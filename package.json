@@ -1,0 +1,44 @@
+{
+  "name": "vaniaflorsit-website",
+  "version": "1.0.0",
+  "description": "Local flower shop website in Sydney",
+  "main": "dist/script.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "dev": "tsc --watch & http-server -p 8080 -c-1",
+    "start": "http-server -p 8080 -c-1",
+    "lint": "eslint **/*.ts",
+    "lint:fix": "eslint **/*.ts --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "flowers",
+    "florist",
+    "sydney",
+    "typescript",
+    "e-commerce",
+    "wedding-flowers"
+  ],
+  "author": "Vania",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.57.0",
+    "http-server": "^14.1.1",
+    "rimraf": "^5.0.7",
+    "typescript": "^5.4.5"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

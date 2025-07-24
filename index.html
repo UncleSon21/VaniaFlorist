@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaniaflorsit | Premium Flowers in Sydney</title>
+    
+    <!-- Favicon - Website icon in browser tab -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <!-- For modern browsers -->
+    <link rel="manifest" href="site.webmanifest">
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Premium florist in Sydney offering wedding bouquets, birthday flowers, and seasonal arrangements. Same-day delivery available.">
+    <meta name="keywords" content="florist sydney, wedding flowers, birthday bouquets, same day delivery, premium flowers">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <p>Fresh Flowers & Same-Day Delivery: The Perfect Gift, Delivered. <a href="#shop">Shop The Summer Collection</a></p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="dropdown-container">
+                    <button class="nav-dropdown">Shop <span class="arrow">▼</span></button>
+                    <div class="dropdown-menu">
+                        <a href="#flowers" class="dropdown-item">Fresh Flowers</a>
+                        <a href="#bouquets" class="dropdown-item">Bouquets</a>
+                        <a href="#arrangements" class="dropdown-item">Arrangements</a>
+                        <a href="#wedding" class="dropdown-item">Wedding Flowers</a>
+                        <a href="#corporate" class="dropdown-item">Corporate Events</a>
+                        <a href="#seasonal" class="dropdown-item">Seasonal Collection</a>
+                    </div>
+                </div>
+                <a href="#flowers" class="text-link">Flowers</a>
+                <a href="#plants" class="text-link">Plants</a>
+                <a href="#peonies" class="text-link">Gifts</a>
+                <a href="#me-day" class="text-link">Same-Day Delivery</a>
+                <a href="#contact-us" class="text-link">Contact Us</a>
+            </div>
+            <div class="logo">
+                <h1 class="logo-title">Vaniaflorsit</h1>
+                <p class="logo-subtitle">Sydney Florist</p>
+            </div>
+            <div class="nav-right">
+                <a href="#subscriptions" class="text-link">Subscriptions</a>
+                <a href="#rewards" class="text-link">Rewards</a>
+                <button class="nav-icon search-btn" aria-label="Search" id="searchButton">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="nav-icon" aria-label="My Account">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+                <button class="nav-icon cart-icon" aria-label="Shopping Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-content">
+            <button class="search-close" id="searchClose">&times;</button>
+            <h3 class="search-title">Search Our Collection</h3>
+            
+            <!-- Search Input -->
+            <div class="search-input-container">
+                <input type="text" class="search-input" placeholder="Search for flowers, occasions, colors..." id="searchInput">
+                <button class="search-submit" id="searchSubmit">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="search-categories">
+                <h4>Shop by Category</h4>
+                <div class="category-grid">
+                    <div class="category-item" data-category="wedding">
+                        <div class="category-icon">💒</div>
+                        <span>Wedding Flowers</span>
+                        <small>Bridal bouquets & decorations</small>
+                    </div>
+                    <div class="category-item" data-category="birthday">
+                        <div class="category-icon">🎂</div>
+                        <span>Birthday Flowers</span>
+                        <small>Celebration arrangements</small>
+                    </div>
+                    <div class="category-item" data-category="romantic">
+                        <div class="category-icon">💕</div>
+                        <span>Romantic</span>
+                        <small>Roses & love arrangements</small>
+                    </div>
+                    <div class="category-item" data-category="sympathy">
+                        <div class="category-icon">🕊️</div>
+                        <span>Sympathy</span>
+                        <small>Funeral & condolence flowers</small>
+                    </div>
+                    <div class="category-item" data-category="corporate">
+                        <div class="category-icon">🏢</div>
+                        <span>Corporate</span>
+                        <small>Office & event arrangements</small>
+                    </div>
+                    <div class="category-item" data-category="seasonal">
+                        <div class="category-icon">🌸</div>
+                        <span>Seasonal</span>
+                        <small>Peonies, tulips & seasonal blooms</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="search-suggestions">
+                <h4>Popular Searches</h4>
+                <div class="suggestion-tags">
+                    <span class="suggestion-tag" data-search="red roses">Red Roses</span>
+                    <span class="suggestion-tag" data-search="white lilies">White Lilies</span>
+                    <span class="suggestion-tag" data-search="mixed bouquet">Mixed Bouquet</span>
+                    <span class="suggestion-tag" data-search="peonies">Peonies</span>
+                    <span class="suggestion-tag" data-search="sunflowers">Sunflowers</span>
+                    <span class="suggestion-tag" data-search="orchids">Orchids</span>
+                    <span class="suggestion-tag" data-search="same day delivery">Same Day</span>
+                    <span class="suggestion-tag" data-search="under $50">Under $50</span>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-image"></div>
+        <div class="hero-content">
+            <h2>It's A Peony Party</h2>
+            <p>A short-lived season meets a long-lasting impression. Our premium Alaskan peonies are here and going fast.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary">SHOP FLOWERS</button>
+                <button class="btn-secondary">SHOP PLANTS</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about highlight">
+        <div class="container highlight-container">
+            <h2 class="section-title">Welcome to Vaniaflorsit — where passion meets petals.</h2>
+            <div class="about-text centered">
+                <p>Crafted for those who appreciate elegance, our floral arrangements are thoughtfully designed with charm and care in the heart of Sydney, bringing beauty to your doorstep across the city.</p>
+                <a href="about.html" class="learn-more-btn">LEARN MORE</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🌹</div>
+                    <h3>Wedding Florals</h3>
+                    <p>From bridal bouquets to venue decorations, we create magical wedding experiences with our premium floral designs.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎁</div>
+                    <h3>Gift Bouquets</h3>
+                    <p>Express your feelings with our carefully curated bouquets for birthdays, anniversaries, and special occasions.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏢</div>
+                    <h3>Corporate Events</h3>
+                    <p>Elevate your corporate events with sophisticated floral arrangements that leave lasting impressions.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚚</div>
+                    <h3>Same-Day Delivery</h3>
+                    <p>Need flowers urgently? We offer same-day delivery within the city for orders placed before 2 PM.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Our Creations</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="placeholder-image">Spring Collection</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">Wedding Bouquet</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">Corporate Arrangement</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">Birthday Special</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">Seasonal Flowers</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">Custom Design</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get in Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Visit Our Shop</h3>
+                    <p><strong>Address:</strong> 123 Garden Street, Floral District, Sydney NSW 2000</p>
+                    <p><strong>Phone:</strong> (02) 9123-4567</p>
+                    <p><strong>Email:</strong> hello@vaniaflorsit.com.au</p>
+                    <p><strong>Hours:</strong> Mon-Sat 9AM-7PM, Sun 10AM-5PM</p>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <input type="tel" name="phone" placeholder="Phone Number">
+                    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Vaniaflorsit</h3>
+                    <p>Creating beautiful moments with nature's finest blooms in Sydney.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" target="_blank">Facebook</a>
+                        <a href="#" target="_blank">Instagram</a>
+                        <a href="#" target="_blank">Pinterest</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vaniaflorsit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Compiled JavaScript from TypeScript -->
+    <script type="module" src="dist/script.js"></script>
+</body>
+</html>
