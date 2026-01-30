@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Flowers | Vaniaflorsit - Premium Sydney Florist</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Shop premium flowers online at Vaniaflorsit. Browse wedding bouquets, birthday arrangements, and seasonal flowers with same-day Sydney delivery.">
+    <meta name="keywords" content="buy flowers online sydney, flower shop, wedding flowers, birthday bouquets, flower delivery">
+    
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/shop-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <p>Free Delivery on Orders Over $50 · Same-Day Delivery Available</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="shop.html" class="text-link">Shop</a>
+                <a href="#occasions" class="text-link">Occasions</a>
+                <a href="#about" class="text-link">About</a>
+                <a href="#delivery" class="text-link">Delivery</a>
+                <a href="#contact" class="text-link">Contact</a>
+            </div>
+            <div class="logo">
+                <a href="index.html">
+                    <h1 class="logo-title">Vaniaflorsit</h1>
+                    <p class="logo-subtitle">Sydney Florist</p>
+                </a>
+            </div>
+            <div class="nav-right">
+                <button class="nav-icon search-btn" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="nav-icon" aria-label="My Account">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+                <button class="nav-icon cart-icon" aria-label="Shopping Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shop Hero Section -->
+    <section class="shop-hero">
+        <div class="shop-hero-content">
+            <h1>Shop Our Collection</h1>
+            <p>Beautiful flowers for every occasion</p>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a>
+            <span class="separator">›</span>
+            <span class="current">Shop</span>
+        </div>
+    </div>
+
+    <!-- Shop Main Content -->
+    <section class="shop-content">
+        <div class="container">
+            <div class="shop-layout">
+                <!-- Sidebar Categories -->
+                <aside class="shop-sidebar">
+                    <div class="filter-header">
+                        <h3>Categories</h3>
+                    </div>
+
+                    <!-- Category Navigation -->
+                    <div class="category-nav">
+                        <a href="#all" class="category-link active">
+                            <span>All Flowers</span>
+                            <span class="count">48</span>
+                        </a>
+                        <a href="#roses" class="category-link">
+                            <span>Roses</span>
+                            <span class="count">12</span>
+                        </a>
+                        <a href="#bouquets" class="category-link">
+                            <span>Mixed Bouquets</span>
+                            <span class="count">15</span>
+                        </a>
+                        <a href="#wedding" class="category-link">
+                            <span>Wedding Flowers</span>
+                            <span class="count">8</span>
+                        </a>
+                        <a href="#sympathy" class="category-link">
+                            <span>Sympathy Flowers</span>
+                            <span class="count">6</span>
+                        </a>
+                        <a href="#seasonal" class="category-link">
+                            <span>Seasonal Collection</span>
+                            <span class="count">10</span>
+                        </a>
+                        <a href="#plants" class="category-link">
+                            <span>Plants & Succulents</span>
+                            <span class="count">8</span>
+                        </a>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="filter-section">
+                        <h4 class="filter-title">Price Range</h4>
+                        <div class="price-options">
+                            <label class="price-option">
+                                <input type="checkbox" name="price" value="under50">
+                                <span>Under $50</span>
+                            </label>
+                            <label class="price-option">
+                                <input type="checkbox" name="price" value="50-100">
+                                <span>$50 - $100</span>
+                            </label>
+                            <label class="price-option">
+                                <input type="checkbox" name="price" value="100-150">
+                                <span>$100 - $150</span>
+                            </label>
+                            <label class="price-option">
+                                <input type="checkbox" name="price" value="over150">
+                                <span>Over $150</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Occasion Filter -->
+                    <div class="filter-section">
+                        <h4 class="filter-title">Occasion</h4>
+                        <div class="occasion-tags">
+                            <button class="occasion-tag">Birthday</button>
+                            <button class="occasion-tag">Anniversary</button>
+                            <button class="occasion-tag">Get Well</button>
+                            <button class="occasion-tag">Thank You</button>
+                            <button class="occasion-tag">Love & Romance</button>
+                            <button class="occasion-tag">New Baby</button>
+                            <button class="occasion-tag">Sympathy</button>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Product Grid -->
+                <main class="shop-main">
+                    <!-- Sort Options -->
+                    <div class="shop-controls">
+                        <div class="results-count">
+                            Showing <span class="count-number">12</span> of 48 products
+                        </div>
+                        <div class="sort-options">
+                            <select class="sort-select" id="sortSelect">
+                                <option value="featured">Featured</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="newest">Newest First</option>
+                                <option value="popular">Most Popular</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Product Cards -->
+                        <div class="product-card" data-product-id="1">
+                            <div class="product-badge new">New</div>
+                            <div class="product-image">
+                                <div class="placeholder-product">🌹</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=1" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Classic Red Roses</h3>
+                                <p class="product-description">Dozen premium long-stem red roses</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $45</span>
+                                    <a href="product-details.html?id=1" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="2">
+                            <div class="product-badge popular">Popular</div>
+                            <div class="product-image">
+                                <div class="placeholder-product">💐</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=2" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Spring Garden Mix</h3>
+                                <p class="product-description">Colorful seasonal flower arrangement</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $35</span>
+                                    <a href="product-details.html?id=2" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="3">
+                            <div class="product-badge seasonal">Limited</div>
+                            <div class="product-image">
+                                <div class="placeholder-product">🌸</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=3" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Premium Alaskan Peonies</h3>
+                                <p class="product-description">Limited season luxury peonies</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Pre-order</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $55</span>
+                                    <a href="product-details.html?id=3" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="4">
+                            <div class="product-image">
+                                <div class="placeholder-product">🌻</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=4" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Sunshine Bouquet</h3>
+                                <p class="product-description">Bright sunflowers with greenery</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $30</span>
+                                    <a href="product-details.html?id=4" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="5">
+                            <div class="product-image">
+                                <div class="placeholder-product">🌺</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=5" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Tropical Paradise</h3>
+                                <p class="product-description">Exotic flowers and tropical foliage</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Next Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $65</span>
+                                    <a href="product-details.html?id=5" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="6">
+                            <div class="product-badge new">New</div>
+                            <div class="product-image">
+                                <div class="placeholder-product">🌷</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=6" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Pastel Tulips</h3>
+                                <p class="product-description">Soft colored tulip arrangement</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $40</span>
+                                    <a href="product-details.html?id=6" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="7">
+                            <div class="product-image">
+                                <div class="placeholder-product">💜</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=7" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Lavender Dreams</h3>
+                                <p class="product-description">Calming lavender and purple blooms</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $38</span>
+                                    <a href="product-details.html?id=7" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="8">
+                            <div class="product-badge popular">Popular</div>
+                            <div class="product-image">
+                                <div class="placeholder-product">🌼</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=8" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Daisy Delight</h3>
+                                <p class="product-description">Fresh white daisies with greenery</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $25</span>
+                                    <a href="product-details.html?id=8" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="9">
+                            <div class="product-image">
+                                <div class="placeholder-product">💒</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=9" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Wedding Elegance</h3>
+                                <p class="product-description">Premium bridal bouquet</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Custom Order</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $120</span>
+                                    <a href="product-details.html?id=9" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="10">
+                            <div class="product-image">
+                                <div class="placeholder-product">🌿</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=10" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Green Serenity</h3>
+                                <p class="product-description">Lush indoor plant arrangement</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Pickup Available</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $48</span>
+                                    <a href="product-details.html?id=10" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="11">
+                            <div class="product-image">
+                                <div class="placeholder-product">🕊️</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=11" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Peaceful White Lilies</h3>
+                                <p class="product-description">Elegant sympathy arrangement</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $50</span>
+                                    <a href="product-details.html?id=11" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-product-id="12">
+                            <div class="product-image">
+                                <div class="placeholder-product">🎁</div>
+                                <div class="product-overlay">
+                                    <a href="product-details.html?id=12" class="quick-view-btn">Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Gift Box Special</h3>
+                                <p class="product-description">Flowers with chocolates & card</p>
+                                <div class="product-meta">
+                                    <span class="delivery-badge">Same Day Delivery</span>
+                                </div>
+                                <div class="product-footer">
+                                    <span class="product-price">From $75</span>
+                                    <a href="product-details.html?id=12" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Load More -->
+                    <div class="load-more-section">
+                        <button class="load-more-btn">Load More Products</button>
+                        <p class="showing-text">Showing 12 of 48 products</p>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Vaniaflorsit</h3>
+                    <p>Creating beautiful moments with nature's finest blooms in Sydney.</p>
+                    <p class="footer-contact">
+                        <strong>Call:</strong> (02) 9123-4567<br>
+                        <strong>Email:</strong> hello@vaniaflorsit.com.au
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#delivery">Delivery Info</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Store Hours</h4>
+                    <p>
+                        Monday - Saturday: 9:00 AM - 7:00 PM<br>
+                        Sunday: 10:00 AM - 5:00 PM
+                    </p>
+                    <div class="social-links">
+                        <a href="#" target="_blank">Facebook</a>
+                        <a href="#" target="_blank">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vaniaflorsit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="dist/script.js"></script>
+    <script type="module" src="dist/shop.js"></script>
+</body>
+</html>

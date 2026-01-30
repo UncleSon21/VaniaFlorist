@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Product Details - Vaniaflorsit</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/product-details.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Left: Back Button -->
+            <div class="nav-left">
+                <a href="shop.html" class="back-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    <span>Back to Shop</span>
+                </a>
+            </div>
+            
+            <!-- Center: Logo -->
+            <div class="nav-center">
+                <a href="index.html" class="logo">
+                    <h1 class="logo-title">Vaniaflorsit</h1>
+                </a>
+            </div>
+            
+            <!-- Right: Cart -->
+            <div class="nav-right">
+                <a href="cart.html" class="cart-link">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Details Section -->
+    <section class="product-details-container">
+        <div class="container">
+            <div class="product-layout">
+                <!-- Product Images -->
+                <div class="product-images">
+                    <div class="main-image">
+                        <img id="p-image" src="" alt="Product Image" style="display:none;" />
+                        <div class="image-placeholder">
+                            <span style="font-size: 8rem;">🌹</span>
+                        </div>
+                    </div>
+                    <div class="thumbnail-images">
+                        <!-- Thumbnails can be added dynamically if you have multiple images -->
+                        <div class="thumbnail active">🌹</div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info">
+                    <h1 class="product-title" id="p-title">Loading...</h1>
+                    <p class="product-subtitle">Please wait while we load product details...</p>
+                    
+                    <!-- Size Options - Will be populated from database -->
+                    <div class="size-section">
+                        <h3>Size Options:</h3>
+                        <p class="size-note">*All Prices are in Australian Dollars</p>
+                        <div class="size-options">
+                            <!-- Populated dynamically from database -->
+                        </div>
+                    </div>
+
+                    <!-- Presentation Options -->
+                    <div class="presentation-section">
+                        <h3>Presentation:</h3>
+                        <div class="presentation-options">
+                            <label class="presentation-option">
+                                <input type="radio" name="presentation" value="wrapped" checked>
+                                <div class="option-box">
+                                    <span>Wrapped Bouquet</span>
+                                </div>
+                            </label>
+                            
+                            <label class="presentation-option">
+                                <input type="radio" name="presentation" value="vase" data-price="30">
+                                <div class="option-box">
+                                    <span>In Vase +$30</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Selector -->
+                    <div class="quantity-section">
+                        <h3>Quantity:</h3>
+                        <input type="number" id="qty" min="1" value="1" class="qty-input">
+                    </div>
+
+                    <!-- Add-ons Section -->
+                    <div class="addons-section">
+                        <h3>Why not include a small gift?</h3>
+                        <div class="addon-categories">
+                            <button class="addon-category active" data-category="chocolates">Chocolates</button>
+                            <button class="addon-category" data-category="wine">Champagne & Wine</button>
+                            <button class="addon-category" data-category="cards">Cards</button>
+                            <button class="addon-category" data-category="candles">Candles & Diffuser</button>
+                            <button class="addon-category" data-category="balloons">Balloons</button>
+                            <button class="addon-category" data-category="cakes">Cakes</button>
+                            <button class="addon-category" data-category="teddy">Teddy Bears</button>
+                        </div>
+
+                        <!-- Chocolates Grid - Will be populated from database -->
+                        <div class="addon-grid active" data-category="chocolates">
+                            <!-- Populated dynamically from database -->
+                        </div>
+
+                        <!-- Other categories can be added similarly -->
+                        <div class="addon-grid" data-category="wine">
+                            <p>Wine add-ons coming soon...</p>
+                        </div>
+                        
+                        <div class="addon-grid" data-category="cards">
+                            <p>Card add-ons coming soon...</p>
+                        </div>
+                        
+                        <div class="addon-grid" data-category="candles">
+                            <p>Candle add-ons coming soon...</p>
+                        </div>
+                        
+                        <div class="addon-grid" data-category="balloons">
+                            <p>Balloon add-ons coming soon...</p>
+                        </div>
+                        
+                        <div class="addon-grid" data-category="cakes">
+                            <p>Cake add-ons coming soon...</p>
+                        </div>
+                        
+                        <div class="addon-grid" data-category="teddy">
+                            <p>Teddy bear add-ons coming soon...</p>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Date (optional) -->
+                    <div class="delivery-date-section" style="margin: 20px 0;">
+                        <h3>Delivery Date:</h3>
+                        <input type="date" id="delivery-date" class="date-input">
+                    </div>
+
+                    <!-- Cart Summary -->
+                    <div class="cart-summary">
+                        <div class="summary-items">
+                            <div class="summary-item" id="main-product">
+                                <span>Loading...</span>
+                                <span>$0.00</span>
+                            </div>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total:</span>
+                            <span id="total-price">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn-buy-now">BUY NOW</button>
+                        <button class="btn-add-cart">ADD TO CART</button>
+                    </div>
+
+                    <!-- Delivery Info -->
+                    <div class="delivery-info">
+                        <div class="info-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="3" width="15" height="13"></rect>
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                            </svg>
+                            <span>Same-day delivery for orders before 2PM</span>
+                        </div>
+                        <div class="info-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+                                <circle cx="12" cy="9" r="2.5"></circle>
+                            </svg>
+                            <span>Free delivery within 10km of CBD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="details">PRODUCT DETAILS</button>
+                    <button class="tab-button" data-tab="delivery">DELIVERY INFO</button>
+                    <button class="tab-button" data-tab="care">CARE INSTRUCTIONS</button>
+                </div>
+                
+                <div class="tab-content active" data-tab="details">
+                    <h3>About This Arrangement</h3>
+                    <p>Our flowers are carefully selected for their vibrant colors and perfect blooms, creating stunning arrangements that speak volumes.</p>
+                    <ul>
+                        <li>Premium quality flowers</li>
+                        <li>Fresh daily from local growers</li>
+                        <li>Hand-tied by expert florists</li>
+                        <li>Presented with seasonal greenery</li>
+                        <li>Available in multiple sizes</li>
+                    </ul>
+                </div>
+                
+                <div class="tab-content" data-tab="delivery">
+                    <h3>Delivery Information</h3>
+                    <p>We offer flexible delivery options to ensure your flowers arrive fresh and on time:</p>
+                    <ul>
+                        <li><strong>Same-Day Delivery:</strong> Order before 2PM for delivery today</li>
+                        <li><strong>Next-Day Delivery:</strong> Order anytime for delivery tomorrow</li>
+                        <li><strong>Scheduled Delivery:</strong> Choose your preferred date and time</li>
+                        <li><strong>Free Delivery:</strong> On orders over $50 within 10km of Sydney CBD</li>
+                        <li><strong>Express Delivery:</strong> Within 3 hours for urgent orders (+$15)</li>
+                    </ul>
+                </div>
+                
+                <div class="tab-content" data-tab="care">
+                    <h3>Care Instructions</h3>
+                    <p>To ensure your flowers stay fresh and beautiful for as long as possible:</p>
+                    <ol>
+                        <li>Remove flowers from packaging immediately</li>
+                        <li>Cut 2-3cm off stems at a 45-degree angle</li>
+                        <li>Remove any leaves below the water line</li>
+                        <li>Place in clean vase with fresh, cool water</li>
+                        <li>Add flower food if provided</li>
+                        <li>Change water every 2-3 days</li>
+                        <li>Keep away from direct sunlight and heating</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Vaniaflorsit. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="dist/product-details.js"></script>
+</body>
+</html>

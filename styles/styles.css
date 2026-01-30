@@ -210,6 +210,10 @@ body {
   color: #8b7355;
   letter-spacing: 4px;
 }
+.logo a {
+  text-decoration: none;
+  color: inherit;
+}
 
 /* Decorative elements */
 .logo:before,

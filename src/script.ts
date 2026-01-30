@@ -238,8 +238,7 @@ class FlowerShopApp {
         // Open search modal
         if (searchBtn) {
             console.log('Adding click listener to search button');
-            searchBtn.addEventListener('click', (e) => {
-                e.preventDefault();
+            searchBtn.addEventListener('click', (_e) => {
                 console.log('Search button clicked!');
                 this.openSearchModal();
             });
@@ -314,8 +313,7 @@ class FlowerShopApp {
     private setupNavigationListeners(): void {
         // Smooth scrolling for navigation links
         document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link: HTMLAnchorElement) => {
-            link.addEventListener('click', (e: Event) => {
-                e.preventDefault();
+            link.addEventListener('click', (_e: Event) => {
                 const target = link.getAttribute('href');
                 if (target && target !== '#') {
                     this.smoothScroll(target);
@@ -623,8 +621,7 @@ class FlowerShopApp {
         const contactForm = document.getElementById('contactForm') as HTMLFormElement | null;
         
         if (contactForm) {
-            contactForm.addEventListener('submit', (e: Event) => {
-                e.preventDefault();
+            contactForm.addEventListener('submit', (_e: Event) => {
                 this.handleFormSubmission(contactForm);
             });
         }
@@ -694,8 +691,7 @@ class FlowerShopApp {
 
             const dropdownItems = document.querySelectorAll<HTMLAnchorElement>('.dropdown-item');
             dropdownItems.forEach((item: HTMLAnchorElement) => {
-                item.addEventListener('click', (e: Event) => {
-                    e.preventDefault();
+                item.addEventListener('click', (_e: Event) => {
                     const category = item.textContent || '';
                     alert(`You clicked on: ${category}\nThis would normally show the ${category.toLowerCase()} category page.`);
                 });
