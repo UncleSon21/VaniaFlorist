@@ -1,36 +1,76 @@
+// src/scripts/shop_page_db.ts  — REPLACE EXISTING FILE
+// Updated renderGrid to match revamped card HTML structure.
+
 import { fetchCatalog } from "./db";
 import { qs, qsa } from "./utils";
-import { mountCartDrawer } from "./cart";
+import { loadCart, mountCartDrawer } from "./cart";
 
 type MaterialFilter = "all" | "fresh" | "artificial";
 
-function renderGrid(list: any[]){
-  const grid = qs<HTMLDivElement>("#productsGrid");
-  if (!grid) return;
-  grid.innerHTML = list.map(p => `
-    <div class="product-card" data-product-id="${p.id}">
-      <div class="product-image">
-        <img loading="lazy" src="${p.images[0] || ""}" alt="${p.name}">
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">${p.name}</h3>
-        <p class="product-description">${p.description}</p>
-        <div class="product-footer">
-          <span class="product-price">From $${(Math.min(...p.variants.map((v:any)=>v.priceCents))/100).toFixed(2)}</span>
-          <a href="product-details.html?id=${p.id}" class="view-details-btn">View Details</a>
-        </div>
-      </div>
-    </div>
-  `).join("");
+function updateNavCount() {
+  const cart = loadCart();
+  const total = cart.reduce((s, ci) => s + ci.qty, 0);
+  const el = qs<HTMLElement>("#nav-cart-count");
+  if (el) el.textContent = String(total);
 }
 
-async function main(){
+function renderGrid(list: any[]) {
+  const grid = qs<HTMLDivElement>("#productsGrid");
+  if (!grid) return;
+
+  const countEl = qs<HTMLElement>("#resultsCount");
+  if (countEl) {
+    countEl.innerHTML = list.length > 0
+      ? `<span>${list.length}</span> result${list.length !== 1 ? "s" : ""}`
+      : "";
+  }
+
+  if (list.length === 0) {
+    grid.innerHTML = `<div class="shop-empty"><div class="shop-empty-icon">🌸</div><h3>No flowers found</h3><p>Try adjusting your filters or search term.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(p => {
+    const minPrice = Math.min(...p.variants.map((v: any) => v.priceCents)) / 100;
+    const img = p.images?.[0] || "";
+    const materialClass = p.material === "fresh" ? "fresh" : "artificial";
+    const materialLabel = p.material === "fresh" ? "Fresh" : "Artificial";
+    return `
+      <div class="product-card" data-product-id="${p.id}">
+        <div class="product-image">
+          ${img ? `<img loading="lazy" src="${img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ""}
+          <div class="product-image-placeholder" ${img ? 'style="display:none"' : ""}>🌹</div>
+          <div class="product-overlay">
+            <a href="product-details.html?id=${p.id}" class="quick-view-btn">View Details</a>
+          </div>
+          <span class="material-badge ${materialClass}">${materialLabel}</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">${p.name}</h3>
+          <p class="product-description">${p.description || ""}</p>
+          <div class="product-footer">
+            <div class="product-price-wrap">
+              <span class="product-price-label">From</span>
+              <span class="product-price">$${minPrice.toFixed(2)}</span>
+            </div>
+            <a href="product-details.html?id=${p.id}" class="view-details-btn">Shop Now</a>
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+async function main() {
+  updateNavCount();
+  document.addEventListener("cart:changed", updateNavCount);
+
   const all = await fetchCatalog();
 
   const categorySel = qs<HTMLSelectElement>("#categorySelect");
-  if (categorySel){
-    const cats = Array.from(new Set(all.flatMap((p:any)=>p.categories))).filter(Boolean).sort();
-    categorySel.innerHTML = `<option value="all">All categories</option>` + cats.map(c=>`<option value="${c}">${c}</option>`).join("");
+  if (categorySel) {
+    const cats = [...new Set(all.flatMap((p: any) => p.categories))].filter(Boolean).sort() as string[];
+    categorySel.innerHTML = `<option value="all">All Categories</option>` +
+      cats.map(c => `<option value="${c}">${(c as string).charAt(0).toUpperCase() + (c as string).slice(1)}</option>`).join("");
   }
 
   let material: MaterialFilter = "all";
@@ -38,22 +78,26 @@ async function main(){
   let q = "";
 
   const apply = () => {
-    const list = all.filter((p:any) => {
-      const okMaterial = material==="all" ? true : p.material===material;
-      const okCat = category==="all" ? true : p.categories.includes(category);
-      const okQ = q ? p.name.toLowerCase().includes(q) : true;
+    const list = all.filter((p: any) => {
+      const okMaterial = material === "all" || p.material === material;
+      const okCat      = category === "all" || p.categories.includes(category);
+      const okQ        = !q || p.name.toLowerCase().includes(q) || (p.description || "").toLowerCase().includes(q);
       return okMaterial && okCat && okQ;
     });
     renderGrid(list);
   };
 
-  qsa<HTMLButtonElement>(".material-pill").forEach(btn => btn.addEventListener("click", () => {
-    material = (btn.dataset.material as MaterialFilter) || "all";
-    qsa<HTMLButtonElement>(".material-pill").forEach(b => b.classList.toggle("active", b===btn));
-    apply();
-  }));
+  qsa<HTMLButtonElement>(".material-pill").forEach(btn =>
+    btn.addEventListener("click", () => {
+      material = (btn.dataset["material"] as MaterialFilter) || "all";
+      qsa<HTMLButtonElement>(".material-pill").forEach(b => b.classList.toggle("active", b === btn));
+      apply();
+    })
+  );
+
   categorySel?.addEventListener("change", () => { category = categorySel.value || "all"; apply(); });
-  qs<HTMLInputElement>("#searchInput")?.addEventListener("input", (e) => {
+
+  qs<HTMLInputElement>("#searchInput")?.addEventListener("input", e => {
     q = (e.currentTarget as HTMLInputElement).value.trim().toLowerCase();
     apply();
   });

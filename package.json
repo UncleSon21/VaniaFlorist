@@ -5,14 +5,9 @@
   "main": "dist/script.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "dev": "tsc --watch & http-server -p 8080 -c-1",
-    "start": "http-server -p 3000 -c-1",
-    "lint": "eslint **/*.ts",
-    "lint:fix": "eslint **/*.ts --fix",
-    "type-check": "tsc --noEmit",
-    "clean": "rimraf dist"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "flowers",
@@ -26,12 +21,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.14.0",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.2",
+    "@typescript-eslint/parser": "^8.57.2",
     "eslint": "^8.57.0",
     "http-server": "^14.1.1",
     "rimraf": "^5.0.7",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vite": "^8.0.3"
   },
   "browserslist": [
     "> 1%",

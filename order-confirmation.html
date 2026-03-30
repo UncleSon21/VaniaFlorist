@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed – Vaniaflorsit</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+    /* ── Confirmation Page ── */
+    .confirmation-page {
+        background: #faf8f5;
+        min-height: 80vh;
+        padding: 60px 0 100px;
+    }
+
+    /* ── Hero checkmark ── */
+    .confirmation-hero {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+
+    .checkmark-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #5a9a5a, #4a8a4a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        box-shadow: 0 8px 30px rgba(90,154,90,0.25);
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    @keyframes popIn {
+        from { opacity: 0; transform: scale(0.5); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+
+    .checkmark-circle svg {
+        color: white;
+        animation: drawCheck 0.4s ease 0.3s both;
+        opacity: 0;
+    }
+
+    @keyframes drawCheck {
+        from { opacity: 0; transform: scale(0.5); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+
+    .confirmation-hero h1 {
+        font-family: 'Great Vibes', cursive;
+        font-size: 3.5rem;
+        color: #8b7355;
+        font-weight: 400;
+        margin-bottom: 10px;
+        animation: fadeUp 0.6s ease 0.2s both;
+    }
+
+    .confirmation-hero p {
+        color: #9a8778;
+        font-size: 1rem;
+        animation: fadeUp 0.6s ease 0.35s both;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Layout ── */
+    .confirmation-layout {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 24px;
+        align-items: start;
+        animation: fadeUp 0.6s ease 0.4s both;
+    }
+
+    /* ── Panels ── */
+    .conf-panel {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #f0e8dd;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .conf-panel:last-child { margin-bottom: 0; }
+
+    .conf-panel-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #f8f3ee;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .conf-panel-header h2 {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #c8a882;
+        margin: 0;
+    }
+
+    .conf-panel-body { padding: 22px 24px; }
+
+    /* ── Order ID banner ── */
+    .order-id-banner {
+        background: linear-gradient(135deg, #faf8f5, #f5ede0);
+        border: 1px solid #e8ddd4;
+        border-radius: 12px;
+        padding: 18px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .order-id-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #c8a882;
+        margin-bottom: 4px;
+    }
+
+    .order-id-value {
+        font-family: 'Courier New', monospace;
+        font-size: 0.88rem;
+        color: #6b5240;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .copy-id-btn {
+        padding: 7px 14px;
+        border: 1.5px solid #e8ddd4;
+        background: white;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #8b7355;
+        cursor: pointer;
+        font-family: 'Georgia', serif;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .copy-id-btn:hover { border-color: #8b7355; background: #faf8f5; }
+    .copy-id-btn.copied { background: #5a9a5a; border-color: #5a9a5a; color: white; }
+
+    /* ── Detail rows ── */
+    .detail-rows { display: grid; gap: 14px; }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #f8f3ee;
+    }
+
+    .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .detail-key {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #c8a882;
+        flex-shrink: 0;
+    }
+
+    .detail-val {
+        font-size: 0.9rem;
+        color: #2b2b2b;
+        text-align: right;
+        line-height: 1.5;
+    }
+
+    /* ── Order items ── */
+    .order-items-list { display: grid; gap: 14px; }
+
+    .order-item-row {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    .order-item-img {
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        background: #faf8f5;
+        flex-shrink: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        border: 1px solid #f0e8dd;
+    }
+
+    .order-item-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .order-item-info { flex: 1; min-width: 0; }
+
+    .order-item-name {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #1e1a17;
+        margin-bottom: 3px;
+    }
+
+    .order-item-meta { font-size: 0.8rem; color: #bbb; }
+
+    .order-item-price {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #8b7355;
+        flex-shrink: 0;
+    }
+
+    /* ── Cost breakdown ── */
+    .cost-rows { display: grid; gap: 10px; }
+
+    .cost-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.88rem;
+        color: #888;
+    }
+
+    .cost-row.total {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1e1a17;
+        padding-top: 14px;
+        border-top: 1px solid #f0e8dd;
+        margin-top: 4px;
+    }
+
+    .cost-row.total span:last-child { color: #8b7355; font-size: 1.25rem; }
+
+    /* ── Next steps ── */
+    .next-steps { display: grid; gap: 14px; }
+
+    .next-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .next-step-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #faf8f5;
+        border: 1px solid #f0e8dd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .next-step-text h4 {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #2b2b2b;
+        margin-bottom: 2px;
+    }
+
+    .next-step-text p {
+        font-size: 0.8rem;
+        color: #9a8778;
+        line-height: 1.5;
+    }
+
+    /* ── CTAs ── */
+    .conf-ctas { display: grid; gap: 10px; }
+
+    .btn-continue-shopping {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background: #8b7355;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        font-family: 'Georgia', serif;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        cursor: pointer;
+    }
+
+    .btn-continue-shopping:hover {
+        background: #6d5a44;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(139,115,85,0.3);
+    }
+
+    .btn-home {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background: transparent;
+        color: #8b7355;
+        border: 1.5px solid #e8ddd4;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        font-family: 'Georgia', serif;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-home:hover { border-color: #8b7355; background: #faf8f5; }
+
+    /* ── Loading / Error states ── */
+    .conf-loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: #bbb;
+    }
+
+    .conf-spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid #f0e8dd;
+        border-top-color: #8b7355;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .conf-error {
+        text-align: center;
+        padding: 60px 20px;
+        color: #e05252;
+    }
+
+    .conf-error h3 { margin-bottom: 8px; }
+    .conf-error p  { font-size: 0.9rem; color: #bbb; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+        .confirmation-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+        .confirmation-hero h1 { font-size: 2.6rem; }
+        .confirmation-page { padding: 40px 0 80px; }
+        .conf-panel-body { padding: 16px; }
+        .order-id-banner { flex-direction: column; }
+    }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left"></div>
+            <div class="nav-center" style="text-align:center;">
+                <a href="index.html" style="text-decoration:none;">
+                    <h1 style="font-family:'Great Vibes',cursive;font-size:2rem;color:#8b7355;margin:0;font-weight:400;">Vaniaflorsit</h1>
+                </a>
+            </div>
+            <div class="nav-right"></div>
+        </div>
+    </nav>
+
+    <main class="confirmation-page">
+        <div class="container">
+
+            <!-- Loading state -->
+            <div id="conf-loading" class="conf-loading">
+                <div class="conf-spinner"></div>
+                <p>Loading your order…</p>
+            </div>
+
+            <!-- Error state -->
+            <div id="conf-error" style="display:none;" class="conf-error">
+                <h3>Couldn't load order details</h3>
+                <p>Your order was placed — we just couldn't fetch the details right now.<br>Check your phone for a confirmation, or <a href="index.html" style="color:#8b7355;">return home</a>.</p>
+            </div>
+
+            <!-- Main content -->
+            <div id="conf-content" style="display:none;">
+
+                <!-- Hero -->
+                <div class="confirmation-hero">
+                    <div class="checkmark-circle">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h1>Order Confirmed!</h1>
+                    <p>Thank you — your flowers are on their way to being arranged 🌸</p>
+                </div>
+
+                <div class="confirmation-layout">
+
+                    <!-- LEFT col -->
+                    <div>
+
+                        <!-- Order ID -->
+                        <div class="conf-panel">
+                            <div class="conf-panel-header">
+                                <h2>Order Reference</h2>
+                            </div>
+                            <div class="conf-panel-body">
+                                <div class="order-id-banner">
+                                    <div>
+                                        <div class="order-id-label">Order ID</div>
+                                        <div class="order-id-value" id="order-id-display">—</div>
+                                    </div>
+                                    <button class="copy-id-btn" id="copy-id-btn">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="detail-rows" id="order-details">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Items -->
+                        <div class="conf-panel">
+                            <div class="conf-panel-header">
+                                <h2>Items Ordered</h2>
+                            </div>
+                            <div class="conf-panel-body">
+                                <div class="order-items-list" id="order-items-list">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cost summary -->
+                        <div class="conf-panel">
+                            <div class="conf-panel-header">
+                                <h2>Payment Summary</h2>
+                            </div>
+                            <div class="conf-panel-body">
+                                <div class="cost-rows" id="cost-rows">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT col -->
+                    <div>
+
+                        <!-- Next steps -->
+                        <div class="conf-panel" style="margin-bottom:20px;">
+                            <div class="conf-panel-header">
+                                <h2>What Happens Next</h2>
+                            </div>
+                            <div class="conf-panel-body">
+                                <div class="next-steps">
+                                    <div class="next-step">
+                                        <div class="next-step-icon">📞</div>
+                                        <div class="next-step-text">
+                                            <h4>We'll call to confirm</h4>
+                                            <p>Our team will call you within 1 hour to confirm your order details.</p>
+                                        </div>
+                                    </div>
+                                    <div class="next-step">
+                                        <div class="next-step-icon">💐</div>
+                                        <div class="next-step-text">
+                                            <h4>Arranged with care</h4>
+                                            <p>Our florists will handcraft your arrangement fresh on the day.</p>
+                                        </div>
+                                    </div>
+                                    <div class="next-step">
+                                        <div class="next-step-icon">🚚</div>
+                                        <div class="next-step-text">
+                                            <h4>Delivered to your door</h4>
+                                            <p>We'll deliver on your chosen date, handled with care.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="conf-panel">
+                            <div class="conf-panel-body">
+                                <div class="conf-ctas">
+                                    <a href="shop.html" class="btn-continue-shopping">Continue Shopping</a>
+                                    <a href="index.html" class="btn-home">Back to Home</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script type="module" src="src/scripts/order-confirmation.ts"></script>
+
+</body>
+</html>

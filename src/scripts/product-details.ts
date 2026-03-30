@@ -1,363 +1,152 @@
-import { fetchProductById } from "./db";
-import { qs, qsa, getParam, formatPrice } from "./utils";
-import { addToCart, loadCart } from "./cart";
+// src/scripts/db.ts
+import { createClient } from "@supabase/supabase-js";
 
-/**
- * Updates the cart count badge in the navbar
- */
-function updateCartCount() {
-  const cart = loadCart();
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-  
-  const cartCountEl = qs<HTMLElement>(".cart-count");
-  if (cartCountEl) {
-    cartCountEl.textContent = String(totalItems);
-  }
+const _meta = import.meta as any;
+
+export const supabase = createClient(
+  (window as any).SUPABASE_URL || _meta.env?.VITE_SUPABASE_URL,
+  (window as any).SUPABASE_ANON_KEY || _meta.env?.VITE_SUPABASE_ANON_KEY
+);
+
+export async function fetchCatalog() {
+  const { data, error } = await supabase
+    .from("products")
+    .select(`
+      id, slug, name, description, material, in_stock, made_to_order, lead_time_days,
+      product_images ( image_url, sort_order ),
+      variants ( id, variant_code, name, price_cents ),
+      product_categories ( categories:category_id ( name ) )
+    `)
+    .order("name", { ascending: true });
+
+  if (error) throw error;
+
+  return (data || []).map((p: any) => ({
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    description: p.description,
+    material: p.material,
+    inStock: p.in_stock,
+    madeToOrder: p.made_to_order ?? false,
+    leadTimeDays: p.lead_time_days ?? 0,
+    images: (p.product_images || [])
+      .sort((a: any, b: any) => a.sort_order - b.sort_order)
+      .map((x: any) => x.image_url),
+    variants: (p.variants || []).map((v: any) => ({
+      code: v.variant_code,
+      name: v.name,
+      priceCents: v.price_cents,
+    })),
+    categories: (p.product_categories || [])
+      .map((pc: any) => pc.categories?.name)
+      .filter(Boolean),
+  }));
 }
 
-async function main() {
-  // Initialize cart count on page load
-  updateCartCount();
-  
-  // Listen for cart changes
-  document.addEventListener("cart:changed", updateCartCount);
-  const id = getParam("id");
-  if (!id) {
-    location.replace("shop.html");
-    return;
-  }
+export async function fetchProductById(id: string) {
+  const { data, error } = await supabase
+    .from("products")
+    .select(`
+      id, slug, name, description, material, in_stock, made_to_order, lead_time_days,
+      product_images ( image_url, sort_order ),
+      variants ( id, variant_code, name, price_cents ),
+      product_add_ons ( add_ons ( id, slug, name, price_cents ) ),
+      perishable_rules ( earliest_days_ahead, blackout_weekdays )
+    `)
+    .eq("id", id)
+    .single();
 
-  try {
-    const p = await fetchProductById(id);
-    
-    // Update page title
-    document.title = `${p.name} - Vaniaflorsit`;
-    
-    // Set product title and description
-    const titleEl = qs<HTMLElement>(".product-title");
-    if (titleEl) titleEl.textContent = p.name.toUpperCase();
-    
-    const subtitleEl = qs<HTMLElement>(".product-subtitle");
-    if (subtitleEl) {
-      subtitleEl.textContent = p.description || "A beautiful flower arrangement";
-    }
+  if (error) throw error;
 
-    // Set main product image
-    if (p.images && p.images.length > 0) {
-      const mainImg = qs<HTMLImageElement>("#p-image");
-      if (mainImg) {
-        mainImg.src = p.images[0];
-        mainImg.style.display = "block";
-        mainImg.alt = p.name;
-        
-        mainImg.onload = () => {
-          const placeholder = qs(".image-placeholder");
-          if (placeholder) placeholder.style.display = "none";
-        };
-        
-        mainImg.onerror = () => {
-          console.warn("Failed to load product image:", p.images[0]);
-        };
-      }
-      
-      // Update thumbnails if you have multiple images
-      const thumbnailContainer = qs(".thumbnail-images");
-      if (thumbnailContainer && p.images.length > 1) {
-        thumbnailContainer.innerHTML = p.images.slice(0, 4).map((img, idx) => 
-          `<div class="thumbnail ${idx === 0 ? 'active' : ''}" data-index="${idx}">
-            <img src="${img}" alt="${p.name} ${idx + 1}" style="width:100%; height:100%; object-fit:cover;">
-          </div>`
-        ).join("");
-      }
-    }
+  // FIX: perishable_rules comes back as an array from Supabase — grab first element
+  const perishableRaw = Array.isArray(data.perishable_rules)
+    ? data.perishable_rules[0]
+    : data.perishable_rules;
 
-    // Populate size/variant options from database
-    const sizeWrap = qs<HTMLElement>(".size-options");
-    if (sizeWrap && p.variants && p.variants.length > 0) {
-      sizeWrap.innerHTML = p.variants.map((v: any, i: number) => `
-        <label class="size-option">
-          <input type="radio" name="size" value="${v.code}" data-price="${v.priceCents / 100}" ${i === 0 ? "checked" : ""}>
-          <div class="size-box">
-            <span class="price">${formatPrice(v.priceCents / 100)}</span>
-            <span class="label">${v.name}</span>
-          </div>
-        </label>
-      `).join("");
-
-      // Add change listener for size options
-      sizeWrap.addEventListener("change", updateCartSummary);
-    }
-
-    // Presentation options listener
-    const presentationWrap = qs<HTMLElement>(".presentation-options");
-    if (presentationWrap) {
-      presentationWrap.addEventListener("change", updateCartSummary);
-    }
-
-    // Populate add-ons from database
-    if (p.addOns && p.addOns.length > 0) {
-      const addonGrid = qs<HTMLElement>('.addon-grid[data-category="chocolates"]');
-      if (addonGrid) {
-        addonGrid.innerHTML = p.addOns.map((a: any) => `
-          <div class="addon-item">
-            ${a.image ? `<img src="${a.image}" alt="${a.name}" />` : ''}
-            <div class="addon-placeholder" style="${a.image ? 'display:none' : ''}">🎁</div>
-            <h4>${a.name}</h4>
-            <p class="addon-price">${formatPrice(a.priceCents / 100)}</p>
-            <button class="add-addon" data-id="${a.id}" data-name="${a.name}" data-price-cents="${a.priceCents}">Add</button>
-          </div>
-        `).join("");
-      }
-    } else {
-      // Show message if no add-ons available
-      const addonGrid = qs<HTMLElement>('.addon-grid[data-category="chocolates"]');
-      if (addonGrid) {
-        addonGrid.innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">No add-ons available for this product.</p>';
-      }
-    }
-
-    // Handle add-on button clicks
-    const addonContainer = qs<HTMLElement>(".addons-section");
-    if (addonContainer) {
-      addonContainer.addEventListener("click", (e) => {
-        const btn = (e.target as HTMLElement).closest(".add-addon") as HTMLButtonElement;
-        if (!btn) return;
-        
-        const isAdded = btn.classList.contains("added");
-        btn.classList.toggle("added");
-        btn.textContent = isAdded ? "Add" : "Added ✓";
-        
-        updateCartSummary();
-      });
-    }
-
-    // Quantity input
-    const qtyInput = qs<HTMLInputElement>("#qty");
-    if (qtyInput) {
-      qtyInput.addEventListener("change", () => {
-        if (parseInt(qtyInput.value) < 1) qtyInput.value = "1";
-        updateCartSummary();
-      });
-      qtyInput.addEventListener("input", () => {
-        if (parseInt(qtyInput.value) < 1) qtyInput.value = "1";
-        updateCartSummary();
-      });
-    }
-
-    // Update cart summary in sidebar
-    function updateCartSummary() {
-      const variantCode = qs<HTMLInputElement>('input[name="size"]:checked')?.value || p.variants[0].code;
-      const variant = p.variants.find((v: any) => v.code === variantCode);
-      if (!variant) return;
-
-      const qty = Math.max(1, parseInt(qtyInput?.value || "1", 10));
-      let subtotalCents = variant.priceCents;
-
-      // Build summary items HTML
-      let summaryHTML = `
-        <div class="summary-item" id="main-product">
-          <span>${p.name} (${variant.name})</span>
-          <span>${formatPrice(variant.priceCents / 100)}</span>
-        </div>
-      `;
-
-      // Add presentation option if vase selected
-      const vaseOption = qs<HTMLInputElement>('input[name="presentation"][value="vase"]:checked');
-      if (vaseOption) {
-        const vasePrice = parseFloat(vaseOption.dataset.price || "30");
-        subtotalCents += vasePrice * 100;
-        summaryHTML += `
-          <div class="summary-item">
-            <span>In Vase</span>
-            <span>${formatPrice(vasePrice)}</span>
-          </div>
-        `;
-      }
-
-      // Add selected add-ons
-      qsa<HTMLButtonElement>(".add-addon.added").forEach(btn => {
-        const addonPriceCents = Number(btn.dataset.priceCents || "0");
-        const addonName = btn.dataset.name || "Add-on";
-        subtotalCents += addonPriceCents;
-        summaryHTML += `
-          <div class="summary-item">
-            <span>${addonName}</span>
-            <span>${formatPrice(addonPriceCents / 100)}</span>
-          </div>
-        `;
-      });
-
-      // Update summary items
-      const summaryItems = qs<HTMLElement>(".summary-items");
-      if (summaryItems) {
-        summaryItems.innerHTML = summaryHTML;
-      }
-
-      // Calculate and display total (with quantity)
-      const totalCents = subtotalCents * qty;
-      const totalElement = qs<HTMLElement>("#total-price");
-      if (totalElement) {
-        totalElement.textContent = formatPrice(totalCents / 100);
-      }
-    }
-
-    // Delivery date enforcement for perishable products
-    function enforceDeliveryRules() {
-      const input = qs<HTMLInputElement>("#delivery-date");
-      if (!input) return;
-
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      
-      let minDate = new Date(today);
-      
-      // Handle artificial flowers with lead time
-      if (p.material === "artificial" && p.leadTimeDays) {
-        minDate.setDate(minDate.getDate() + p.leadTimeDays);
-      }
-      
-      // Handle perishable flowers
-      if (p.perishable?.earliestDaysAhead) {
-        minDate.setDate(minDate.getDate() + p.perishable.earliestDaysAhead);
-      }
-      
-      // Set minimum date
-      input.min = minDate.toISOString().split("T")[0];
-      
-      // Set default value to minimum date
-      if (!input.value) {
-        input.value = input.min;
-      }
-      
-      // Check for blackout days
-      input.addEventListener("change", () => {
-        if (!input.value) return;
-        
-        const selectedDate = new Date(input.value + "T00:00:00");
-        const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
-        
-        if (p.perishable?.blackoutWeekdays?.includes(dayOfWeek)) {
-          alert("Sorry, we don't deliver fresh flowers on this day of the week. Please choose another date.");
-          input.value = input.min;
+  return {
+    id: data.id,
+    slug: data.slug,
+    name: data.name,
+    description: data.description,
+    material: data.material,
+    inStock: data.in_stock,
+    madeToOrder: data.made_to_order ?? false,
+    leadTimeDays: data.lead_time_days ?? 0,
+    images: (data.product_images || [])
+      .sort((a: any, b: any) => a.sort_order - b.sort_order)
+      .map((x: any) => x.image_url),
+    variants: (data.variants || []).map((v: any) => ({
+      code: v.variant_code,
+      name: v.name,
+      priceCents: v.price_cents,
+    })),
+    addOns: (data.product_add_ons || []).map((pa: any) => ({
+      id: pa.add_ons.id,
+      slug: pa.add_ons.slug,
+      name: pa.add_ons.name,
+      priceCents: pa.add_ons.price_cents,
+    })),
+    perishable: perishableRaw
+      ? {
+          earliestDaysAhead: perishableRaw.earliest_days_ahead,
+          blackoutWeekdays: perishableRaw.blackout_weekdays || [],
         }
-        
-        // Check if date is in the past or before minimum
-        if (selectedDate < minDate) {
-          alert(`Please select a date on or after ${minDate.toLocaleDateString()}`);
-          input.value = input.min;
-        }
-      });
-    }
-
-    // Initialize
-    updateCartSummary();
-    enforceDeliveryRules();
-
-    // Add to cart functionality
-    const addBtn = qs<HTMLButtonElement>(".btn-add-cart");
-    if (addBtn) {
-      addBtn.addEventListener("click", () => {
-        const variantCode = qs<HTMLInputElement>('input[name="size"]:checked')?.value || p.variants[0].code;
-        const addOnIds = qsa<HTMLButtonElement>(".add-addon.added")
-          .map(b => String(b.dataset.id))
-          .filter(Boolean);
-        const qty = Math.max(1, parseInt(qtyInput?.value || "1", 10));
-        
-        addToCart({ 
-          productId: p.id, 
-          variantId: variantCode, 
-          addOnIds, 
-          qty 
-        });
-        
-        const originalText = addBtn.textContent;
-        addBtn.textContent = "ADDED ✓";
-        addBtn.style.backgroundColor = "#4CAF50";
-        
-        setTimeout(() => {
-          addBtn.textContent = originalText;
-          addBtn.style.backgroundColor = "";
-        }, 1500);
-      });
-    }
-
-    // Buy now functionality
-    const buyNowBtn = qs<HTMLButtonElement>(".btn-buy-now");
-    if (buyNowBtn) {
-      buyNowBtn.addEventListener("click", () => {
-        const variantCode = qs<HTMLInputElement>('input[name="size"]:checked')?.value || p.variants[0].code;
-        const addOnIds = qsa<HTMLButtonElement>(".add-addon.added")
-          .map(b => String(b.dataset.id))
-          .filter(Boolean);
-        const qty = Math.max(1, parseInt(qtyInput?.value || "1", 10));
-        
-        addToCart({ 
-          productId: p.id, 
-          variantId: variantCode, 
-          addOnIds, 
-          qty 
-        });
-        
-        // Redirect to checkout
-        location.href = "checkout.html";
-      });
-    }
-
-    // Tab functionality
-    const tabButtons = qsa<HTMLButtonElement>(".tab-button");
-    const tabContents = qsa<HTMLElement>(".tab-content");
-    
-    tabButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const tabName = btn.dataset.tab;
-        
-        tabButtons.forEach(b => b.classList.remove("active"));
-        tabContents.forEach(c => c.classList.remove("active"));
-        
-        btn.classList.add("active");
-        const targetContent = qs<HTMLElement>(`.tab-content[data-tab="${tabName}"]`);
-        if (targetContent) targetContent.classList.add("active");
-      });
-    });
-
-    // Add-on category switching
-    const categoryButtons = qsa<HTMLButtonElement>(".addon-category");
-    const addonGrids = qsa<HTMLElement>(".addon-grid");
-    
-    categoryButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const category = btn.dataset.category;
-        
-        categoryButtons.forEach(b => b.classList.remove("active"));
-        addonGrids.forEach(g => g.classList.remove("active"));
-        
-        btn.classList.add("active");
-        const targetGrid = qs<HTMLElement>(`.addon-grid[data-category="${category}"]`);
-        if (targetGrid) targetGrid.classList.add("active");
-      });
-    });
-
-    // Thumbnail click handler (if you have multiple images)
-    const thumbnails = qsa<HTMLElement>(".thumbnail");
-    thumbnails.forEach(thumb => {
-      thumb.addEventListener("click", () => {
-        const index = parseInt(thumb.dataset.index || "0");
-        const mainImg = qs<HTMLImageElement>("#p-image");
-        
-        if (mainImg && p.images[index]) {
-          mainImg.src = p.images[index];
-          
-          thumbnails.forEach(t => t.classList.remove("active"));
-          thumb.classList.add("active");
-        }
-      });
-    });
-
-  } catch (error) {
-    console.error("Error loading product:", error);
-    alert("Failed to load product details. Please try again.");
-    location.replace("shop.html");
-  }
+      : null,
+  };
 }
 
-main().catch(console.error);
+export type OrderDraft = {
+  customer_name: string;
+  customer_phone: string;
+  delivery_date: string;
+  notes?: string;
+  total_cents: number;
+  items: Array<{
+    product_id: string;
+    variant_code: string;
+    qty: number;
+    add_on_ids?: number[];
+    line_cents: number;
+  }>;
+};
+
+export async function createOrder(draft: OrderDraft) {
+  const { data: order, error: e1 } = await supabase
+    .from("orders")
+    .insert([{
+      customer_name: draft.customer_name,
+      customer_phone: draft.customer_phone,
+      delivery_date: draft.delivery_date,
+      notes: draft.notes || null,
+      total_cents: draft.total_cents,
+    }])
+    .select("id")
+    .single();
+
+  if (e1) throw e1;
+
+  for (const it of draft.items) {
+    const { data: oi, error: e2 } = await supabase
+      .from("order_items")
+      .insert([{
+        order_id: order.id,
+        product_id: it.product_id,
+        variant_code: it.variant_code,
+        qty: it.qty,
+        line_cents: it.line_cents,
+      }])
+      .select("id")
+      .single();
+
+    if (e2) throw e2;
+
+    if (it.add_on_ids?.length) {
+      const rows = it.add_on_ids.map(aid => ({ order_item_id: oi.id, add_on_id: aid }));
+      const { error: e3 } = await supabase.from("order_item_add_ons").insert(rows);
+      if (e3) throw e3;
+    }
+  }
+
+  return (order as any).id as string;
+}

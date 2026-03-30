@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout – Vaniaflorsit</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <style>
+    /* ── Checkout Page ── */
+    .checkout-page { background: #faf8f5; min-height: 80vh; padding: 50px 0 100px; }
+
+    .checkout-header { margin-bottom: 40px; }
+    .checkout-header h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; color: #8b7355; font-weight: 400; margin-bottom: 6px; }
+    .checkout-header p { color: #bbb; font-size: 0.9rem; }
+
+    /* Progress steps */
+    .checkout-steps { display: flex; align-items: center; gap: 0; margin-bottom: 40px; }
+    .step { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; font-weight: 700; color: #ddd; letter-spacing: 0.5px; text-transform: uppercase; }
+    .step.active { color: #8b7355; }
+    .step.done  { color: #5a9a5a; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
+    .step.done .step-num { background: #5a9a5a; border-color: #5a9a5a; color: white; }
+    .step.active .step-num { background: #8b7355; border-color: #8b7355; color: white; }
+    .step-line { flex: 1; height: 1px; background: #e8ddd4; margin: 0 14px; }
+
+    /* Layout */
+    .checkout-layout { display: grid; grid-template-columns: 1fr 380px; gap: 30px; align-items: start; }
+
+    /* ── Form Panel ── */
+    .checkout-form-panel { background: white; border-radius: 16px; border: 1px solid #f0e8dd; overflow: hidden; }
+    .panel-section { padding: 28px; border-bottom: 1px solid #f8f3ee; }
+    .panel-section:last-child { border-bottom: none; }
+    .panel-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #c8a882; margin-bottom: 20px; }
+
+    /* Form fields */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .field-row.full { grid-template-columns: 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 0.78rem; font-weight: 700; color: #6b5240; letter-spacing: 0.3px; }
+    .field label span.req { color: #e05252; margin-left: 2px; }
+
+    .field input,
+    .field select,
+    .field textarea {
+        padding: 11px 14px;
+        border: 2px solid #e8ddd4;
+        border-radius: 10px;
+        font-size: 0.92rem;
+        font-family: 'Georgia', serif;
+        color: #2b2b2b;
+        background: white;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        width: 100%;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus { outline: none; border-color: #8b7355; box-shadow: 0 0 0 3px rgba(139,115,85,0.08); }
+    .field input.error, .field select.error, .field textarea.error { border-color: #e05252; }
+    .field .field-error { font-size: 0.75rem; color: #e05252; display: none; }
+    .field.has-error .field-error { display: block; }
+    .field.has-error input, .field.has-error select, .field.has-error textarea { border-color: #e05252; }
+
+    .field textarea { resize: vertical; min-height: 80px; }
+
+    /* Address toggle */
+    .delivery-type-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
+    .delivery-type-btn {
+        flex: 1; padding: 11px; border: 2px solid #e8ddd4; background: white; border-radius: 10px;
+        font-size: 0.84rem; font-weight: 600; color: #8b7355; cursor: pointer; transition: all 0.2s;
+        font-family: 'Georgia', serif; text-align: center;
+    }
+    .delivery-type-btn.active { background: #8b7355; border-color: #8b7355; color: white; }
+    .delivery-type-btn:hover:not(.active) { border-color: #8b7355; background: #faf8f5; }
+
+    #pickup-note { background: #faf8f5; border-radius: 10px; padding: 14px 16px; font-size: 0.85rem; color: #8b7355; display: none; border: 1px solid #f0e8dd; }
+    #pickup-note strong { display: block; margin-bottom: 4px; }
+
+    /* ── Order Summary Panel ── */
+    .checkout-summary-panel { background: white; border-radius: 16px; border: 1px solid #f0e8dd; overflow: hidden; position: sticky; top: 100px; }
+    .summary-panel-title { padding: 20px 24px; border-bottom: 1px solid #f0e8dd; font-size: 0.72rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #c8a882; }
+
+    /* Loading */
+    .summary-loading { padding: 40px 24px; text-align: center; color: #bbb; }
+    .summary-spinner { width: 32px; height: 32px; border: 3px solid #f0e8dd; border-top-color: #8b7355; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Line items */
+    .summary-items-list { padding: 16px 24px; border-bottom: 1px solid #f8f3ee; }
+    .summary-line { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+    .summary-line:last-child { margin-bottom: 0; }
+    .summary-line-img { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; background: #faf8f5; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; overflow: hidden; }
+    .summary-line-img img { width: 100%; height: 100%; object-fit: cover; }
+    .summary-line-info { flex: 1; min-width: 0; }
+    .summary-line-name { font-size: 0.88rem; font-weight: 700; color: #1e1a17; margin-bottom: 2px; line-height: 1.3; }
+    .summary-line-meta { font-size: 0.78rem; color: #bbb; }
+    .summary-line-price { font-size: 0.92rem; font-weight: 700; color: #8b7355; flex-shrink: 0; }
+
+    /* Totals */
+    .summary-totals { padding: 16px 24px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 0.88rem; color: #888; margin-bottom: 10px; }
+    .summary-row.total { font-size: 1.1rem; font-weight: 700; color: #1e1a17; padding-top: 14px; border-top: 1px solid #f0e8dd; margin-top: 4px; }
+    .summary-row.total span:last-child { color: #8b7355; font-size: 1.3rem; }
+
+    /* Submit */
+    .checkout-submit-wrap { padding: 20px 24px; }
+    .btn-place-order {
+        display: block; width: 100%; padding: 16px; background: #8b7355; color: white; border: none;
+        border-radius: 12px; font-size: 1rem; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;
+        font-family: 'Georgia', serif; transition: all 0.25s ease; text-align: center; margin-bottom: 12px;
+    }
+    .btn-place-order:hover:not(:disabled) { background: #6d5a44; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,115,85,0.3); }
+    .btn-place-order:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-place-order.loading { opacity: 0.8; cursor: not-allowed; }
+
+    .btn-back-cart { display: block; width: 100%; padding: 12px; background: transparent; color: #8b7355; border: 1.5px solid #e8ddd4; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Georgia', serif; transition: all 0.2s; text-align: center; text-decoration: none; }
+    .btn-back-cart:hover { border-color: #8b7355; background: #faf8f5; }
+
+    .secure-note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.75rem; color: #bbb; margin-top: 14px; }
+    .secure-note svg { color: #c8a882; }
+
+    /* Empty cart */
+    .checkout-empty { text-align: center; padding: 80px 20px; background: white; border-radius: 16px; border: 1px solid #f0e8dd; }
+    .checkout-empty-icon { font-size: 3.5rem; opacity: 0.3; margin-bottom: 18px; }
+    .checkout-empty h3 { color: #aaa; font-size: 1.2rem; margin-bottom: 8px; }
+    .checkout-empty p { color: #bbb; font-size: 0.9rem; margin-bottom: 24px; }
+    .btn-shop-now { display: inline-block; background: #8b7355; color: white; text-decoration: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 0.88rem; transition: all 0.2s; }
+    .btn-shop-now:hover { background: #6d5a44; transform: translateY(-2px); }
+
+    /* Responsive */
+    @media (max-width: 900px) { .checkout-layout { grid-template-columns: 1fr; } .checkout-summary-panel { position: static; order: -1; } }
+    @media (max-width: 600px) { .checkout-steps { display: none; } .field-row { grid-template-columns: 1fr; } .checkout-header h1 { font-size: 2.4rem; } .checkout-page { padding: 30px 0 80px; } }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="cart.html" style="display:flex;align-items:center;gap:8px;color:#8b7355;text-decoration:none;font-weight:600;font-size:.9rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Cart
+                </a>
+            </div>
+            <div class="nav-center" style="text-align:center;">
+                <a href="index.html" style="text-decoration:none;">
+                    <h1 style="font-family:'Great Vibes',cursive;font-size:2rem;color:#8b7355;margin:0;font-weight:400;">Vaniaflorsit</h1>
+                </a>
+            </div>
+            <div class="nav-right"></div>
+        </div>
+    </nav>
+
+    <main class="checkout-page">
+        <div class="container">
+
+            <div class="checkout-header">
+                <h1>Checkout</h1>
+                <p>Almost there — just fill in your details below</p>
+            </div>
+
+            <!-- Progress steps -->
+            <div class="checkout-steps">
+                <div class="step done">
+                    <div class="step-num">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    Cart
+                </div>
+                <div class="step-line"></div>
+                <div class="step active">
+                    <div class="step-num">2</div>
+                    Details
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    Confirmation
+                </div>
+            </div>
+
+            <!-- Empty cart state (shown if cart is empty) -->
+            <div id="checkout-empty" style="display:none;">
+                <div class="checkout-empty">
+                    <div class="checkout-empty-icon">🛒</div>
+                    <h3>Your cart is empty</h3>
+                    <p>Add some beautiful flowers before checking out.</p>
+                    <a href="shop.html" class="btn-shop-now">Browse the Shop</a>
+                </div>
+            </div>
+
+            <!-- Main checkout layout -->
+            <div class="checkout-layout" id="checkout-main" style="display:none;">
+
+                <!-- LEFT: Form -->
+                <div class="checkout-form-panel">
+
+                    <!-- Contact -->
+                    <div class="panel-section">
+                        <div class="panel-section-title">Contact Details</div>
+                        <div class="field-row">
+                            <div class="field" id="field-name">
+                                <label for="name">Full Name <span class="req">*</span></label>
+                                <input type="text" id="name" placeholder="Jane Smith" autocomplete="name">
+                                <span class="field-error">Please enter your name</span>
+                            </div>
+                            <div class="field" id="field-phone">
+                                <label for="phone">Phone Number <span class="req">*</span></label>
+                                <input type="tel" id="phone" placeholder="04XX XXX XXX" autocomplete="tel">
+                                <span class="field-error">Please enter a valid phone number</span>
+                            </div>
+                        </div>
+                        <div class="field-row full">
+                            <div class="field" id="field-email">
+                                <label for="email">Email <span style="color:#bbb;font-weight:400;">(optional — for order updates)</span></label>
+                                <input type="email" id="email" placeholder="jane@example.com" autocomplete="email">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery -->
+                    <div class="panel-section">
+                        <div class="panel-section-title">Delivery</div>
+
+                        <div class="delivery-type-toggle">
+                            <button class="delivery-type-btn active" data-type="delivery" id="btn-delivery">🚚 Deliver to me</button>
+                            <button class="delivery-type-btn" data-type="pickup" id="btn-pickup">🏪 I'll pick up</button>
+                        </div>
+
+                        <div id="delivery-fields">
+                            <div class="field-row full" style="margin-bottom:16px;">
+                                <div class="field" id="field-address">
+                                    <label for="address">Street Address <span class="req">*</span></label>
+                                    <input type="text" id="address" placeholder="123 Garden St" autocomplete="street-address">
+                                    <span class="field-error">Please enter your address</span>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field" id="field-suburb">
+                                    <label for="suburb">Suburb <span class="req">*</span></label>
+                                    <input type="text" id="suburb" placeholder="Surry Hills" autocomplete="address-level2">
+                                    <span class="field-error">Please enter suburb</span>
+                                </div>
+                                <div class="field">
+                                    <label for="postcode">Postcode</label>
+                                    <input type="text" id="postcode" placeholder="2000" maxlength="4" autocomplete="postal-code">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="pickup-note">
+                            <strong>📍 Pickup Address</strong>
+                            123 Garden Street, Floral District, Sydney NSW 2000<br>
+                            Mon–Sat 9am–7pm · Sun 10am–5pm
+                        </div>
+                    </div>
+
+                    <!-- Date & Notes -->
+                    <div class="panel-section">
+                        <div class="panel-section-title">Delivery Date & Notes</div>
+                        <div class="field-row">
+                            <div class="field" id="field-delivery-date">
+                                <label for="delivery-date">Preferred Delivery Date <span class="req">*</span></label>
+                                <input type="date" id="delivery-date">
+                                <span class="field-error">Please select a delivery date</span>
+                            </div>
+                            <div class="field">
+                                <label for="delivery-time">Preferred Time</label>
+                                <select id="delivery-time">
+                                    <option value="">Any time</option>
+                                    <option value="morning">Morning (9am – 12pm)</option>
+                                    <option value="afternoon">Afternoon (12pm – 5pm)</option>
+                                    <option value="evening">Evening (5pm – 7pm)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field-row full">
+                            <div class="field">
+                                <label for="notes">Special Instructions <span style="color:#bbb;font-weight:400;">(optional)</span></label>
+                                <textarea id="notes" placeholder="Recipient name, gate code, message on card…"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT: Order Summary -->
+                <div class="checkout-summary-panel">
+                    <div class="summary-panel-title">Your Order</div>
+
+                    <div class="summary-loading" id="summary-loading">
+                        <div class="summary-spinner"></div>
+                        <p>Loading order…</p>
+                    </div>
+
+                    <div id="summary-body" style="display:none;">
+                        <div class="summary-items-list" id="summary-items"></div>
+
+                        <div class="summary-totals">
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span id="co-subtotal">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Delivery</span>
+                                <span id="co-delivery">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span id="co-total">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkout-submit-wrap">
+                        <button class="btn-place-order" id="btn-place-order" disabled>
+                            Place Order
+                        </button>
+                        <a href="cart.html" class="btn-back-cart">← Back to Cart</a>
+                        <div class="secure-note">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Your information is safe with us
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="src/scripts/checkout.ts"></script>
+
+</body>
+</html>
