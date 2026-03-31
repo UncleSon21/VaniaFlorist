@@ -1,152 +1,314 @@
-// src/scripts/db.ts
-import { createClient } from "@supabase/supabase-js";
+// src/scripts/product-details.ts
+import { fetchProductById } from "./db";
+import { loadCart, addToCart } from "./cart";
 
-const _meta = import.meta as any;
-
-export const supabase = createClient(
-  (window as any).SUPABASE_URL || _meta.env?.VITE_SUPABASE_URL,
-  (window as any).SUPABASE_ANON_KEY || _meta.env?.VITE_SUPABASE_ANON_KEY
-);
-
-export async function fetchCatalog() {
-  const { data, error } = await supabase
-    .from("products")
-    .select(`
-      id, slug, name, description, material, in_stock, made_to_order, lead_time_days,
-      product_images ( image_url, sort_order ),
-      variants ( id, variant_code, name, price_cents ),
-      product_categories ( categories:category_id ( name ) )
-    `)
-    .order("name", { ascending: true });
-
-  if (error) throw error;
-
-  return (data || []).map((p: any) => ({
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    description: p.description,
-    material: p.material,
-    inStock: p.in_stock,
-    madeToOrder: p.made_to_order ?? false,
-    leadTimeDays: p.lead_time_days ?? 0,
-    images: (p.product_images || [])
-      .sort((a: any, b: any) => a.sort_order - b.sort_order)
-      .map((x: any) => x.image_url),
-    variants: (p.variants || []).map((v: any) => ({
-      code: v.variant_code,
-      name: v.name,
-      priceCents: v.price_cents,
-    })),
-    categories: (p.product_categories || [])
-      .map((pc: any) => pc.categories?.name)
-      .filter(Boolean),
-  }));
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function qs<T extends Element>(sel: string, ctx: Document | Element = document) {
+  return ctx.querySelector<T>(sel);
 }
 
-export async function fetchProductById(id: string) {
-  const { data, error } = await supabase
-    .from("products")
-    .select(`
-      id, slug, name, description, material, in_stock, made_to_order, lead_time_days,
-      product_images ( image_url, sort_order ),
-      variants ( id, variant_code, name, price_cents ),
-      product_add_ons ( add_ons ( id, slug, name, price_cents ) ),
-      perishable_rules ( earliest_days_ahead, blackout_weekdays )
-    `)
-    .eq("id", id)
-    .single();
+function updateNavCount() {
+  const cart = loadCart();
+  const total = cart.reduce((s: number, ci: any) => s + ci.qty, 0);
+  const el = qs<HTMLElement>(".cart-count");
+  if (el) el.textContent = String(total);
+}
 
-  if (error) throw error;
+// ── State ─────────────────────────────────────────────────────────────────────
+let product: any = null;
+let selectedVariantIdx = 0;
+let presentationExtra = 0;   // 0 or 3000 cents ($30)
+let qty = 1;
+const selectedAddOnIds: Set<number> = new Set();
+const selectedAddOnCents: Map<number, number> = new Map();
 
-  // FIX: perishable_rules comes back as an array from Supabase — grab first element
-  const perishableRaw = Array.isArray(data.perishable_rules)
-    ? data.perishable_rules[0]
-    : data.perishable_rules;
+// ── Price display ─────────────────────────────────────────────────────────────
+function refreshTotal() {
+  if (!product) return;
+  const variantCents = product.variants[selectedVariantIdx]?.priceCents ?? 0;
+  const addOnTotal = Array.from(selectedAddOnCents.values()).reduce((a, b) => a + b, 0);
+  const lineCents = (variantCents + presentationExtra + addOnTotal) * qty;
 
+  const nameEl = qs<HTMLElement>("#summary-product-name");
+  const priceEl = qs<HTMLElement>("#summary-product-price");
+  const totalEl = qs<HTMLElement>("#total-price");
+  const variantName = product.variants[selectedVariantIdx]?.name ?? "";
+
+  if (nameEl) nameEl.textContent = `${product.name} – ${variantName}`;
+  if (priceEl) priceEl.textContent = `$${(variantCents / 100).toFixed(2)}`;
+  if (totalEl) totalEl.textContent = `$${(lineCents / 100).toFixed(2)}`;
+
+  // addon rows in summary
+  const addOnSummary = qs<HTMLElement>("#summary-addons");
+  if (addOnSummary) {
+    addOnSummary.innerHTML = "";
+    selectedAddOnIds.forEach(id => {
+      const cents = selectedAddOnCents.get(id) ?? 0;
+      const addon = product.addOns?.find((a: any) => a.id === id);
+      if (!addon) return;
+      const row = document.createElement("div");
+      row.className = "summary-item addon-row";
+      row.innerHTML = `<span>+ ${addon.name}</span><span>$${(cents / 100).toFixed(2)}</span>`;
+      addOnSummary.appendChild(row);
+    });
+  }
+
+  // presentation row
+  const presEl = qs<HTMLElement>("#summary-presentation");
+  if (presEl) {
+    presEl.style.display = presentationExtra > 0 ? "flex" : "none";
+    const presPrice = qs<HTMLElement>("#summary-presentation-price");
+    if (presPrice) presPrice.textContent = `$${(presentationExtra / 100).toFixed(2)}`;
+  }
+}
+
+// ── Image gallery ─────────────────────────────────────────────────────────────
+function setMainImage(url: string) {
+  const img = qs<HTMLImageElement>("#p-image");
+  const placeholder = qs<HTMLElement>(".image-placeholder");
+  if (!img) return;
+  if (url) {
+    img.src = url;
+    img.style.display = "block";
+    if (placeholder) placeholder.style.display = "none";
+  } else {
+    img.style.display = "none";
+    if (placeholder) placeholder.style.display = "flex";
+  }
+}
+
+function buildGallery(images: string[]) {
+  const thumbWrap = qs<HTMLElement>(".thumbnail-images");
+  if (!thumbWrap) return;
+
+  if (!images.length) {
+    thumbWrap.innerHTML = "";
+    return;
+  }
+
+  setMainImage(images[0] ?? "");
+
+  thumbWrap.innerHTML = images.map((url, i) => `
+    <div class="thumbnail ${i === 0 ? "active" : ""}" data-idx="${i}">
+      <img src="${url}" alt="Product image ${i + 1}" loading="lazy">
+    </div>
+  `).join("");
+
+  thumbWrap.querySelectorAll<HTMLElement>(".thumbnail").forEach(th => {
+    th.addEventListener("click", () => {
+      const idx = Number(th.dataset["idx"]);
+      setMainImage(images[idx] ?? "");
+      thumbWrap.querySelectorAll(".thumbnail").forEach(t => t.classList.remove("active"));
+      th.classList.add("active");
+    });
+  });
+}
+
+// ── Variants ──────────────────────────────────────────────────────────────────
+function buildVariants(variants: any[]) {
+  const wrap = qs<HTMLElement>(".size-options");
+  if (!wrap) return;
+  wrap.innerHTML = variants.map((v, i) => `
+    <label class="size-option">
+      <input type="radio" name="variant" value="${i}" ${i === 0 ? "checked" : ""}>
+      <div class="size-box">
+        <span class="price">$${(v.priceCents / 100).toFixed(0)}</span>
+        <span class="label">${v.name}</span>
+      </div>
+    </label>
+  `).join("");
+
+  wrap.querySelectorAll<HTMLInputElement>('input[name="variant"]').forEach(inp => {
+    inp.addEventListener("change", () => {
+      selectedVariantIdx = Number(inp.value);
+      refreshTotal();
+    });
+  });
+}
+
+// ── Add-ons ───────────────────────────────────────────────────────────────────
+function buildAddOns(addOns: any[]) {
+  const grid = qs<HTMLElement>('.addon-grid[data-category="chocolates"]');
+  if (!grid) return;
+
+  if (!addOns.length) {
+    grid.innerHTML = `<p>No add-ons available yet.</p>`;
+    return;
+  }
+
+  grid.innerHTML = addOns.map(a => `
+    <div class="addon-item" data-id="${a.id}" data-cents="${a.priceCents}">
+      <div class="addon-placeholder">🎁</div>
+      <div class="addon-item-name">${a.name}</div>
+      <div class="addon-item-price">+$${(a.priceCents / 100).toFixed(2)}</div>
+      <button class="add-addon" data-id="${a.id}" data-cents="${a.priceCents}">Add</button>
+    </div>
+  `).join("");
+
+  grid.querySelectorAll<HTMLButtonElement>(".add-addon").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = Number(btn.dataset["id"]);
+      const cents = Number(btn.dataset["cents"]);
+      if (selectedAddOnIds.has(id)) {
+        selectedAddOnIds.delete(id);
+        selectedAddOnCents.delete(id);
+        btn.textContent = "Add";
+        btn.classList.remove("added");
+      } else {
+        selectedAddOnIds.add(id);
+        selectedAddOnCents.set(id, cents);
+        btn.textContent = "✓ Added";
+        btn.classList.add("added");
+      }
+      refreshTotal();
+    });
+  });
+}
+
+// ── Cart actions ──────────────────────────────────────────────────────────────
+function buildCartItem() {
+  const variant = product.variants[selectedVariantIdx];
   return {
-    id: data.id,
-    slug: data.slug,
-    name: data.name,
-    description: data.description,
-    material: data.material,
-    inStock: data.in_stock,
-    madeToOrder: data.made_to_order ?? false,
-    leadTimeDays: data.lead_time_days ?? 0,
-    images: (data.product_images || [])
-      .sort((a: any, b: any) => a.sort_order - b.sort_order)
-      .map((x: any) => x.image_url),
-    variants: (data.variants || []).map((v: any) => ({
-      code: v.variant_code,
-      name: v.name,
-      priceCents: v.price_cents,
-    })),
-    addOns: (data.product_add_ons || []).map((pa: any) => ({
-      id: pa.add_ons.id,
-      slug: pa.add_ons.slug,
-      name: pa.add_ons.name,
-      priceCents: pa.add_ons.price_cents,
-    })),
-    perishable: perishableRaw
-      ? {
-          earliestDaysAhead: perishableRaw.earliest_days_ahead,
-          blackoutWeekdays: perishableRaw.blackout_weekdays || [],
-        }
-      : null,
+    productId: product.id as string,
+    variantId: variant?.code ?? "std",
+    addOnIds: Array.from(selectedAddOnIds).map(String),
+    qty,
   };
 }
 
-export type OrderDraft = {
-  customer_name: string;
-  customer_phone: string;
-  delivery_date: string;
-  notes?: string;
-  total_cents: number;
-  items: Array<{
-    product_id: string;
-    variant_code: string;
-    qty: number;
-    add_on_ids?: number[];
-    line_cents: number;
-  }>;
-};
+function handleAddToCart() {
+  addToCart(buildCartItem());
+  updateNavCount();
 
-export async function createOrder(draft: OrderDraft) {
-  const { data: order, error: e1 } = await supabase
-    .from("orders")
-    .insert([{
-      customer_name: draft.customer_name,
-      customer_phone: draft.customer_phone,
-      delivery_date: draft.delivery_date,
-      notes: draft.notes || null,
-      total_cents: draft.total_cents,
-    }])
-    .select("id")
-    .single();
+  const btn = qs<HTMLButtonElement>(".btn-add-cart");
+  if (btn) {
+    const orig = btn.textContent ?? "ADD TO CART";
+    btn.textContent = "✓ Added!";
+    btn.classList.add("success");
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove("success");
+    }, 2000);
+  }
+}
 
-  if (e1) throw e1;
+function handleBuyNow() {
+  handleAddToCart();
+  window.location.href = "checkout.html";
+}
 
-  for (const it of draft.items) {
-    const { data: oi, error: e2 } = await supabase
-      .from("order_items")
-      .insert([{
-        order_id: order.id,
-        product_id: it.product_id,
-        variant_code: it.variant_code,
-        qty: it.qty,
-        line_cents: it.line_cents,
-      }])
-      .select("id")
-      .single();
+// ── Quantity ──────────────────────────────────────────────────────────────────
+function bindQtyControls() {
+  const dec = qs<HTMLButtonElement>("#qty-dec");
+  const inc = qs<HTMLButtonElement>("#qty-inc");
+  const disp = qs<HTMLElement>("#qty-display");
 
-    if (e2) throw e2;
+  const update = () => {
+    if (disp) disp.textContent = String(qty);
+    if (dec) dec.disabled = qty <= 1;
+    refreshTotal();
+  };
 
-    if (it.add_on_ids?.length) {
-      const rows = it.add_on_ids.map(aid => ({ order_item_id: oi.id, add_on_id: aid }));
-      const { error: e3 } = await supabase.from("order_item_add_ons").insert(rows);
-      if (e3) throw e3;
-    }
+  dec?.addEventListener("click", () => { if (qty > 1) { qty--; update(); } });
+  inc?.addEventListener("click", () => { qty++; update(); });
+  update();
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function bindTabs() {
+  document.querySelectorAll<HTMLButtonElement>(".tab-button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.dataset["tab"];
+      document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll<HTMLElement>(".tab-content").forEach(c => c.classList.remove("active"));
+      btn.classList.add("active");
+      qs<HTMLElement>(`.tab-content[data-tab="${tab}"]`)?.classList.add("active");
+    });
+  });
+}
+
+// ── Presentation ──────────────────────────────────────────────────────────────
+function bindPresentation() {
+  document.querySelectorAll<HTMLInputElement>('input[name="presentation"]').forEach(inp => {
+    inp.addEventListener("change", () => {
+      presentationExtra = inp.value === "vase" ? 3000 : 0;
+      refreshTotal();
+    });
+  });
+}
+
+// ── Add-on category tabs ──────────────────────────────────────────────────────
+function bindAddonCategories() {
+  document.querySelectorAll<HTMLButtonElement>(".addon-category").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const cat = btn.dataset["category"];
+      document.querySelectorAll(".addon-category").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll<HTMLElement>(".addon-grid").forEach(g => g.classList.remove("active"));
+      btn.classList.add("active");
+      qs<HTMLElement>(`.addon-grid[data-category="${cat}"]`)?.classList.add("active");
+    });
+  });
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+async function main() {
+  updateNavCount();
+  document.addEventListener("cart:changed", updateNavCount);
+
+  bindTabs();
+  bindAddonCategories();
+  bindQtyControls();
+  bindPresentation();
+
+  qs<HTMLButtonElement>(".btn-add-cart")?.addEventListener("click", handleAddToCart);
+  qs<HTMLButtonElement>(".btn-buy-now")?.addEventListener("click", handleBuyNow);
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (!id) {
+    qs<HTMLElement>("#p-title")!.textContent = "Product not found";
+    return;
   }
 
-  return (order as any).id as string;
+  try {
+    product = await fetchProductById(id);
+
+    // Title & subtitle
+    const titleEl = qs<HTMLElement>("#p-title");
+    const subtitleEl = qs<HTMLElement>(".product-subtitle");
+    const pageTitleEl = qs<HTMLElement>("#page-title", document);
+    if (titleEl) titleEl.textContent = product.name;
+    if (subtitleEl) subtitleEl.textContent = product.description ?? "";
+    if (pageTitleEl) pageTitleEl.textContent = `${product.name} — Vaniaflorsit`;
+
+    // Material badge
+    const badgeEl = qs<HTMLElement>("#material-badge");
+    if (badgeEl) {
+      badgeEl.textContent = product.material === "fresh" ? "Fresh" : "Artificial";
+      badgeEl.className = `material-badge-detail ${product.material}`;
+    }
+
+    // Images
+    buildGallery(product.images ?? []);
+
+    // Variants
+    if (product.variants?.length) {
+      buildVariants(product.variants);
+    }
+
+    // Add-ons
+    if (product.addOns?.length) {
+      buildAddOns(product.addOns);
+    }
+
+    refreshTotal();
+
+  } catch (err) {
+    console.error("Failed to load product:", err);
+    const titleEl = qs<HTMLElement>("#p-title");
+    if (titleEl) titleEl.textContent = "Failed to load product";
+  }
 }
+
+main().catch(console.error);

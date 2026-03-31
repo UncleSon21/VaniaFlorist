@@ -1,6 +1,7 @@
 // src/scripts/order-confirmation.ts
-// Reads ?id= from the URL, fetches the order from Supabase,
-// and renders the full confirmation view.
+// UPDATED: Now handles both direct order ID and Stripe session ID redirects.
+// After Stripe checkout, the URL contains ?session_id=cs_xxx
+// We poll Supabase for the order (webhook may take a moment to create it).
 
 import { supabase } from "./db";
 import { formatPrice } from "./utils";
@@ -11,8 +12,8 @@ const DELIVERY_FEE_CENTS            = 1500;
 function $(id: string) { return document.getElementById(id) as HTMLElement; }
 function fmt(cents: number) { return formatPrice(cents / 100); }
 
-/* ── Fetch order + items + product names from Supabase ── */
-async function fetchOrder(orderId: string) {
+/* ── Fetch order by ID ── */
+async function fetchOrderById(orderId: string) {
   const { data: order, error: e1 } = await supabase
     .from("orders")
     .select("id, customer_name, customer_phone, delivery_date, notes, total_cents, status, created_at")
@@ -35,27 +36,56 @@ async function fetchOrder(orderId: string) {
   return { order, items: items ?? [] };
 }
 
+/* ── Fetch order by Stripe session ID (with retry/polling) ── */
+async function fetchOrderBySessionId(sessionId: string, retries = 8): Promise<{ order: any; items: any[] }> {
+  for (let i = 0; i < retries; i++) {
+    const { data: order, error } = await supabase
+      .from("orders")
+      .select("id, customer_name, customer_phone, delivery_date, notes, total_cents, status, created_at")
+      .eq("stripe_session_id", sessionId)
+      .maybeSingle();
+
+    if (order) {
+      // Found the order — now fetch items
+      const { data: items } = await supabase
+        .from("order_items")
+        .select(`
+          id, qty, line_cents, variant_code,
+          products ( name, product_images ( image_url, sort_order ) ),
+          variants:variant_code ( name )
+        `)
+        .eq("order_id", order.id);
+
+      return { order, items: items ?? [] };
+    }
+
+    // Webhook hasn't fired yet — wait and retry
+    if (i < retries - 1) {
+      await new Promise(r => setTimeout(r, 1500)); // wait 1.5s between retries
+    }
+  }
+
+  throw new Error("Order not found — the payment was successful but the order is still being processed. Please check back in a moment.");
+}
+
 /* ── Format date nicely ── */
 function fmtDate(iso: string) {
   const d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString("en-AU", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 }
 
-/* ── Derive delivery fee from total (best-effort) ── */
+/* ── Derive delivery fee ── */
 function deriveDelivery(totalCents: number, items: any[]) {
   const itemsTotal = items.reduce((s: number, i: any) => s + i.line_cents, 0);
-  // If total > itemsTotal, the difference is delivery (or rounding)
   const diff = totalCents - itemsTotal;
   if (diff > 0 && diff <= DELIVERY_FEE_CENTS) return diff;
   if (itemsTotal >= FREE_DELIVERY_THRESHOLD_CENTS) return 0;
-  // If total equals itemsTotal, delivery was free
   if (totalCents === itemsTotal) return 0;
   return DELIVERY_FEE_CENTS;
 }
 
 /* ── Render ── */
 function render(order: any, items: any[]) {
-  // Parse notes for pickup/delivery hint
   const isPickup = (order.notes || "").toLowerCase().includes("pick up") ||
                    (order.notes || "").toLowerCase().includes("pickup");
 
@@ -81,10 +111,10 @@ function render(order: any, items: any[]) {
     ["Phone",         order.customer_phone],
     ["Delivery Date", fmtDate(order.delivery_date)],
     ["Delivery Type", isPickup ? "Pickup" : "Delivery"],
+    ["Payment",       order.status === "paid" ? "✓ Paid" : order.status],
   ];
 
   if (order.notes) {
-    // Strip the "Deliver to:" / "Customer will pick up." internal notes for display
     const displayNotes = order.notes
       .replace(/Deliver to:.*$/m, "")
       .replace(/Customer will pick up\./i, "")
@@ -142,22 +172,52 @@ function render(order: any, items: any[]) {
 
 /* ── Boot ── */
 async function main() {
-  const params  = new URLSearchParams(window.location.search);
-  const orderId = params.get("id");
+  const params    = new URLSearchParams(window.location.search);
+  const orderId   = params.get("id");
+  const sessionId = params.get("session_id");
 
-  if (!orderId) {
+  if (!orderId && !sessionId) {
     $("conf-loading").style.display = "none";
     $("conf-error").style.display   = "block";
     return;
   }
 
   try {
-    const { order, items } = await fetchOrder(orderId);
-    render(order, items);
-  } catch (err) {
+    let result;
+
+    if (orderId) {
+      // Direct order ID (legacy or admin link)
+      result = await fetchOrderById(orderId);
+    } else {
+      // Stripe redirect — poll for order created by webhook
+      result = await fetchOrderBySessionId(sessionId!);
+    }
+
+    render(result.order, result.items);
+
+    // Clean up URL to show order ID instead of session_id
+    if (sessionId && result.order.id) {
+      window.history.replaceState({}, "", `order-confirmation.html?id=${result.order.id}`);
+    }
+  } catch (err: any) {
     console.error("Failed to load order:", err);
     $("conf-loading").style.display = "none";
     $("conf-error").style.display   = "block";
+
+    // If it's a timing issue, show a more helpful message
+    const errorEl = $("conf-error");
+    if (sessionId && err.message?.includes("still being processed")) {
+      errorEl.innerHTML = `
+        <div style="text-align:center;padding:40px 20px;">
+          <h2 style="color:#8b6f6f;">Payment Successful!</h2>
+          <p>Your payment went through, but your order is still being processed.</p>
+          <p>This usually takes just a few seconds. Please refresh the page.</p>
+          <button onclick="location.reload()" style="margin-top:16px;padding:12px 24px;background:#8b6f6f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;">
+            Refresh Page
+          </button>
+        </div>
+      `;
+    }
   }
 }
 

@@ -431,7 +431,6 @@ class FlowerShopApp {
         }
     }
 
-    // ✅ FIX: Removed alert, just navigate
     private handleCartClick(): void {
         window.location.href = 'cart.html';
     }

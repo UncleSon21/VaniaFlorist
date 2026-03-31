@@ -35,8 +35,9 @@ function renderGrid(list: any[]) {
     const img = p.images?.[0] || "";
     const materialClass = p.material === "fresh" ? "fresh" : "artificial";
     const materialLabel = p.material === "fresh" ? "Fresh" : "Artificial";
+    const href = `product-details.html?id=${p.id}`;
     return `
-      <div class="product-card" data-product-id="${p.id}">
+      <a class="product-card" href="${href}" data-product-id="${p.id}">
         <div class="product-image">
           ${img ? `<img loading="lazy" src="${img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.removeProperty('display')">` : ""}
           <div class="product-image-placeholder" ${img ? 'style="display:none"' : ""}>
@@ -51,9 +52,6 @@ function renderGrid(list: any[]) {
             </svg>
             <span>Photo coming soon</span>
           </div>
-          <div class="product-overlay">
-            <a href="product-details.html?id=${p.id}" class="quick-view-btn">View Details</a>
-          </div>
           <span class="material-badge ${materialClass}">${materialLabel}</span>
         </div>
         <div class="product-info">
@@ -64,10 +62,10 @@ function renderGrid(list: any[]) {
               <span class="product-price-label">From</span>
               <span class="product-price">$${minPrice.toFixed(2)}</span>
             </div>
-            <a href="product-details.html?id=${p.id}" class="view-details-btn">Shop Now</a>
+            <span class="view-details-btn">Shop Now</span>
           </div>
         </div>
-      </div>`;
+      </a>`;
   }).join("");
 }
 

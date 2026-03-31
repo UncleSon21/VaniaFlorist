@@ -1,13 +1,17 @@
-// src/scripts/checkout.ts — FIXED VERSION
-// ✅ Replaced alert() on order failure with inline error banner
+// src/scripts/checkout.ts
+// UPDATED: Now redirects to Stripe Checkout instead of writing orders directly.
+// The order is created server-side by the Stripe webhook after payment succeeds.
 
-import { fetchProductById, createOrder } from "./db";
+import { fetchProductById } from "./db";
 import { loadCart, saveCart } from "./cart";
 import { formatPrice } from "./utils";
 
-const FREE_DELIVERY_THRESHOLD_CENTS = 5000;
-const DELIVERY_FEE_CENTS            = 1500;
+const FREE_DELIVERY_THRESHOLD_CENTS = 5000; // $50
+const DELIVERY_FEE_CENTS            = 1500; // $15
 
+// ─── UPDATE THIS after deploying the Edge Function ───
+const CHECKOUT_FUNCTION_URL = `${import.meta.env['VITE_SUPABASE_URL']}/functions/v1/create-checkout-session`;
+/* ─── Helpers ─── */
 function $(id: string) { return document.getElementById(id) as HTMLElement; }
 function inp(id: string) { return document.getElementById(id) as HTMLInputElement; }
 function fmt(cents: number) { return formatPrice(cents / 100); }
@@ -48,7 +52,7 @@ type EnrichedLine = {
   name: string;
   variantName: string;
   image: string;
-  priceCents: number;
+  priceCents: number;   // per unit
   qty: number;
   productId: string;
   variantCode: string;
@@ -155,9 +159,8 @@ function validate(): boolean {
   return results.every(Boolean);
 }
 
-/* ─── Inline error banner (replaces alert) ─── */
+/* ─── Inline error banner ─── */
 function showOrderError(message: string) {
-  // Remove existing error banner if any
   const existing = document.getElementById("order-error-banner");
   if (existing) existing.remove();
 
@@ -179,13 +182,12 @@ function showOrderError(message: string) {
       <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
     </svg>
     <div>
-      <div style="font-weight:700;color:#c53030;font-size:0.9rem;margin-bottom:4px;">Order could not be placed</div>
+      <div style="font-weight:700;color:#c53030;font-size:0.9rem;margin-bottom:4px;">Payment could not be started</div>
       <div style="color:#9b2c2c;font-size:0.85rem;line-height:1.5;">${message}</div>
     </div>
     <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:1.2rem;margin-left:auto;padding:0;" aria-label="Dismiss">✕</button>
   `;
 
-  // Insert before the checkout form
   const formPanel = document.querySelector(".checkout-form-panel");
   if (formPanel && formPanel.parentElement) {
     formPanel.parentElement.insertBefore(banner, formPanel);
@@ -193,8 +195,8 @@ function showOrderError(message: string) {
   }
 }
 
-/* ─── Submit ─── */
-async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; delivery: number; total: number }) {
+/* ─── Submit → Redirect to Stripe Checkout ─── */
+async function handleSubmit(lines: EnrichedLine[]) {
   if (!validate()) return;
 
   // Clear any previous error
@@ -203,13 +205,13 @@ async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; d
 
   const btn = $("btn-place-order") as HTMLButtonElement;
   btn.disabled    = true;
-  btn.textContent = "Placing order…";
-  btn.classList.add("loading");
+  btn.textContent = "Redirecting to payment…";
+  btn.classList.add("btn-loading");
 
   const pickup = isPickupMode();
 
   const addressParts = pickup
-    ? ["Pickup"]
+    ? "Pickup"
     : [inp("address").value, inp("suburb").value, inp("postcode").value].filter(Boolean).join(", ");
 
   const deliveryTimeEl = document.getElementById("delivery-time") as HTMLSelectElement | null;
@@ -221,35 +223,56 @@ async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; d
     pickup ? "Customer will pick up." : `Deliver to: ${addressParts}`,
   ].filter(Boolean).join("\n");
 
+  // Build items payload (product IDs + variant codes — prices verified server-side)
   const items = lines.map(l => ({
     product_id:   l.productId,
     variant_code: l.variantCode,
     qty:          l.qty,
-    line_cents:   l.lineCents,
+    add_on_ids:   l.addOnIds.map(Number).filter(Boolean),
   }));
 
+  // Get optional email
+  const emailEl = document.getElementById("email") as HTMLInputElement | null;
+  const customerEmail = emailEl?.value.trim() || "";
+
   try {
-    const orderId = await createOrder({
-      customer_name:  inp("name").value.trim(),
-      customer_phone: inp("phone").value.trim(),
-      delivery_date:  inp("delivery-date").value,
-      notes,
-      total_cents:    totals.total,
-      items,
+    // ─── Call Edge Function to create Stripe Checkout Session ───
+    const res = await fetch(CHECKOUT_FUNCTION_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json",
+        "Authorization": `Bearer ${import.meta.env['VITE_SUPABASE_ANON_KEY']}`,
+        "apikey": import.meta.env['VITE_SUPABASE_ANON_KEY'],
+      },
+      body: JSON.stringify({
+        items,
+        customer_name:  inp("name").value.trim(),
+        customer_phone: inp("phone").value.trim(),
+        customer_email: customerEmail,
+        delivery_date:  inp("delivery-date").value,
+        notes,
+        is_pickup: pickup,
+        success_url: `${window.location.origin}/order-confirmation.html`,
+        cancel_url:  `${window.location.origin}/checkout.html`,
+      }),
     });
 
+    const data = await res.json();
+
+    if (!res.ok || !data.url) {
+      throw new Error(data.error || "Failed to create payment session");
+    }
+
+    // ─── Clear cart and redirect to Stripe ───
     saveCart([]);
-    window.location.href = `order-confirmation.html?id=${orderId}`;
+    window.location.href = data.url;
 
   } catch (err: any) {
-    console.error("Order submission failed:", err);
+    console.error("Checkout failed:", err);
     btn.disabled    = false;
-    btn.textContent = "Place Order";
-    btn.classList.remove("loading");
-
-    // ✅ FIX: Show inline error instead of alert()
+    btn.textContent = "Pay with Stripe";
+    btn.classList.remove("btn-loading");
     showOrderError(
-      "Something went wrong placing your order. Please try again, or call us directly at <strong>(02) 9123-4567</strong>."
+      "Something went wrong starting the payment. Please try again, or call us directly at <strong>(02) 9123-4567</strong>."
     );
   }
 }
@@ -273,11 +296,14 @@ async function main() {
   const lines = await enrichCart();
   renderSummary(lines);
 
+  // Re-render delivery cost when pickup/delivery toggled
   $("btn-delivery").addEventListener("click", () => renderSummary(lines));
   $("btn-pickup").addEventListener("click",   () => renderSummary(lines));
 
-  $("btn-place-order").addEventListener("click", () => handleSubmit(lines, renderSummary(lines)));
+  // Submit — redirect to Stripe
+  $("btn-place-order").addEventListener("click", () => handleSubmit(lines));
 
+  // Live validation on blur
   ["name", "phone", "delivery-date", "address", "suburb"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("blur", () => validate());
