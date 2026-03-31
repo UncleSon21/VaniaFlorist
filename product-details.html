@@ -6,7 +6,7 @@
     <title id="page-title">Product Details - Vaniaflorsit</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/product-details.css">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
@@ -243,7 +243,8 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Vaniaflorsit. All rights reserved.</p>
+            <p>&copy; <span id="footer-year">2026</span> Vaniaflorsit. All rights reserved.</p>
+            <script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
         </div>
     </footer>
 

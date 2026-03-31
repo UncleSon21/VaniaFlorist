@@ -1,12 +1,13 @@
 // src/scripts/db.ts
 import { createClient } from "@supabase/supabase-js";
 
-const _meta = import.meta as any;
+// Vite replaces import.meta.env.VITE_* at build time
+// @ts-ignore
+const SUPABASE_URL: string = (window as any).SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
+// @ts-ignore
+const SUPABASE_ANON_KEY: string = (window as any).SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(
-  (window as any).SUPABASE_URL || _meta.env?.VITE_SUPABASE_URL,
-  (window as any).SUPABASE_ANON_KEY || _meta.env?.VITE_SUPABASE_ANON_KEY
-);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export async function fetchCatalog() {
   const { data, error } = await supabase

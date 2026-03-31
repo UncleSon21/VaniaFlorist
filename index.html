@@ -3,173 +3,569 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vaniaflorsit | Premium Flowers in Sydney</title>
-    
-    <!-- Favicon - Website icon in browser tab -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    
-    <!-- For modern browsers -->
-    <link rel="manifest" href="site.webmanifest">
-    
-    <!-- Meta tags for SEO -->
-    <meta name="description" content="Premium florist in Sydney offering wedding bouquets, birthday flowers, and seasonal arrangements. Same-day delivery available.">
-    <meta name="keywords" content="florist sydney, wedding flowers, birthday bouquets, same day delivery, premium flowers">
-    
+    <meta name="description" content="Vaniaflorsit — Sydney's premier florist. Handcrafted bouquets, wedding flowers, and same-day delivery across Sydney.">
+    <title>Vaniaflorsit — Sydney Florist</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+    /* ══════════════════════════════════════════════════
+       HOMEPAGE OVERRIDES — search overlay + polish
+       ══════════════════════════════════════════════════ */
+
+    /* ── Full-Screen Search Overlay ── */
+    .search-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(250, 248, 245, 0.97);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 10vh;
+        overflow-y: auto;
+    }
+    .search-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .search-overlay .search-content {
+        background: #fff;
+        width: 92%;
+        max-width: 680px;
+        border-radius: 24px;
+        box-shadow: 0 24px 80px rgba(139,115,85,0.12), 0 2px 12px rgba(0,0,0,0.04);
+        border: 1px solid #f0e8dd;
+        padding: 0;
+        transform: translateY(20px) scale(0.97);
+        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        margin-bottom: 10vh;
+    }
+    .search-overlay.active .search-content {
+        transform: translateY(0) scale(1);
+    }
+
+    /* Close button */
+    .search-overlay .search-close {
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: #faf8f5;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8b7355;
+        transition: all 0.25s ease;
+        z-index: 2;
+    }
+    .search-overlay .search-close:hover {
+        background: #8b7355;
+        color: #fff;
+        transform: rotate(90deg);
+    }
+
+    /* Search header */
+    .search-header {
+        padding: 48px 40px 0;
+        text-align: center;
+    }
+    .search-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #1e1a17;
+        margin-bottom: 6px;
+        letter-spacing: -0.3px;
+    }
+    .search-header p {
+        font-size: 0.88rem;
+        color: #bbb;
+        margin-bottom: 28px;
+    }
+
+    /* Search input */
+    .search-input-wrap {
+        position: relative;
+        margin: 0 40px;
+    }
+    .search-input-wrap > svg {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #c8b89a;
+        pointer-events: none;
+    }
+    .search-input-wrap input {
+        width: 100%;
+        padding: 18px 56px 18px 52px;
+        font-size: 1.05rem;
+        border: 2px solid #f0e8dd;
+        border-radius: 14px;
+        font-family: 'Georgia', serif;
+        outline: none;
+        background: #faf8f5;
+        color: #2b2b2b;
+        transition: all 0.3s ease;
+    }
+    .search-input-wrap input::placeholder { color: #c8b89a; }
+    .search-input-wrap input:focus {
+        border-color: #8b7355;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(139,115,85,0.08);
+    }
+    .search-input-wrap .search-submit-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #8b7355;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .search-input-wrap .search-submit-btn:hover { background: #6d5a44; }
+
+    /* Category grid */
+    .search-cats { padding: 32px 40px 0; }
+    .search-cats h4 {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #c8a882;
+        margin-bottom: 16px;
+    }
+    .search-cat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    .search-cat-card {
+        background: #faf8f5;
+        border: 1.5px solid #f0e8dd;
+        border-radius: 14px;
+        padding: 20px 14px 16px;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .search-cat-card:hover {
+        border-color: #8b7355;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(139,115,85,0.10);
+    }
+    .search-cat-card .cat-emoji { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+    .search-cat-card .cat-name { font-size: 0.88rem; font-weight: 700; color: #1e1a17; display: block; margin-bottom: 3px; }
+    .search-cat-card .cat-sub { font-size: 0.75rem; color: #bbb; line-height: 1.3; }
+
+    /* Popular tags */
+    .search-tags { padding: 28px 40px 36px; }
+    .search-tags h4 {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #c8a882;
+        margin-bottom: 14px;
+    }
+    .search-tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .search-tag {
+        padding: 8px 18px;
+        border-radius: 24px;
+        background: #f5f0e8;
+        border: 1.5px solid #e8ddd4;
+        color: #8b7355;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        font-family: 'Georgia', serif;
+    }
+    .search-tag:hover {
+        background: #8b7355;
+        border-color: #8b7355;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    /* Search results */
+    .search-overlay .search-results {
+        max-height: 320px;
+        overflow-y: auto;
+        padding: 0 40px 36px;
+        border-top: 1px solid #f0e8dd;
+        margin: 24px 0 0;
+    }
+    .search-overlay .search-results:empty { display: none; }
+
+    /* Responsive search */
+    @media (max-width: 700px) {
+        .search-overlay { padding-top: 4vh; }
+        .search-header { padding: 36px 24px 0; }
+        .search-input-wrap { margin: 0 24px; }
+        .search-cats { padding: 24px 24px 0; }
+        .search-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .search-tags { padding: 24px 24px 28px; }
+        .search-overlay .search-results { padding: 0 24px 28px; }
+    }
+
+    /* ── Hero ── */
+    .hero { height: 85vh; min-height: 520px; max-height: 800px; }
+    .hero-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        font-weight: 600;
+        color: #1e1a17;
+        line-height: 1.08;
+        margin-bottom: 16px;
+        letter-spacing: -1px;
+    }
+    .hero-content p { font-size: 1.15rem; color: #6b5d54; max-width: 420px; }
+    .hero-buttons { margin-top: 28px; }
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        display: inline-block;
+        text-decoration: none;
+        padding: 16px 36px;
+        font-size: 0.82rem;
+        letter-spacing: 1.5px;
+        border-radius: 6px;
+        font-family: 'Georgia', serif;
+        font-weight: 700;
+        transition: all 0.3s ease;
+    }
+    .hero-buttons .btn-primary { background: #8b7355; color: #fff; border: none; }
+    .hero-buttons .btn-primary:hover {
+        background: #6d5a44;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(139,115,85,0.3);
+    }
+    .hero-buttons .btn-secondary {
+        background: transparent;
+        color: #8b7355;
+        border: 2px solid #d4c5a0;
+    }
+    .hero-buttons .btn-secondary:hover {
+        border-color: #8b7355;
+        background: rgba(139,115,85,0.04);
+    }
+
+    /* ── Highlight / About ── */
+    .highlight-container {
+        max-width: 720px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 100px 20px;
+    }
+    .highlight .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #1e1a17;
+        line-height: 1.3;
+        margin-bottom: 24px;
+    }
+    .about-text.centered p {
+        font-size: 1.1rem;
+        color: #6b5d54;
+        line-height: 1.8;
+        margin-bottom: 32px;
+    }
+    .learn-more-btn {
+        display: inline-block;
+        padding: 14px 36px;
+        border: 2px solid #d4c5a0;
+        color: #8b7355;
+        text-decoration: none;
+        font-size: 0.78rem;
+        letter-spacing: 2px;
+        font-weight: 700;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        font-family: 'Georgia', serif;
+    }
+    .learn-more-btn:hover {
+        background: #8b7355;
+        border-color: #8b7355;
+        color: #fff;
+    }
+
+    /* ── Services ── */
+    .services { padding: 100px 0; background: #fff; }
+    .services .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: #1e1a17;
+        margin-bottom: 60px;
+    }
+    .service-card {
+        padding: 44px 32px;
+        border-radius: 20px;
+        border: 1px solid #f0e8dd;
+        text-align: center;
+        transition: all 0.35s ease;
+        background: #fff;
+    }
+    .service-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(139,115,85,0.10);
+        border-color: #d4c5a0;
+    }
+    .service-card .service-icon {
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 20px;
+        background: #faf8f5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    .service-card:hover .service-icon {
+        background: #8b7355;
+        transform: scale(1.1);
+    }
+    .service-card:hover .service-icon svg { stroke: #fff; }
+    .service-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e1a17;
+        margin-bottom: 12px;
+    }
+    .service-card p { font-size: 0.92rem; color: #888; line-height: 1.7; }
+
+    /* ── Gallery ── */
+    .gallery { padding: 100px 0; background: #faf8f5; }
+    .gallery .section-title {
+        font-family: 'Playfair Display', serif;
+        color: #1e1a17;
+        margin-bottom: 48px;
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    .gallery-item {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        height: 280px;
+        text-decoration: none;
+        display: block;
+    }
+    .gallery-item .placeholder-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        padding: 28px;
+        transition: all 0.5s ease;
+        position: relative;
+    }
+    .gallery-item .placeholder-image::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 40%, rgba(30,26,23,0.45) 100%);
+        transition: opacity 0.4s ease;
+    }
+    .gallery-item:hover .placeholder-image { transform: scale(1.06); }
+    .gallery-item .placeholder-image span {
+        position: relative;
+        z-index: 1;
+        color: #fff;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.15rem;
+        font-weight: 600;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 700px) {
+        .gallery-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+        .gallery-item { height: 200px; }
+        .hero-content h2 { font-size: 2.8rem; }
+    }
+    @media (max-width: 480px) {
+        .gallery-grid { grid-template-columns: 1fr; }
+        .hero-content h2 { font-size: 2.2rem; }
+    }
+
+    /* ── Contact ── */
+    .contact { padding: 100px 0; background: #fff; }
+    .contact .section-title {
+        font-family: 'Playfair Display', serif;
+        color: #1e1a17;
+        margin-bottom: 48px;
+    }
+
+    /* ── Footer ── */
+    .footer-logo {
+        font-family: 'Great Vibes', cursive;
+        font-size: 1.8rem;
+        color: #f5f0e8 !important;
+        font-weight: 400;
+    }
+
+    /* ── Active nav ── */
+    .text-link.active { color: #8b7355; }
+    .text-link.active::after { width: 100%; left: 0; }
+    </style>
 </head>
 <body>
+
     <!-- Top Bar -->
     <div class="top-bar">
-        <p>Fresh Flowers & Same-Day Delivery: The Perfect Gift, Delivered. <a href="#shop">Shop The Summer Collection</a></p>
+        <p>Free Delivery on Orders Over $50 &nbsp;·&nbsp; Same-Day Delivery Available in Sydney</p>
     </div>
 
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-left">
-                <div class="dropdown-container">
-                    <button class="nav-dropdown">Shop <span class="arrow">▼</span></button>
-                    <div class="dropdown-menu">
-                        <a href="shop.html" class="dropdown-item">All Flowers</a>
-                        <a href="shop.html#roses" class="dropdown-item">Roses</a>
-                        <a href="shop.html#bouquets" class="dropdown-item">Mixed Bouquets</a>
-                        <a href="shop.html#wedding" class="dropdown-item">Wedding Flowers</a>
-                        <a href="shop.html#sympathy" class="dropdown-item">Sympathy Flowers</a>
-                        <a href="shop.html#seasonal" class="dropdown-item">Seasonal Collection</a>
-                        <a href="shop.html#plants" class="dropdown-item">Plants</a>
-                    </div>
-                </div>
-                <a href="#flowers" class="text-link">Flowers</a>
-                <a href="#plants" class="text-link">Plants</a>
-                <a href="#peonies" class="text-link">Gifts</a>
-                <a href="#me-day" class="text-link">Same-Day Delivery</a>
-                <a href="#contact-us" class="text-link">Contact Us</a>
+                <a href="index.html" class="text-link active">Home</a>
+                <a href="shop.html" class="text-link">Shop</a>
+                <a href="about.html" class="text-link">About</a>
+                <a href="#contact" class="text-link">Contact</a>
             </div>
             <div class="logo">
-                <h1 class="logo-title">Vaniaflorsit</h1>
-                <p class="logo-subtitle">Sydney Florist</p>
+                <a href="index.html">
+                    <h1 class="logo-title">Vaniaflorsit</h1>
+                    <p class="logo-subtitle">Sydney Florist</p>
+                </a>
             </div>
             <div class="nav-right">
-                <a href="#subscriptions" class="text-link">Subscriptions</a>
-                <a href="#rewards" class="text-link">Rewards</a>
                 <button class="nav-icon search-btn" aria-label="Search" id="searchButton">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                     </svg>
                 </button>
-                <button class="nav-icon" aria-label="My Account">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </button>
-                <button class="nav-icon cart-icon" aria-label="Shopping Cart">
+                <a href="cart.html" class="nav-icon cart-icon" aria-label="Shopping Cart" style="text-decoration:none;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                     </svg>
-                    <span class="cart-count">0</span>
-                </button>
+                    <span class="cart-count" id="nav-cart-count">0</span>
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- Search Modal -->
-    <div class="search-modal" id="searchModal">
+    <!-- ══ Search Overlay ══ -->
+    <div class="search-overlay" id="searchOverlay">
         <div class="search-content">
-            <button class="search-close" id="searchClose">&times;</button>
-            <h3 class="search-title">Search Our Collection</h3>
-            
-            <!-- Search Input -->
-            <div class="search-input-container">
-                <input type="text" class="search-input" placeholder="Search for flowers, occasions, colors..." id="searchInput">
-                <button class="search-submit" id="searchSubmit">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
+            <button class="search-close" id="searchClose" aria-label="Close search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+
+            <div class="search-header">
+                <h2>Find Your Perfect Arrangement</h2>
+                <p>Search our collection by name, occasion, or flower type</p>
+            </div>
+
+            <div class="search-input-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search flowers, occasions, styles…" autocomplete="off">
+                <button class="search-submit-btn" id="searchSubmit" aria-label="Search">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </button>
             </div>
 
-            <!-- Categories Section -->
-            <div class="search-categories">
-                <h4>Shop by Category</h4>
-                <div class="category-grid">
-                    <div class="category-item" data-category="wedding">
-                        <div class="category-icon">💒</div>
-                        <span>Wedding Flowers</span>
-                        <small>Bridal bouquets & decorations</small>
-                    </div>
-                    <div class="category-item" data-category="birthday">
-                        <div class="category-icon">🎂</div>
-                        <span>Birthday Flowers</span>
-                        <small>Celebration arrangements</small>
-                    </div>
-                    <div class="category-item" data-category="romantic">
-                        <div class="category-icon">💕</div>
-                        <span>Romantic</span>
-                        <small>Roses & love arrangements</small>
-                    </div>
-                    <div class="category-item" data-category="sympathy">
-                        <div class="category-icon">🕊️</div>
-                        <span>Sympathy</span>
-                        <small>Funeral & condolence flowers</small>
-                    </div>
-                    <div class="category-item" data-category="corporate">
-                        <div class="category-icon">🏢</div>
-                        <span>Corporate</span>
-                        <small>Office & event arrangements</small>
-                    </div>
-                    <div class="category-item" data-category="seasonal">
-                        <div class="category-icon">🌸</div>
-                        <span>Seasonal</span>
-                        <small>Peonies, tulips & seasonal blooms</small>
-                    </div>
+            <div class="search-cats">
+                <h4>Browse by Category</h4>
+                <div class="search-cat-grid">
+                    <a href="shop.html" class="search-cat-card">
+                        <span class="cat-emoji">💐</span>
+                        <span class="cat-name">All Flowers</span>
+                        <span class="cat-sub">Full collection</span>
+                    </a>
+                    <a href="shop.html?category=wedding" class="search-cat-card">
+                        <span class="cat-emoji">🤍</span>
+                        <span class="cat-name">Wedding</span>
+                        <span class="cat-sub">Bridal & venue florals</span>
+                    </a>
+                    <a href="shop.html?category=birthday" class="search-cat-card">
+                        <span class="cat-emoji">🎂</span>
+                        <span class="cat-name">Birthday</span>
+                        <span class="cat-sub">Celebratory bouquets</span>
+                    </a>
+                    <a href="shop.html?category=corporate" class="search-cat-card">
+                        <span class="cat-emoji">🏢</span>
+                        <span class="cat-name">Corporate</span>
+                        <span class="cat-sub">Office & events</span>
+                    </a>
+                    <a href="shop.html?category=sympathy" class="search-cat-card">
+                        <span class="cat-emoji">🕊️</span>
+                        <span class="cat-name">Sympathy</span>
+                        <span class="cat-sub">Thoughtful tributes</span>
+                    </a>
+                    <a href="shop.html?category=seasonal" class="search-cat-card">
+                        <span class="cat-emoji">🌸</span>
+                        <span class="cat-name">Seasonal</span>
+                        <span class="cat-sub">What's blooming now</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Quick Suggestions -->
-            <div class="search-suggestions">
+            <div class="search-tags">
                 <h4>Popular Searches</h4>
-                <div class="suggestion-tags">
-                    <span class="suggestion-tag" data-search="red roses">Red Roses</span>
-                    <span class="suggestion-tag" data-search="white lilies">White Lilies</span>
-                    <span class="suggestion-tag" data-search="mixed bouquet">Mixed Bouquet</span>
-                    <span class="suggestion-tag" data-search="peonies">Peonies</span>
-                    <span class="suggestion-tag" data-search="sunflowers">Sunflowers</span>
-                    <span class="suggestion-tag" data-search="orchids">Orchids</span>
-                    <span class="suggestion-tag" data-search="same day delivery">Same Day</span>
-                    <span class="suggestion-tag" data-search="under $50">Under $50</span>
+                <div class="search-tags-wrap">
+                    <a href="shop.html?q=red+roses" class="search-tag">Red Roses</a>
+                    <a href="shop.html?q=peonies" class="search-tag">Peonies</a>
+                    <a href="shop.html?q=mixed+bouquet" class="search-tag">Mixed Bouquet</a>
+                    <a href="shop.html?q=sunflowers" class="search-tag">Sunflowers</a>
+                    <a href="shop.html?q=white+lilies" class="search-tag">White Lilies</a>
+                    <a href="shop.html?q=orchids" class="search-tag">Orchids</a>
                 </div>
             </div>
 
-            <!-- Search Results -->
             <div class="search-results" id="searchResults"></div>
         </div>
     </div>
 
-    <!-- Hero Section -->
+    <!-- ══ Hero ══ -->
     <section id="home" class="hero">
         <div class="hero-image"></div>
         <div class="hero-content">
-            <h2>It's A Peony Party</h2>
-            <p>A short-lived season meets a long-lasting impression. Our premium Alaskan peonies are here and going fast.</p>
+            <h2>It's A<br>Peony Party</h2>
+            <p>Our premium Alaskan peonies are here and going fast. A short-lived season meets a long-lasting impression.</p>
             <div class="hero-buttons">
-                <button class="btn-primary">SHOP FLOWERS</button>
-                <button class="btn-secondary">SHOP PLANTS</button>
+                <a href="shop.html" class="btn-primary">SHOP FLOWERS</a>
+                <a href="shop.html?material=artificial" class="btn-secondary">SHOP PLANTS</a>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
+    <!-- ══ About ══ -->
     <section id="about" class="about highlight">
         <div class="container highlight-container">
-            <h2 class="section-title">Welcome to Vaniaflorsit — where passion meets petals.</h2>
+            <h2 class="section-title">Welcome to Vaniaflorsit —<br>where passion meets petals.</h2>
             <div class="about-text centered">
                 <p>Crafted for those who appreciate elegance, our floral arrangements are thoughtfully designed with charm and care in the heart of Sydney, bringing beauty to your doorstep across the city.</p>
                 <a href="about.html" class="learn-more-btn">LEARN MORE</a>
@@ -177,63 +573,83 @@
         </div>
     </section>
 
-    <!-- Services Section -->
+    <!-- ══ Services ══ -->
     <section id="services" class="services">
         <div class="container">
             <h2 class="section-title">Our Services</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon">🌹</div>
+                    <div class="service-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </div>
                     <h3>Wedding Florals</h3>
                     <p>From bridal bouquets to venue decorations, we create magical wedding experiences with our premium floral designs.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">🎁</div>
+                    <div class="service-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8V5a2 2 0 0 0-2-2 2 2 0 0 0-2 2v1"/><path d="M12 8V5a2 2 0 0 1 2-2 2 2 0 0 1 2 2v1"/><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+                    </div>
                     <h3>Gift Bouquets</h3>
                     <p>Express your feelings with our carefully curated bouquets for birthdays, anniversaries, and special occasions.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">🏢</div>
+                    <div class="service-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/><circle cx="12" cy="14" r="2"/></svg>
+                    </div>
                     <h3>Corporate Events</h3>
                     <p>Elevate your corporate events with sophisticated floral arrangements that leave lasting impressions.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">🚚</div>
+                    <div class="service-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b7355" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    </div>
                     <h3>Same-Day Delivery</h3>
-                    <p>Need flowers urgently? We offer same-day delivery within the city for orders placed before 2 PM.</p>
+                    <p>Need flowers urgently? We offer same-day delivery within Sydney for orders placed before 2 PM.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Section -->
+    <!-- ══ Gallery ══ -->
     <section id="gallery" class="gallery">
         <div class="container">
             <h2 class="section-title">Our Creations</h2>
             <div class="gallery-grid">
-                <div class="gallery-item">
-                    <div class="placeholder-image">Spring Collection</div>
-                </div>
-                <div class="gallery-item">
-                    <div class="placeholder-image">Wedding Bouquet</div>
-                </div>
-                <div class="gallery-item">
-                    <div class="placeholder-image">Corporate Arrangement</div>
-                </div>
-                <div class="gallery-item">
-                    <div class="placeholder-image">Birthday Special</div>
-                </div>
-                <div class="gallery-item">
-                    <div class="placeholder-image">Seasonal Flowers</div>
-                </div>
-                <div class="gallery-item">
-                    <div class="placeholder-image">Custom Design</div>
-                </div>
+                <a href="shop.html?category=seasonal" class="gallery-item">
+                    <div class="placeholder-image" style="background:linear-gradient(135deg, #f0d8c8, #e0b8a8);">
+                        <span>Spring Collection</span>
+                    </div>
+                </a>
+                <a href="shop.html?category=wedding" class="gallery-item">
+                    <div class="placeholder-image" style="background:linear-gradient(135deg, #f5ede4, #e8ddd4);">
+                        <span>Wedding Bouquets</span>
+                    </div>
+                </a>
+                <a href="shop.html?category=corporate" class="gallery-item">
+                    <div class="placeholder-image" style="background:linear-gradient(135deg, #e4dcd0, #d4c8b4);">
+                        <span>Corporate</span>
+                    </div>
+                </a>
+                <a href="shop.html?category=birthday" class="gallery-item">
+                    <div class="placeholder-image" style="background:linear-gradient(135deg, #f8e4d8, #f0c8b4);">
+                        <span>Birthday Specials</span>
+                    </div>
+                </a>
+                <a href="shop.html?category=seasonal" class="gallery-item">
+                    <div class="placeholder-image" style="background:linear-gradient(135deg, #e8e0d0, #d8ccb8);">
+                        <span>Seasonal Flowers</span>
+                    </div>
+                </a>
+                <a href="shop.html" class="gallery-item">
+                    <div class="placeholder-image" style="background:linear-gradient(135deg, #efe4d8, #dfd0c0);">
+                        <span>Custom Designs</span>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- ══ Contact ══ -->
     <section id="contact" class="contact">
         <div class="container">
             <h2 class="section-title">Get in Touch</h2>
@@ -243,7 +659,7 @@
                     <p><strong>Address:</strong> 123 Garden Street, Floral District, Sydney NSW 2000</p>
                     <p><strong>Phone:</strong> (02) 9123-4567</p>
                     <p><strong>Email:</strong> hello@vaniaflorsit.com.au</p>
-                    <p><strong>Hours:</strong> Mon-Sat 9AM-7PM, Sun 10AM-5PM</p>
+                    <p><strong>Hours:</strong> Mon–Sat 9 AM – 7 PM, Sun 10 AM – 5 PM</p>
                 </div>
                 <form class="contact-form" id="contactForm">
                     <input type="text" name="name" placeholder="Your Name" required>
@@ -256,39 +672,39 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ══ Footer ══ -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Vaniaflorsit</h3>
+                    <h3 class="footer-logo">Vaniaflorsit</h3>
                     <p>Creating beautiful moments with nature's finest blooms in Sydney.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Follow Us</h4>
                     <div class="social-links">
-                        <a href="#" target="_blank">Facebook</a>
-                        <a href="#" target="_blank">Instagram</a>
-                        <a href="#" target="_blank">Pinterest</a>
+                        <a href="#" aria-label="Facebook" rel="noopener">Facebook</a>
+                        <a href="#" aria-label="Instagram" rel="noopener">Instagram</a>
+                        <a href="#" aria-label="Pinterest" rel="noopener">Pinterest</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Vaniaflorsit. All rights reserved.</p>
+                <p>&copy; <span id="footer-year"></span> Vaniaflorsit. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script type="module" src="dist/script.js"></script>
+    <script type="module" src="src/script.ts"></script>
+    <script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
 </body>
 </html>

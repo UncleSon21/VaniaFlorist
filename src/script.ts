@@ -1,4 +1,7 @@
-// TypeScript configuration and type definitions
+// src/script.ts — FIXED VERSION
+// Removed ALL alert() and confirm() popups
+// Replaced with proper navigation and UI feedback
+
 interface FlowerItem {
     id: string;
     name: string;
@@ -29,7 +32,7 @@ interface CartState {
 
 interface SearchElements {
     searchBtn: HTMLButtonElement | null;
-    searchModal: HTMLElement | null;
+    searchOverlay: HTMLElement | null;
     searchClose: HTMLButtonElement | null;
     searchInput: HTMLInputElement | null;
     searchSubmit: HTMLButtonElement | null;
@@ -56,7 +59,6 @@ class FlowerShopApp {
     private searchTimeout: number | null = null;
     private dropdownTimeout: number | null = null;
 
-    // Enhanced flower database
     private readonly flowerData: FlowerItem[] = [
         {
             id: 'red-roses-classic',
@@ -94,89 +96,59 @@ class FlowerShopApp {
             category: 'birthday',
             price: 35,
             priceDisplay: '$35',
-            description: 'Colorful mixed bouquet with gerberas, carnations, and seasonal blooms',
+            description: 'Cheerful mixed bouquet with gerberas, sunflowers, and daisies',
             colors: ['yellow', 'orange', 'pink', 'purple'],
-            occasions: ['birthday', 'celebration', 'congratulations'],
-            flowers: ['gerberas', 'carnations', 'chrysanthemums'],
-            tags: ['colorful', 'cheerful', 'mixed', 'affordable'],
+            occasions: ['birthday', 'congratulations', 'thank-you'],
+            flowers: ['gerberas', 'sunflowers', 'daisies'],
+            tags: ['colorful', 'cheerful', 'medium', 'popular'],
             inStock: true,
             rating: 4.7,
-            imageIcon: '🎂'
-        },
-        {
-            id: 'peonies-alaskan-premium',
-            name: 'Premium Alaskan Peonies',
-            category: 'seasonal',
-            price: 55,
-            priceDisplay: '$55',
-            description: 'Limited season premium Alaskan peonies in soft pink and white',
-            colors: ['pink', 'white'],
-            occasions: ['luxury', 'special', 'seasonal', 'mothers day'],
-            flowers: ['peonies'],
-            tags: ['seasonal', 'limited', 'premium', 'alaskan', 'rare'],
-            inStock: true,
-            rating: 4.8,
-            imageIcon: '🌸'
-        },
-        {
-            id: 'corporate-arrangement-modern',
-            name: 'Modern Corporate Arrangement',
-            category: 'corporate',
-            price: 80,
-            priceDisplay: '$80',
-            description: 'Sophisticated arrangement perfect for offices and business events',
-            colors: ['white', 'green', 'yellow'],
-            occasions: ['corporate', 'office', 'business', 'professional'],
-            flowers: ['lilies', 'orchids', 'greenery'],
-            tags: ['professional', 'modern', 'sophisticated', 'office'],
-            inStock: true,
-            rating: 4.6,
-            imageIcon: '🏢'
-        },
-        {
-            id: 'sunflowers-cheerful',
-            name: 'Cheerful Sunflower Bouquet',
-            category: 'seasonal',
-            price: 30,
-            priceDisplay: '$30',
-            description: 'Bright and happy sunflower bouquet perfect for brightening any day',
-            colors: ['yellow', 'brown'],
-            occasions: ['thank you', 'get well', 'friendship', 'cheerful'],
-            flowers: ['sunflowers'],
-            tags: ['bright', 'cheerful', 'affordable', 'summer'],
-            inStock: true,
-            rating: 4.5,
             imageIcon: '🌻'
         },
         {
-            id: 'white-lilies-elegant',
-            name: 'Elegant White Lilies',
+            id: 'sympathy-white-peace',
+            name: 'White Peace Arrangement',
             category: 'sympathy',
-            price: 40,
-            priceDisplay: '$40',
-            description: 'Pure white lilies with green foliage for sympathy and remembrance',
+            price: 65,
+            priceDisplay: '$65',
+            description: 'Elegant white lilies and roses arrangement for peaceful remembrance',
             colors: ['white', 'green'],
             occasions: ['sympathy', 'funeral', 'remembrance', 'condolence'],
-            flowers: ['lilies'],
-            tags: ['sympathy', 'elegant', 'pure', 'remembrance'],
+            flowers: ['lilies', 'roses', 'chrysanthemums'],
+            tags: ['elegant', 'peaceful', 'white', 'premium'],
             inStock: true,
-            rating: 4.8,
+            rating: 4.9,
             imageIcon: '🕊️'
         },
         {
-            id: 'mixed-seasonal-deluxe',
-            name: 'Deluxe Seasonal Mix',
-            category: 'seasonal',
-            price: 50,
-            priceDisplay: '$50',
-            description: 'Beautiful seasonal arrangement with the best flowers of the season',
-            colors: ['mixed', 'seasonal'],
-            occasions: ['gift', 'seasonal', 'special', 'mixed'],
-            flowers: ['seasonal', 'mixed', 'roses', 'lilies'],
-            tags: ['seasonal', 'deluxe', 'mixed', 'premium'],
+            id: 'corporate-modern-statement',
+            name: 'Modern Statement Piece',
+            category: 'corporate',
+            price: 85,
+            priceDisplay: '$85',
+            description: 'Striking modern arrangement with birds of paradise and tropical foliage',
+            colors: ['orange', 'green', 'purple'],
+            occasions: ['corporate', 'office', 'event', 'reception'],
+            flowers: ['birds-of-paradise', 'anthuriums', 'tropical-foliage'],
+            tags: ['modern', 'statement', 'large', 'premium'],
             inStock: true,
             rating: 4.7,
             imageIcon: '🌺'
+        },
+        {
+            id: 'seasonal-peonies-blush',
+            name: 'Blush Peony Collection',
+            category: 'seasonal',
+            price: 75,
+            priceDisplay: '$75',
+            description: 'Luxurious seasonal peonies in soft blush and cream tones',
+            colors: ['pink', 'cream', 'blush'],
+            occasions: ['gift', 'romantic', 'anniversary', 'self-treat'],
+            flowers: ['peonies'],
+            tags: ['seasonal', 'luxury', 'limited', 'premium'],
+            inStock: true,
+            rating: 5.0,
+            imageIcon: '🌸'
         }
     ];
 
@@ -188,7 +160,7 @@ class FlowerShopApp {
     private getSearchElements(): SearchElements {
         return {
             searchBtn: document.querySelector<HTMLButtonElement>('#searchButton') || document.querySelector<HTMLButtonElement>('.search-btn'),
-            searchModal: document.getElementById('searchModal'),
+            searchOverlay: document.getElementById('searchOverlay'),
             searchClose: document.getElementById('searchClose') as HTMLButtonElement | null,
             searchInput: document.getElementById('searchInput') as HTMLInputElement | null,
             searchSubmit: document.getElementById('searchSubmit') as HTMLButtonElement | null,
@@ -199,26 +171,12 @@ class FlowerShopApp {
     }
 
     private init(): void {
-        console.log('Initializing FlowerShopApp...');
         this.setupEventListeners();
         this.initializeObservers();
         this.setupCartFunctionality();
         this.setupFormHandling();
-        this.setupNavigationEnhancements();
+        this.setupDropdownMenu();
         this.updateCartCount();
-        
-        // Test search button after a short delay to ensure DOM is ready
-        setTimeout(() => {
-            const searchBtn = document.querySelector('#searchButton') || document.querySelector('.search-btn');
-            console.log('Search button test:', searchBtn);
-            if (!searchBtn) {
-                console.error('❌ Search button not found in DOM!');
-            } else {
-                console.log('✅ Search button found successfully');
-            }
-        }, 100);
-        
-        console.log('Vaniaflorsit website loaded successfully! 🌸');
     }
 
     private setupEventListeners(): void {
@@ -228,111 +186,69 @@ class FlowerShopApp {
     }
 
     private setupSearchListeners(): void {
-        const { searchBtn, searchModal, searchClose, searchInput, searchSubmit, suggestionTags, categoryItems } = this.searchElements;
+        const { searchBtn, searchOverlay, searchClose, searchInput, searchSubmit } = this.searchElements;
 
-        // Debug logging
-        console.log('Setting up search listeners...');
-        console.log('Search button found:', searchBtn);
-        console.log('Search modal found:', searchModal);
-
-        // Open search modal
         if (searchBtn) {
-            console.log('Adding click listener to search button');
-            searchBtn.addEventListener('click', (_e) => {
-                console.log('Search button clicked!');
-                this.openSearchModal();
-            });
-        } else {
-            console.error('Search button not found! Check if element exists in DOM.');
+            searchBtn.addEventListener('click', () => this.openSearchModal());
         }
 
-        // Close search modal
         if (searchClose) {
             searchClose.addEventListener('click', () => this.closeSearchModal());
         }
 
-        // Close modal when clicking outside
-        if (searchModal) {
-            searchModal.addEventListener('click', (e: MouseEvent) => {
-                if (e.target === searchModal) {
+        if (searchOverlay) {
+            searchOverlay.addEventListener('click', (e: Event) => {
+                if (e.target === searchOverlay) {
                     this.closeSearchModal();
                 }
             });
         }
 
-        // Search input handling
         if (searchInput) {
             searchInput.addEventListener('input', (e: Event) => {
-                const target = e.target as HTMLInputElement;
-                this.handleSearchInput(target.value);
+                const value = (e.target as HTMLInputElement).value;
+                this.handleSearchInput(value);
             });
 
-            searchInput.addEventListener('keypress', (e: KeyboardEvent) => {
-                if (e.key === 'Enter') {
-                    this.performSearch(searchInput.value);
+            searchInput.addEventListener('keydown', (e: KeyboardEvent) => {
+                if (e.key === 'Escape') {
+                    this.closeSearchModal();
                 }
             });
         }
 
-        // Search submit button
         if (searchSubmit) {
             searchSubmit.addEventListener('click', () => {
-                if (searchInput) {
-                    this.performSearch(searchInput.value);
+                const query = this.searchElements.searchInput?.value || '';
+                if (query.trim()) {
+                    // Navigate to shop page with search query
+                    window.location.href = `shop.html?q=${encodeURIComponent(query.trim())}`;
                 }
             });
         }
-
-        // Suggestion tags
-        suggestionTags.forEach((tag: Element) => {
-            tag.addEventListener('click', () => {
-                const searchTerm = tag.getAttribute('data-search') || tag.textContent || '';
-                if (searchInput) {
-                    searchInput.value = searchTerm;
-                    this.performSearch(searchTerm);
-                }
-            });
-        });
-
-        // Category items
-        categoryItems.forEach((item: Element) => {
-            item.addEventListener('click', () => {
-                const category = item.getAttribute('data-category') || '';
-                this.searchByCategory(category);
-            });
-        });
-
-        // Keyboard events
-        document.addEventListener('keydown', (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && searchModal?.classList.contains('active')) {
-                this.closeSearchModal();
-            }
-        });
     }
 
     private setupNavigationListeners(): void {
-        // Smooth scrolling for navigation links
-        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link: HTMLAnchorElement) => {
-            link.addEventListener('click', (_e: Event) => {
-                const target = link.getAttribute('href');
-                if (target && target !== '#') {
-                    this.smoothScroll(target);
+        // Smooth scrolling for anchor links on the same page
+        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e: Event) => {
+                const href = anchor.getAttribute('href');
+                if (href && href.length > 1) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        this.smoothScroll(href);
+                    }
                 }
             });
         });
 
-        // Logo click to scroll to top
-        const logo = document.querySelector<HTMLElement>('.logo');
-        if (logo) {
-            logo.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-
-        this.setupDropdownMenu();
+        // Keyboard: close search on Escape
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                this.closeSearchModal();
+            }
+        });
     }
 
     private setupWindowListeners(): void {
@@ -344,31 +260,23 @@ class FlowerShopApp {
     }
 
     private openSearchModal(): void {
-        const { searchModal, searchInput } = this.searchElements;
-        
-        console.log('Opening search modal...');
-        console.log('Modal element:', searchModal);
-        
-        if (searchModal) {
-            searchModal.classList.add('active');
-            console.log('Added active class to modal');
+        const { searchOverlay, searchInput } = this.searchElements;
+        if (searchOverlay) {
+            searchOverlay.classList.add('active');
         }
         if (searchInput) {
             searchInput.focus();
         }
         document.body.style.overflow = 'hidden';
-        
         this.showDefaultContent();
     }
 
     private closeSearchModal(): void {
-        const { searchModal, searchInput, searchResults } = this.searchElements;
-        
-        if (searchModal) {
-            searchModal.classList.remove('active');
+        const { searchOverlay, searchInput, searchResults } = this.searchElements;
+        if (searchOverlay) {
+            searchOverlay.classList.remove('active');
         }
         document.body.style.overflow = 'auto';
-        
         if (searchInput) {
             searchInput.value = '';
         }
@@ -388,36 +296,24 @@ class FlowerShopApp {
         if (this.searchTimeout) {
             clearTimeout(this.searchTimeout);
         }
-        
         this.searchTimeout = window.setTimeout(() => {
-            if (value.trim()) {
-                this.performSearch(value);
+            if (value.trim().length >= 2) {
+                this.showLoadingState();
+                setTimeout(() => {
+                    const results = this.advancedSearch(value.trim(), {});
+                    this.displaySearchResults(results);
+                }, 200);
             } else {
                 this.showDefaultContent();
             }
         }, 300);
     }
 
-    private performSearch(query: string, filters: SearchFilters = {}): void {
-        const { searchResults } = this.searchElements;
-        if (!searchResults) return;
-
-        this.showLoadingState();
-
-        setTimeout(() => {
-            const results = this.advancedSearch(query, filters);
-            this.displaySearchResults(results);
-        }, 300);
-    }
-
-    private advancedSearch(query: string, filters: SearchFilters = {}): SearchResult {
-        const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
-        const scoredResults: Array<{item: FlowerItem, score: number}> = [];
+    private advancedSearch(query: string, filters: SearchFilters): SearchResult {
+        const searchTerms = query.toLowerCase().split(/\s+/).filter(term => term.length > 0);
+        const scoredResults: Array<{ item: FlowerItem; score: number }> = [];
 
         this.flowerData.forEach(item => {
-            let score = 0;
-
-            // Apply filters first
             if (filters.category && item.category !== filters.category) return;
             if (filters.inStock !== undefined && item.inStock !== filters.inStock) return;
             if (filters.minRating && item.rating < filters.minRating) return;
@@ -426,32 +322,16 @@ class FlowerShopApp {
                 if (item.price < min || item.price > max) return;
             }
 
-            // Calculate relevance score
+            let score = 0;
             searchTerms.forEach(term => {
                 if (item.name.toLowerCase().includes(term)) {
-                    score += item.name.toLowerCase() === term ? 100 : 50;
+                    score += item.name.toLowerCase().startsWith(term) ? 100 : 50;
                 }
-                if (item.category.toLowerCase().includes(term)) {
-                    score += 40;
-                }
-                item.flowers.forEach(flower => {
-                    if (flower.toLowerCase().includes(term)) {
-                        score += 35;
-                    }
-                });
-                item.occasions.forEach(occasion => {
-                    if (occasion.toLowerCase().includes(term)) {
-                        score += 30;
-                    }
-                });
-                item.colors.forEach(color => {
-                    if (color.toLowerCase().includes(term)) {
-                        score += 25;
-                    }
-                });
-                if (item.description.toLowerCase().includes(term)) {
-                    score += 15;
-                }
+                if (item.category.toLowerCase().includes(term)) score += 40;
+                item.flowers.forEach(f => { if (f.toLowerCase().includes(term)) score += 35; });
+                item.occasions.forEach(o => { if (o.toLowerCase().includes(term)) score += 30; });
+                item.colors.forEach(c => { if (c.toLowerCase().includes(term)) score += 25; });
+                if (item.description.toLowerCase().includes(term)) score += 15;
             });
 
             score += item.rating * 2;
@@ -464,33 +344,19 @@ class FlowerShopApp {
 
         const sortedResults = scoredResults
             .sort((a, b) => b.score - a.score)
-            .map(result => result.item);
-
-        const categories = [...new Set(sortedResults.map(item => item.category))];
+            .map(r => r.item);
 
         return {
             items: sortedResults,
             query,
             count: sortedResults.length,
-            categories
+            categories: [...new Set(sortedResults.map(i => i.category))]
         };
-    }
-
-    private searchByCategory(category: string): void {
-        const { searchInput } = this.searchElements;
-        
-        if (searchInput) {
-            searchInput.value = category.charAt(0).toUpperCase() + category.slice(1) + ' flowers';
-        }
-        
-        const categoryFilter = category as 'wedding' | 'birthday' | 'romantic' | 'sympathy' | 'corporate' | 'seasonal';
-        this.performSearch('', { category: categoryFilter });
     }
 
     private showLoadingState(): void {
         const { searchResults } = this.searchElements;
         if (!searchResults) return;
-
         searchResults.innerHTML = `
             <div class="search-loading">
                 <div class="loading-spinner"></div>
@@ -511,18 +377,18 @@ class FlowerShopApp {
                     <div class="no-results-icon">🌸</div>
                     <h3>No flowers found</h3>
                     <p>We couldn't find any flowers matching "${query}"</p>
-                    <p><small>Try searching for "roses", "wedding", "birthday", or browse our categories above</small></p>
+                    <p><small>Try searching for "roses", "wedding", or browse our categories above</small></p>
                 </div>
             `;
             return;
         }
 
-        const resultsHeader = query ? 
-            `Found ${count} beautiful arrangement${count !== 1 ? 's' : ''} for "${query}"` :
-            `${count} arrangement${count !== 1 ? 's' : ''} in this category`;
+        const resultsHeader = query
+            ? `Found ${count} beautiful arrangement${count !== 1 ? 's' : ''} for "${query}"`
+            : `${count} arrangement${count !== 1 ? 's' : ''} in this category`;
 
         const resultsHTML = items.slice(0, 8).map((item: FlowerItem) => `
-            <div class="search-result-item" data-flower-id="${item.id}">
+            <a href="shop.html?q=${encodeURIComponent(item.name)}" class="search-result-item" style="text-decoration:none;color:inherit;">
                 <div class="result-image">${item.imageIcon}</div>
                 <div class="result-details">
                     <div class="result-name">${item.name}</div>
@@ -533,95 +399,64 @@ class FlowerShopApp {
                         ${!item.inStock ? '<span style="color: #999; font-size: 0.8rem;">Out of Stock</span>' : ''}
                     </div>
                 </div>
-            </div>
+            </a>
         `).join('');
 
         searchResults.innerHTML = `
             <div class="results-header">${resultsHeader}</div>
             ${resultsHTML}
         `;
-
-        // Add click listeners to result items
-        searchResults.querySelectorAll('.search-result-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                const flowerId = (e.currentTarget as HTMLElement).getAttribute('data-flower-id');
-                if (flowerId) {
-                    this.selectFlower(flowerId);
-                }
-            });
-        });
     }
 
+    // ✅ FIX: Navigate to shop page instead of showing alert
     public selectFlower(flowerId: string): void {
         const selectedFlower = this.flowerData.find(flower => flower.id === flowerId);
         if (selectedFlower) {
-            const stockStatus = selectedFlower.inStock ? 'In Stock' : 'Out of Stock';
-            const message = `${selectedFlower.name}\n${selectedFlower.priceDisplay} - ${stockStatus}\n\n${selectedFlower.description}\n\nThis would normally redirect to the product page.`;
-            alert(message);
-            
-            if (selectedFlower.inStock) {
-                const addToCart = confirm('Would you like to add this item to your cart?');
-                if (addToCart) {
-                    this.addFlowerToCart(selectedFlower);
-                }
-            }
-            
             this.closeSearchModal();
+            window.location.href = `shop.html?q=${encodeURIComponent(selectedFlower.name)}`;
         }
     }
 
     private setupCartFunctionality(): void {
         const cartIcon = document.querySelector<HTMLElement>('.cart-icon');
-        const shopButtons = document.querySelectorAll<HTMLButtonElement>('.btn-primary');
-        
-        shopButtons.forEach((button: HTMLButtonElement) => {
-            if (button.textContent?.includes('SHOP')) {
-                button.addEventListener('click', () => this.addToCart(button));
-            }
-        });
 
-        if (cartIcon) {
-            cartIcon.addEventListener('click', () => this.handleCartClick());
+        // Hero "SHOP" buttons — now <a> tags in HTML, no JS needed
+
+        // ✅ FIX: Cart icon navigates to cart page (already an <a> tag now)
+        // Only add click handler if it's a <button>, not an <a>
+        if (cartIcon && cartIcon.tagName === 'BUTTON') {
+            cartIcon.addEventListener('click', () => {
+                window.location.href = 'cart.html';
+            });
         }
     }
 
-    private addToCart(button: HTMLButtonElement): void {
-        this.cartState.count++;
-        this.updateCartCount();
-        
-        const originalText = button.textContent || '';
-        button.textContent = 'ADDED!';
-        button.style.backgroundColor = '#5a8a3a';
-        
-        setTimeout(() => {
-            button.textContent = originalText;
-            button.style.backgroundColor = '#8b7355';
-        }, 1000);
+    // ✅ FIX: Removed alert, just navigate
+    private handleCartClick(): void {
+        window.location.href = 'cart.html';
     }
 
     private updateCartCount(): void {
         const cartCountElement = document.querySelector<HTMLElement>('.cart-count');
         if (cartCountElement) {
-            cartCountElement.textContent = this.cartState.count.toString();
-            cartCountElement.style.display = this.cartState.count > 0 ? 'block' : 'none';
-        }
-    }
-
-    private handleCartClick(): void {
-        const { count } = this.cartState;
-        
-        if (count === 0) {
-            alert('Your cart is empty!\nBrowse our beautiful flowers to add items.');
-        } else {
-            alert(`You have ${count} item${count !== 1 ? 's' : ''} in your cart.\nThis would normally open the cart page.`);
+            // Read from localStorage if available (sync with the real cart)
+            try {
+                const cart = JSON.parse(localStorage.getItem('vf_cart_v1') || '[]');
+                const total = cart.reduce((s: number, ci: any) => s + (ci.qty || 0), 0);
+                cartCountElement.textContent = String(total);
+                cartCountElement.style.display = total > 0 ? 'block' : 'none';
+            } catch {
+                cartCountElement.textContent = this.cartState.count.toString();
+                cartCountElement.style.display = this.cartState.count > 0 ? 'block' : 'none';
+            }
         }
     }
 
     private setupFormHandling(): void {
         const contactForm = document.getElementById('contactForm') as HTMLFormElement | null;
-        
         if (contactForm) {
-            contactForm.addEventListener('submit', (_e: Event) => {
+            contactForm.addEventListener('submit', (e: Event) => {
+                e.preventDefault();
                 this.handleFormSubmission(contactForm);
             });
         }
@@ -632,17 +467,17 @@ class FlowerShopApp {
         if (!submitButton) return;
 
         const originalText = submitButton.textContent || '';
-        
+
         submitButton.innerHTML = '<span class="loading"></span> Sending...';
         submitButton.disabled = true;
-        
+
         await new Promise(resolve => setTimeout(resolve, 1500));
-        
+
         submitButton.innerHTML = '✓ Message Sent!';
         submitButton.style.backgroundColor = '#5a8a3a';
-        
+
         form.reset();
-        
+
         setTimeout(() => {
             submitButton.textContent = originalText;
             submitButton.style.backgroundColor = '#8b7355';
@@ -650,26 +485,8 @@ class FlowerShopApp {
         }, 2000);
     }
 
-    private setupNavigationEnhancements(): void {
-        const galleryItems = document.querySelectorAll<HTMLElement>('.gallery-item');
-        galleryItems.forEach((item: HTMLElement) => {
-            item.addEventListener('click', () => {
-                const title = item.querySelector('.placeholder-image')?.textContent || 'Unknown';
-                alert(`You clicked on: ${title}\nThis would normally open a larger view or gallery page.`);
-            });
-        });
-
-        const serviceCards = document.querySelectorAll<HTMLElement>('.service-card');
-        serviceCards.forEach((card: HTMLElement) => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-    }
+    // ✅ FIX: Gallery items are now <a> tags — no JS click handlers needed
+    // ✅ FIX: Service card hover is handled via CSS transitions, not inline JS
 
     private setupDropdownMenu(): void {
         const dropdownContainer = document.querySelector<HTMLElement>('.dropdown-container');
@@ -677,9 +494,7 @@ class FlowerShopApp {
 
         if (dropdownContainer && dropdownMenu) {
             dropdownContainer.addEventListener('mouseenter', () => {
-                if (this.dropdownTimeout) {
-                    clearTimeout(this.dropdownTimeout);
-                }
+                if (this.dropdownTimeout) clearTimeout(this.dropdownTimeout);
                 dropdownMenu.style.display = 'block';
             });
 
@@ -689,12 +504,15 @@ class FlowerShopApp {
                 }, 100);
             });
 
-            const dropdownItems = document.querySelectorAll<HTMLAnchorElement>('.dropdown-item');
-            dropdownItems.forEach((item: HTMLAnchorElement) => {
-                item.addEventListener('click', (_e: Event) => {
-                    const category = item.textContent || '';
-                    alert(`You clicked on: ${category}\nThis would normally show the ${category.toLowerCase()} category page.`);
-                });
+            // ✅ FIX: Dropdown items navigate to shop with category filter
+            document.querySelectorAll<HTMLAnchorElement>('.dropdown-item').forEach(item => {
+                if (!item.href || item.href === '#') {
+                    item.addEventListener('click', (e: Event) => {
+                        e.preventDefault();
+                        const category = item.textContent?.trim().toLowerCase() || '';
+                        window.location.href = `shop.html?category=${encodeURIComponent(category)}`;
+                    });
+                }
             });
         }
     }
@@ -705,8 +523,8 @@ class FlowerShopApp {
             rootMargin: '0px 0px -50px 0px'
         };
 
-        const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-            entries.forEach((entry: IntersectionObserverEntry) => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in-on-scroll');
                     observer.unobserve(entry.target);
@@ -714,8 +532,7 @@ class FlowerShopApp {
             });
         }, observerOptions);
 
-        const elementsToObserve = document.querySelectorAll<HTMLElement>('.service-card, .gallery-item, .section-title');
-        elementsToObserve.forEach((el: HTMLElement) => {
+        document.querySelectorAll<HTMLElement>('.service-card, .gallery-item, .section-title').forEach(el => {
             observer.observe(el);
         });
     }
@@ -724,45 +541,29 @@ class FlowerShopApp {
         const element = document.querySelector(target) as HTMLElement | null;
         if (element) {
             const offsetTop = element.offsetTop - 100;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         }
     }
 
     private handleResize(): void {
         const navLeft = document.querySelector<HTMLElement>('.nav-left');
         if (!navLeft) return;
-
-        if (window.innerWidth <= 768) {
-            navLeft.style.display = 'none';
-        } else {
-            navLeft.style.display = 'flex';
-        }
+        navLeft.style.display = window.innerWidth <= 768 ? 'none' : 'flex';
     }
 
     private handleScroll(): void {
         const scrolled = window.pageYOffset;
         const heroImage = document.querySelector<HTMLElement>('.hero-image');
-        
         if (heroImage && scrolled < window.innerHeight) {
-            const rate = scrolled * -0.5;
-            heroImage.style.transform = `translateY(${rate}px)`;
+            heroImage.style.transform = `translateY(${scrolled * -0.5}px)`;
         }
     }
 
-    public getCartState(): CartState {
-        return { ...this.cartState };
-    }
-
+    // ✅ FIX: Removed alert from addFlowerToCart
     public addFlowerToCart(flower: FlowerItem): void {
         this.cartState.items.push(flower);
         this.cartState.count++;
         this.updateCartCount();
-        
-        const message = `✅ ${flower.name} added to cart!\nTotal items: ${this.cartState.count}`;
-        alert(message);
     }
 
     public searchFlowers(query: string, filters?: SearchFilters): SearchResult {
@@ -778,14 +579,12 @@ class FlowerShopApp {
     }
 }
 
-// Initialize the application when DOM is loaded
+// Initialize
 let flowerShopApp: FlowerShopApp;
 
 document.addEventListener('DOMContentLoaded', () => {
     flowerShopApp = new FlowerShopApp();
-    // Make flowerShopApp available globally for HTML onclick handlers
     (window as any).flowerShopApp = flowerShopApp;
 });
 
-// Export for potential module usage
 export { FlowerShopApp, FlowerItem, CartState, SearchResult };

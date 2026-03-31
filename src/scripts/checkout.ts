@@ -1,15 +1,13 @@
-// src/scripts/checkout.ts
-// Handles the checkout page: loads cart items, renders order summary,
-// validates the form, and submits the order to Supabase via createOrder().
+// src/scripts/checkout.ts — FIXED VERSION
+// ✅ Replaced alert() on order failure with inline error banner
 
 import { fetchProductById, createOrder } from "./db";
 import { loadCart, saveCart } from "./cart";
 import { formatPrice } from "./utils";
 
-const FREE_DELIVERY_THRESHOLD_CENTS = 5000; // $50
-const DELIVERY_FEE_CENTS            = 1500; // $15
+const FREE_DELIVERY_THRESHOLD_CENTS = 5000;
+const DELIVERY_FEE_CENTS            = 1500;
 
-/* ─── Helpers ─── */
 function $(id: string) { return document.getElementById(id) as HTMLElement; }
 function inp(id: string) { return document.getElementById(id) as HTMLInputElement; }
 function fmt(cents: number) { return formatPrice(cents / 100); }
@@ -19,7 +17,6 @@ function initDeliveryDate() {
   const el = inp("delivery-date");
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  // FIX: split()[0] is string|undefined — use nullish coalescing
   el.min = today.toISOString().split("T")[0] ?? "";
   if (!el.value) el.value = el.min;
 }
@@ -51,7 +48,7 @@ type EnrichedLine = {
   name: string;
   variantName: string;
   image: string;
-  priceCents: number;   // per unit
+  priceCents: number;
   qty: number;
   productId: string;
   variantCode: string;
@@ -101,7 +98,6 @@ function renderSummary(lines: EnrichedLine[]) {
   const delivery  = (isFree || isPickup) ? 0 : DELIVERY_FEE_CENTS;
   const total     = subtotal + delivery;
 
-  // Line items
   const itemsEl = $("summary-items");
   itemsEl.innerHTML = lines.map(l => `
     <div class="summary-line">
@@ -118,16 +114,13 @@ function renderSummary(lines: EnrichedLine[]) {
     </div>
   `).join("");
 
-  // Totals
   $("co-subtotal").textContent  = fmt(subtotal);
   $("co-delivery").textContent  = (isFree || isPickup) ? "FREE" : fmt(delivery);
   $("co-total").textContent     = fmt(total);
 
-  // Show summary
   $("summary-loading").style.display = "none";
   $("summary-body").style.display    = "block";
 
-  // Enable place-order button
   const placeBtn = $("btn-place-order") as HTMLButtonElement;
   placeBtn.disabled = false;
 
@@ -151,7 +144,7 @@ function validate(): boolean {
   const results = [
     validateField("field-name",  "name",  v => v.length >= 2),
     validateField("field-phone", "phone", v => /^[\d\s\+\-\(\)]{8,}$/.test(v)),
-    validateField("field-delivery-date", "delivery-date", v => !!v),
+    validateField("field-delivery-date", "delivery-date", v => !!(v)),
   ];
 
   if (!isPickupMode()) {
@@ -162,12 +155,54 @@ function validate(): boolean {
   return results.every(Boolean);
 }
 
+/* ─── Inline error banner (replaces alert) ─── */
+function showOrderError(message: string) {
+  // Remove existing error banner if any
+  const existing = document.getElementById("order-error-banner");
+  if (existing) existing.remove();
+
+  const banner = document.createElement("div");
+  banner.id = "order-error-banner";
+  banner.style.cssText = `
+    background: #fff5f5;
+    border: 1px solid #f0c0c0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    animation: fadeSlideIn 0.3s ease;
+  `;
+  banner.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e05252" stroke-width="2" style="flex-shrink:0;margin-top:2px;">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <div>
+      <div style="font-weight:700;color:#c53030;font-size:0.9rem;margin-bottom:4px;">Order could not be placed</div>
+      <div style="color:#9b2c2c;font-size:0.85rem;line-height:1.5;">${message}</div>
+    </div>
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:1.2rem;margin-left:auto;padding:0;" aria-label="Dismiss">✕</button>
+  `;
+
+  // Insert before the checkout form
+  const formPanel = document.querySelector(".checkout-form-panel");
+  if (formPanel && formPanel.parentElement) {
+    formPanel.parentElement.insertBefore(banner, formPanel);
+    banner.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
 /* ─── Submit ─── */
 async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; delivery: number; total: number }) {
   if (!validate()) return;
 
+  // Clear any previous error
+  const existing = document.getElementById("order-error-banner");
+  if (existing) existing.remove();
+
   const btn = $("btn-place-order") as HTMLButtonElement;
-  btn.disabled  = true;
+  btn.disabled    = true;
   btn.textContent = "Placing order…";
   btn.classList.add("loading");
 
@@ -177,7 +212,9 @@ async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; d
     ? ["Pickup"]
     : [inp("address").value, inp("suburb").value, inp("postcode").value].filter(Boolean).join(", ");
 
-  const deliveryTime = (document.getElementById("delivery-time") as HTMLSelectElement).value;
+  const deliveryTimeEl = document.getElementById("delivery-time") as HTMLSelectElement | null;
+  const deliveryTime = deliveryTimeEl?.value || "";
+
   const notes = [
     inp("notes").value,
     deliveryTime ? `Preferred time: ${deliveryTime}` : "",
@@ -189,7 +226,6 @@ async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; d
     variant_code: l.variantCode,
     qty:          l.qty,
     line_cents:   l.lineCents,
-    // add_on_ids: l.addOnIds.map(Number).filter(Boolean),  // uncomment when IDs are numeric
   }));
 
   try {
@@ -202,10 +238,7 @@ async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; d
       items,
     });
 
-    // Clear cart
     saveCart([]);
-
-    // Redirect to confirmation
     window.location.href = `order-confirmation.html?id=${orderId}`;
 
   } catch (err: any) {
@@ -213,7 +246,11 @@ async function handleSubmit(lines: EnrichedLine[], totals: { subtotal: number; d
     btn.disabled    = false;
     btn.textContent = "Place Order";
     btn.classList.remove("loading");
-    alert("Something went wrong placing your order. Please try again or call us directly.");
+
+    // ✅ FIX: Show inline error instead of alert()
+    showOrderError(
+      "Something went wrong placing your order. Please try again, or call us directly at <strong>(02) 9123-4567</strong>."
+    );
   }
 }
 
@@ -234,17 +271,13 @@ async function main() {
   $("checkout-main").style.display  = "grid";
 
   const lines = await enrichCart();
-  // FIX: don't store totals — renderSummary is called fresh on each submit/toggle
   renderSummary(lines);
 
-  // Re-render delivery cost when pickup/delivery toggled
   $("btn-delivery").addEventListener("click", () => renderSummary(lines));
   $("btn-pickup").addEventListener("click",   () => renderSummary(lines));
 
-  // Submit — pass fresh totals at click time
   $("btn-place-order").addEventListener("click", () => handleSubmit(lines, renderSummary(lines)));
 
-  // Live validation on blur
   ["name", "phone", "delivery-date", "address", "suburb"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("blur", () => validate());

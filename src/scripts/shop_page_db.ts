@@ -1,5 +1,5 @@
-// src/scripts/shop_page_db.ts  — REPLACE EXISTING FILE
-// Updated renderGrid to match revamped card HTML structure.
+// src/scripts/shop_page_db.ts — FIXED VERSION
+// ✅ Reads URL params: ?category=, ?material=, ?q= to pre-filter on page load
 
 import { fetchCatalog } from "./db";
 import { qs, qsa } from "./utils";
@@ -66,16 +66,35 @@ async function main() {
 
   const all = await fetchCatalog();
 
+  // ✅ FIX: Read URL params to pre-filter
+  const params = new URLSearchParams(window.location.search);
+  const urlCategory = params.get("category") || "all";
+  const urlMaterial = params.get("material") || "all";
+  const urlSearch   = params.get("q") || "";
+
   const categorySel = qs<HTMLSelectElement>("#categorySelect");
   if (categorySel) {
     const cats = [...new Set(all.flatMap((p: any) => p.categories))].filter(Boolean).sort() as string[];
     categorySel.innerHTML = `<option value="all">All Categories</option>` +
-      cats.map(c => `<option value="${c}">${(c as string).charAt(0).toUpperCase() + (c as string).slice(1)}</option>`).join("");
+      cats.map(c => `<option value="${c}"${c === urlCategory ? " selected" : ""}>${(c as string).charAt(0).toUpperCase() + (c as string).slice(1)}</option>`).join("");
   }
 
-  let material: MaterialFilter = "all";
-  let category = "all";
-  let q = "";
+  let material: MaterialFilter = (urlMaterial === "fresh" || urlMaterial === "artificial") ? urlMaterial : "all";
+  let category = urlCategory;
+  let q = urlSearch.toLowerCase();
+
+  // Pre-set the search input
+  const searchInput = qs<HTMLInputElement>("#searchInput");
+  if (searchInput && urlSearch) {
+    searchInput.value = urlSearch;
+  }
+
+  // Pre-set the material pill
+  if (material !== "all") {
+    qsa<HTMLButtonElement>(".material-pill").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset["material"] === material);
+    });
+  }
 
   const apply = () => {
     const list = all.filter((p: any) => {
@@ -97,7 +116,7 @@ async function main() {
 
   categorySel?.addEventListener("change", () => { category = categorySel.value || "all"; apply(); });
 
-  qs<HTMLInputElement>("#searchInput")?.addEventListener("input", e => {
+  searchInput?.addEventListener("input", e => {
     q = (e.currentTarget as HTMLInputElement).value.trim().toLowerCase();
     apply();
   });
