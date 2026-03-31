@@ -38,8 +38,19 @@ function renderGrid(list: any[]) {
     return `
       <div class="product-card" data-product-id="${p.id}">
         <div class="product-image">
-          ${img ? `<img loading="lazy" src="${img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ""}
-          <div class="product-image-placeholder" ${img ? 'style="display:none"' : ""}>🌹</div>
+          ${img ? `<img loading="lazy" src="${img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.removeProperty('display')">` : ""}
+          <div class="product-image-placeholder" ${img ? 'style="display:none"' : ""}>
+            <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.35">
+              <ellipse cx="32" cy="20" rx="8" ry="12" fill="#c8a882" transform="rotate(0 32 32)"/>
+              <ellipse cx="32" cy="20" rx="8" ry="12" fill="#c8a882" transform="rotate(60 32 32)"/>
+              <ellipse cx="32" cy="20" rx="8" ry="12" fill="#c8a882" transform="rotate(120 32 32)"/>
+              <ellipse cx="32" cy="20" rx="8" ry="12" fill="#c8a882" transform="rotate(180 32 32)"/>
+              <ellipse cx="32" cy="20" rx="8" ry="12" fill="#c8a882" transform="rotate(240 32 32)"/>
+              <ellipse cx="32" cy="20" rx="8" ry="12" fill="#c8a882" transform="rotate(300 32 32)"/>
+              <circle cx="32" cy="32" r="7" fill="#e8c9a0"/>
+            </svg>
+            <span>Photo coming soon</span>
+          </div>
           <div class="product-overlay">
             <a href="product-details.html?id=${p.id}" class="quick-view-btn">View Details</a>
           </div>

@@ -374,6 +374,31 @@
         text-decoration: none;
         display: block;
     }
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-item .gallery-caption {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 45%, rgba(30,26,23,0.55) 100%);
+        display: flex;
+        align-items: flex-end;
+        padding: 28px;
+        transition: opacity 0.4s ease;
+    }
+    .gallery-item .gallery-caption span {
+        color: #fff;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    /* Keep placeholder style as fallback */
     .gallery-item .placeholder-image {
         width: 100%;
         height: 100%;
@@ -412,7 +437,127 @@
         .hero-content h2 { font-size: 2.2rem; }
     }
 
-    /* ── Contact ── */
+    /* ── Gallery CTA tile ── */
+    .gallery-item--cta {
+        background: linear-gradient(135deg, #2b241e 0%, #3d3228 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .gallery-item--cta:hover { opacity: 0.9; }
+    .gallery-cta {
+        text-align: center;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    .gallery-cta-sub {
+        font-size: 0.72rem;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #c8a882;
+        font-family: 'Georgia', serif;
+    }
+    .gallery-cta-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #f5f0e8;
+        line-height: 1.3;
+    }
+    .gallery-cta-arrow {
+        font-size: 1.4rem;
+        color: #c8a882;
+        transition: transform 0.3s ease;
+    }
+    .gallery-item--cta:hover .gallery-cta-arrow { transform: translateX(6px); }
+
+    /* ── Customer Love ── */
+    .customer-love {
+        padding: 100px 0;
+        background: #fff;
+    }
+    .customer-love-eyebrow {
+        text-align: center;
+        font-size: 0.72rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #c8a882;
+        font-family: 'Georgia', serif;
+        margin-bottom: 12px;
+    }
+    .customer-love .section-title {
+        font-family: 'Playfair Display', serif;
+        color: #1e1a17;
+        margin-bottom: 60px;
+    }
+    .customer-love-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    .customer-photo-wrap {
+        border-radius: 24px;
+        overflow: hidden;
+        aspect-ratio: 3/4;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+    }
+    .customer-photo-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        display: block;
+        transition: transform 0.6s ease;
+    }
+    .customer-photo-wrap:hover img { transform: scale(1.03); }
+    .customer-love-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    .quote-mark { margin-bottom: 20px; flex-shrink: 0; }
+    .customer-love-text blockquote {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        font-style: italic;
+        color: #2b2420;
+        line-height: 1.75;
+        margin: 0 0 28px 0;
+        padding: 0;
+        border: none;
+    }
+    .customer-love-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .customer-stars {
+        color: #c8a882;
+        font-size: 1.1rem;
+        letter-spacing: 3px;
+    }
+    .customer-name {
+        font-size: 0.88rem;
+        color: #888;
+        font-family: 'Georgia', serif;
+    }
+    @media (max-width: 760px) {
+        .customer-love-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+        .customer-photo-wrap { aspect-ratio: 4/3; }
+    }
+
+    
     .contact { padding: 100px 0; background: #fff; }
     .contact .section-title {
         font-family: 'Playfair Display', serif;
@@ -616,35 +761,58 @@
             <h2 class="section-title">Our Creations</h2>
             <div class="gallery-grid">
                 <a href="shop.html?category=seasonal" class="gallery-item">
-                    <div class="placeholder-image" style="background:linear-gradient(135deg, #f0d8c8, #e0b8a8);">
-                        <span>Spring Collection</span>
-                    </div>
+                    <img src="images/gallery/bouquet-pink-tulip.jpg" alt="Spring Collection — pink tulip and dahlia bouquet" loading="lazy">
+                    <div class="gallery-caption"><span>Spring Collection</span></div>
                 </a>
                 <a href="shop.html?category=wedding" class="gallery-item">
-                    <div class="placeholder-image" style="background:linear-gradient(135deg, #f5ede4, #e8ddd4);">
-                        <span>Wedding Bouquets</span>
-                    </div>
-                </a>
-                <a href="shop.html?category=corporate" class="gallery-item">
-                    <div class="placeholder-image" style="background:linear-gradient(135deg, #e4dcd0, #d4c8b4);">
-                        <span>Corporate</span>
-                    </div>
+                    <img src="images/gallery/bouquet-white.jpg" alt="Wedding Bouquets — elegant white floral arrangement" loading="lazy">
+                    <div class="gallery-caption"><span>Wedding Bouquets</span></div>
                 </a>
                 <a href="shop.html?category=birthday" class="gallery-item">
-                    <div class="placeholder-image" style="background:linear-gradient(135deg, #f8e4d8, #f0c8b4);">
-                        <span>Birthday Specials</span>
-                    </div>
-                </a>
-                <a href="shop.html?category=seasonal" class="gallery-item">
-                    <div class="placeholder-image" style="background:linear-gradient(135deg, #e8e0d0, #d8ccb8);">
-                        <span>Seasonal Flowers</span>
-                    </div>
+                    <img src="images/gallery/bouquet-pink-roses.jpg" alt="Gift Bouquets — blush pink roses and dahlias" loading="lazy">
+                    <div class="gallery-caption"><span>Gift Bouquets</span></div>
                 </a>
                 <a href="shop.html" class="gallery-item">
-                    <div class="placeholder-image" style="background:linear-gradient(135deg, #efe4d8, #dfd0c0);">
-                        <span>Custom Designs</span>
+                    <img src="images/gallery/bouquet-workshop.jpg" alt="Custom Designs — fresh arrangement being crafted in studio" loading="lazy">
+                    <div class="gallery-caption"><span>Custom Designs</span></div>
+                </a>
+                <a href="shop.html" class="gallery-item">
+                    <img src="images/gallery/flowers-market.jpg" alt="Fresh Flowers — premium roses sourced from market" loading="lazy">
+                    <div class="gallery-caption"><span>Fresh Flowers</span></div>
+                </a>
+                <a href="shop.html" class="gallery-item gallery-item--cta">
+                    <div class="gallery-cta">
+                        <span class="gallery-cta-sub">Ready to order?</span>
+                        <span class="gallery-cta-title">Shop the full collection</span>
+                        <span class="gallery-cta-arrow">→</span>
                     </div>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ Customer Love ══ -->
+    <section class="customer-love">
+        <div class="container">
+            <p class="customer-love-eyebrow">Real Moments</p>
+            <h2 class="section-title">Loved by Sydney</h2>
+            <div class="customer-love-grid">
+                <div class="customer-photo-wrap">
+                    <img src="images/gallery/customer-Leidine.jpg" alt="Happy customer with a large pink and red bouquet from Vaniaflorsit" loading="lazy">
+                </div>
+                <div class="customer-love-text">
+                    <svg class="quote-mark" width="48" height="36" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 36V22.5C0 15.9 2.1 10.5 6.3 6.3C10.5 2.1 16.2 0 23.4 0V6C19.8 6 16.95 7.05 14.85 9.15C12.75 11.25 11.7 14.1 11.7 17.7H21.6V36H0ZM26.4 36V22.5C26.4 15.9 28.5 10.5 32.7 6.3C36.9 2.1 42.6 0 49.8 0V6C46.2 6 43.35 7.05 41.25 9.15C39.15 11.25 38.1 14.1 38.1 17.7H48V36H26.4Z" fill="#e8ddd0"/>
+                    </svg>
+                    <blockquote>
+                        Absolutely stunning. I couldn't believe how beautiful the bouquet was — it was even better in person. Will definitely be ordering again for every special occasion.
+                    </blockquote>
+                    <div class="customer-love-meta">
+                        <div class="customer-stars">★★★★★</div>
+                        <span class="customer-name">— Leidine, Sydney</span>
+                    </div>
+                    <a href="shop.html" class="learn-more-btn" style="margin-top:32px; display:inline-block;">SHOP NOW</a>
+                </div>
             </div>
         </div>
     </section>
@@ -658,7 +826,7 @@
                     <h3>Visit Our Shop</h3>
                     <p><strong>Address:</strong> 123 Garden Street, Floral District, Sydney NSW 2000</p>
                     <p><strong>Phone:</strong> (02) 9123-4567</p>
-                    <p><strong>Email:</strong> hello@vaniaflorsit.com.au</p>
+                    <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95fdf0f9f9fad5e3f4fbfcf4f3f9fae7e6fce1bbf6faf8bbf4e0">[email&#160;protected]</a></p>
                     <p><strong>Hours:</strong> Mon–Sat 9 AM – 7 PM, Sun 10 AM – 5 PM</p>
                 </div>
                 <form class="contact-form" id="contactForm">
@@ -704,7 +872,4 @@
         </div>
     </footer>
 
-    <script type="module" src="src/script.ts"></script>
-    <script>document.getElementById('footer-year').textContent=new Date().getFullYear();</script>
-</body>
-</html>
+    <script data-cfasync="false" src="/cdn-c
