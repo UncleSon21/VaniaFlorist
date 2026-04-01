@@ -31,10 +31,7 @@
         padding-top: 10vh;
         overflow-y: auto;
     }
-    .search-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
+    .search-overlay.active { opacity: 1; visibility: visible; }
     .search-overlay .search-content {
         background: #fff;
         width: 92%;
@@ -48,175 +45,47 @@
         position: relative;
         margin-bottom: 10vh;
     }
-    .search-overlay.active .search-content {
-        transform: translateY(0) scale(1);
-    }
+    .search-overlay.active .search-content { transform: translateY(0) scale(1); }
 
-    /* Close button */
     .search-overlay .search-close {
-        position: absolute;
-        top: 20px;
-        right: 24px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: none;
-        background: #faf8f5;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #8b7355;
-        transition: all 0.25s ease;
-        z-index: 2;
+        position: absolute; top: 20px; right: 24px;
+        width: 40px; height: 40px; border-radius: 50%; border: none;
+        background: #faf8f5; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        color: #8b7355; transition: all 0.25s ease; z-index: 2;
     }
-    .search-overlay .search-close:hover {
-        background: #8b7355;
-        color: #fff;
-        transform: rotate(90deg);
-    }
+    .search-overlay .search-close:hover { background: #8b7355; color: #fff; transform: rotate(90deg); }
 
-    /* Search header */
-    .search-header {
-        padding: 48px 40px 0;
-        text-align: center;
-    }
-    .search-header h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.6rem;
-        font-weight: 600;
-        color: #1e1a17;
-        margin-bottom: 6px;
-        letter-spacing: -0.3px;
-    }
-    .search-header p {
-        font-size: 0.88rem;
-        color: #bbb;
-        margin-bottom: 28px;
-    }
+    .search-header { padding: 48px 40px 0; text-align: center; }
+    .search-header h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 600; color: #1e1a17; margin-bottom: 6px; letter-spacing: -0.3px; }
+    .search-header p { font-size: 0.88rem; color: #bbb; margin-bottom: 28px; }
 
-    /* Search input */
-    .search-input-wrap {
-        position: relative;
-        margin: 0 40px;
-    }
-    .search-input-wrap > svg {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #c8b89a;
-        pointer-events: none;
-    }
-    .search-input-wrap input {
-        width: 100%;
-        padding: 18px 56px 18px 52px;
-        font-size: 1.05rem;
-        border: 2px solid #f0e8dd;
-        border-radius: 14px;
-        font-family: 'Georgia', serif;
-        outline: none;
-        background: #faf8f5;
-        color: #2b2b2b;
-        transition: all 0.3s ease;
-    }
+    .search-input-wrap { position: relative; margin: 0 40px; }
+    .search-input-wrap > svg { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #c8b89a; pointer-events: none; }
+    .search-input-wrap input { width: 100%; padding: 18px 56px 18px 52px; font-size: 1.05rem; border: 2px solid #f0e8dd; border-radius: 14px; font-family: 'Georgia', serif; outline: none; background: #faf8f5; color: #2b2b2b; transition: all 0.3s ease; }
     .search-input-wrap input::placeholder { color: #c8b89a; }
-    .search-input-wrap input:focus {
-        border-color: #8b7355;
-        background: #fff;
-        box-shadow: 0 0 0 4px rgba(139,115,85,0.08);
-    }
-    .search-input-wrap .search-submit-btn {
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: #8b7355;
-        border: none;
-        padding: 10px 12px;
-        border-radius: 10px;
-        color: white;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
+    .search-input-wrap input:focus { border-color: #8b7355; background: #fff; box-shadow: 0 0 0 4px rgba(139,115,85,0.08); }
+    .search-input-wrap .search-submit-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: #8b7355; border: none; padding: 10px 12px; border-radius: 10px; color: white; cursor: pointer; transition: all 0.2s ease; }
     .search-input-wrap .search-submit-btn:hover { background: #6d5a44; }
 
-    /* Category grid */
     .search-cats { padding: 32px 40px 0; }
-    .search-cats h4 {
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #c8a882;
-        margin-bottom: 16px;
-    }
-    .search-cat-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-    }
-    .search-cat-card {
-        background: #faf8f5;
-        border: 1.5px solid #f0e8dd;
-        border-radius: 14px;
-        padding: 20px 14px 16px;
-        text-align: center;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        overflow: hidden;
-    }
-    .search-cat-card:hover {
-        border-color: #8b7355;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(139,115,85,0.10);
-    }
+    .search-cats h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #c8a882; margin-bottom: 16px; }
+    .search-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .search-cat-card { background: #faf8f5; border: 1.5px solid #f0e8dd; border-radius: 14px; padding: 20px 14px 16px; text-align: center; text-decoration: none; transition: all 0.3s ease; overflow: hidden; }
+    .search-cat-card:hover { border-color: #8b7355; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(139,115,85,0.10); }
     .search-cat-card .cat-emoji { font-size: 1.8rem; display: block; margin-bottom: 8px; }
     .search-cat-card .cat-name { font-size: 0.88rem; font-weight: 700; color: #1e1a17; display: block; margin-bottom: 3px; }
     .search-cat-card .cat-sub { font-size: 0.75rem; color: #bbb; line-height: 1.3; }
 
-    /* Popular tags */
     .search-tags { padding: 28px 40px 36px; }
-    .search-tags h4 {
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #c8a882;
-        margin-bottom: 14px;
-    }
+    .search-tags h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #c8a882; margin-bottom: 14px; }
     .search-tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
-    .search-tag {
-        padding: 8px 18px;
-        border-radius: 24px;
-        background: #f5f0e8;
-        border: 1.5px solid #e8ddd4;
-        color: #8b7355;
-        font-size: 0.82rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        font-family: 'Georgia', serif;
-    }
-    .search-tag:hover {
-        background: #8b7355;
-        border-color: #8b7355;
-        color: white;
-        transform: translateY(-1px);
-    }
+    .search-tag { padding: 8px 18px; border-radius: 24px; background: #f5f0e8; border: 1.5px solid #e8ddd4; color: #8b7355; font-size: 0.82rem; font-weight: 600; text-decoration: none; transition: all 0.2s ease; cursor: pointer; font-family: 'Georgia', serif; }
+    .search-tag:hover { background: #8b7355; border-color: #8b7355; color: white; transform: translateY(-1px); }
 
-    /* Search results */
-    .search-overlay .search-results {
-        max-height: 320px;
-        overflow-y: auto;
-        padding: 0 40px 36px;
-        border-top: 1px solid #f0e8dd;
-        margin: 24px 0 0;
-    }
+    .search-overlay .search-results { max-height: 320px; overflow-y: auto; padding: 0 40px 36px; border-top: 1px solid #f0e8dd; margin: 24px 0 0; }
     .search-overlay .search-results:empty { display: none; }
 
-    /* Responsive search */
     @media (max-width: 700px) {
         .search-overlay { padding-top: 4vh; }
         .search-header { padding: 36px 24px 0; }
@@ -228,357 +97,305 @@
     }
 
     /* ── Hero ── */
-    .hero { height: 85vh; min-height: 520px; max-height: 800px; }
-    .hero-content h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 4rem;
-        font-weight: 600;
-        color: #1e1a17;
-        line-height: 1.08;
-        margin-bottom: 16px;
-        letter-spacing: -1px;
+    .hero {
+        height: 85vh;
+        min-height: 520px;
+        max-height: 800px;
+        position: relative;
+        overflow: hidden;
     }
-    .hero-content p { font-size: 1.15rem; color: #6b5d54; max-width: 420px; }
-    .hero-buttons { margin-top: 28px; }
+    /* Hero content — absolutely centred on left side */
+    .hero-content {
+        position: absolute !important;
+        top: 50% !important;
+        left: clamp(32px, 6vw, 120px) !important;
+        transform: translateY(-50%) !important;
+        z-index: 2 !important;
+        max-width: 480px;
+    }
+    .hero-content h2 { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 600; color: #1e1a17; line-height: 1.08; margin-bottom: 0; letter-spacing: -1px; }
+    .hero-content > p { font-size: 1.05rem; color: #6b5d54; max-width: 400px; margin-bottom: 0; }
+    .hero-buttons { margin-top: 24px; }
     .hero-buttons .btn-primary,
-    .hero-buttons .btn-secondary {
-        display: inline-block;
-        text-decoration: none;
-        padding: 16px 36px;
-        font-size: 0.82rem;
-        letter-spacing: 1.5px;
-        border-radius: 6px;
-        font-family: 'Georgia', serif;
-        font-weight: 700;
-        transition: all 0.3s ease;
-    }
+    .hero-buttons .btn-secondary { display: inline-block; text-decoration: none; padding: 16px 36px; font-size: 0.82rem; letter-spacing: 1.5px; border-radius: 6px; font-family: 'Georgia', serif; font-weight: 700; transition: all 0.3s ease; }
     .hero-buttons .btn-primary { background: #8b7355; color: #fff; border: none; }
-    .hero-buttons .btn-primary:hover {
-        background: #6d5a44;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(139,115,85,0.3);
-    }
-    .hero-buttons .btn-secondary {
-        background: transparent;
+    .hero-buttons .btn-primary:hover { background: #6d5a44; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,115,85,0.3); }
+    .hero-buttons .btn-secondary { background: transparent; color: #8b7355; border: 2px solid #d4c5a0; }
+    .hero-buttons .btn-secondary:hover { border-color: #8b7355; background: rgba(139,115,85,0.04); }
+
+    /* ── Hero eyebrow ── */
+    .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        font-family: 'Georgia', serif;
+        font-size: 0.70rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
         color: #8b7355;
-        border: 2px solid #d4c5a0;
+        margin: 0 0 16px 0;
+        padding: 0;
     }
-    .hero-buttons .btn-secondary:hover {
-        border-color: #8b7355;
-        background: rgba(139,115,85,0.04);
+    .hero-eyebrow-dot {
+        width: 4px; height: 4px;
+        border-radius: 50%;
+        background: #c8a882;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    /* ── Hero divider ── */
+    .hero-divider {
+        display: block;
+        width: 48px;
+        height: 1.5px;
+        background: linear-gradient(90deg, #c8a882 0%, transparent 100%);
+        border: none;
+        margin: 16px 0 16px 0;
+    }
+
+    /* ── Hero trust line ── */
+    .hero-trust {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        font-family: 'Georgia', serif;
+        font-size: 0.68rem;
+        letter-spacing: 1.2px;
+        color: #a89880;
+        flex-wrap: wrap;
+        line-height: 1;
+    }
+    .hero-trust-dot {
+        font-size: 0.38rem;
+        color: #c8a882;
+        line-height: 1;
+    }
+
+    /* ── Hero review snippet ── */
+    .hero-review {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid #ede5d8;
+    }
+    .hero-review-stars {
+        color: #c8a882;
+        font-size: 0.72rem;
+        letter-spacing: 2.5px;
+        flex-shrink: 0;
+        line-height: 1;
+    }
+    .hero-review-sep {
+        width: 1px;
+        height: 24px;
+        background: #ddd5c8;
+        flex-shrink: 0;
+    }
+    .hero-review-text {
+        font-family: 'Playfair Display', serif;
+        font-size: 0.80rem;
+        font-style: italic;
+        color: #7a6a5a;
+        line-height: 1.5;
+    }
+
+    /* ── Vertical separator line ── */
+    .hero-separator {
+        position: absolute;
+        left: clamp(360px, 41vw, 660px);
+        top: 12%;
+        bottom: 12%;
+        width: 1px;
+        background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(200, 168, 130, 0.18) 25%,
+            rgba(200, 168, 130, 0.18) 75%,
+            transparent 100%
+        );
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    /* ── Bottom-left corner sprig ── */
+    .hero-corner-sprig {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: clamp(120px, 16vw, 200px);
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0.55;
+    }
+
+    /* ── Scattered decorative petals/dots in the centre gap ── */
+    .hero-scatter {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    /* ── Hero Background Flower ── */
+    .hero-flower-wrap {
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: clamp(300px, 48vw, 580px);
+        pointer-events: none;
+        z-index: 1;
+    }
+    .hero-flower-wrap svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        animation: heroFloat 10s ease-in-out infinite;
+        transform-origin: center center;
+    }
+    @keyframes heroFloat {
+        0%   { transform: translateY(0px)   rotate(0deg)    scale(1.000); }
+        18%  { transform: translateY(-16px) rotate(0.8deg)  scale(1.010); }
+        40%  { transform: translateY(-24px) rotate(-0.6deg) scale(1.014); }
+        60%  { transform: translateY(-12px) rotate(1.2deg)  scale(1.008); }
+        78%  { transform: translateY(-20px) rotate(-0.9deg) scale(1.012); }
+        100% { transform: translateY(0px)   rotate(0deg)    scale(1.000); }
+    }
+    /* Soft radial glow behind flower */
+    .hero-flower-glow {
+        position: absolute;
+        right: -100px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: clamp(340px, 54vw, 640px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 58% 50%, rgba(200,168,152,0.16) 0%, rgba(200,168,152,0.06) 50%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    @media (max-width: 860px) {
+        .hero-flower-wrap { width: clamp(240px, 58vw, 340px); opacity: 0.25; }
+        .hero-separator { display: none; }
+    }
+    @media (max-width: 560px) {
+        .hero-flower-wrap { opacity: 0.14; }
+        .hero-content { left: 20px !important; max-width: calc(100vw - 40px); }
+        .hero-content h2 { font-size: 2.8rem; }
+        .hero-corner-sprig { width: 90px; }
+    }
+    @media (max-width: 480px) {
+        .hero-content h2 { font-size: 2.2rem; }
     }
 
     /* ── Highlight / About ── */
-    .highlight-container {
-        max-width: 720px;
-        margin: 0 auto;
-        text-align: center;
-        padding: 100px 20px;
-    }
-    .highlight .section-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 2rem;
-        font-weight: 600;
-        color: #1e1a17;
-        line-height: 1.3;
-        margin-bottom: 24px;
-    }
-    .about-text.centered p {
-        font-size: 1.1rem;
-        color: #6b5d54;
-        line-height: 1.8;
-        margin-bottom: 32px;
-    }
-    .learn-more-btn {
-        display: inline-block;
-        padding: 14px 36px;
-        border: 2px solid #d4c5a0;
-        color: #8b7355;
-        text-decoration: none;
-        font-size: 0.78rem;
-        letter-spacing: 2px;
-        font-weight: 700;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-        font-family: 'Georgia', serif;
-    }
-    .learn-more-btn:hover {
-        background: #8b7355;
-        border-color: #8b7355;
-        color: #fff;
-    }
+    .highlight-container { max-width: 720px; margin: 0 auto; text-align: center; padding: 100px 20px; }
+    .highlight .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 600; color: #1e1a17; line-height: 1.3; margin-bottom: 24px; }
+    .about-text.centered p { font-size: 1.1rem; color: #6b5d54; line-height: 1.8; margin-bottom: 32px; }
+    .learn-more-btn { display: inline-block; padding: 14px 36px; border: 2px solid #d4c5a0; color: #8b7355; text-decoration: none; font-size: 0.78rem; letter-spacing: 2px; font-weight: 700; border-radius: 6px; transition: all 0.3s ease; font-family: 'Georgia', serif; }
+    .learn-more-btn:hover { background: #8b7355; border-color: #8b7355; color: #fff; }
 
     /* ── Services ── */
     .services { padding: 100px 0; background: #fff; }
-    .services .section-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 2rem;
-        color: #1e1a17;
-        margin-bottom: 60px;
-    }
-    .service-card {
-        padding: 44px 32px;
-        border-radius: 20px;
-        border: 1px solid #f0e8dd;
-        text-align: center;
-        transition: all 0.35s ease;
-        background: #fff;
-    }
-    .service-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 50px rgba(139,115,85,0.10);
-        border-color: #d4c5a0;
-    }
-    .service-card .service-icon {
-        width: 68px;
-        height: 68px;
-        margin: 0 auto 20px;
-        background: #faf8f5;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
-    .service-card:hover .service-icon {
-        background: #8b7355;
-        transform: scale(1.1);
-    }
+    .services .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; color: #1e1a17; margin-bottom: 60px; }
+    .service-card { padding: 44px 32px; border-radius: 20px; border: 1px solid #f0e8dd; text-align: center; transition: all 0.35s ease; background: #fff; }
+    .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(139,115,85,0.10); border-color: #d4c5a0; }
+    .service-card .service-icon { width: 68px; height: 68px; margin: 0 auto 20px; background: #faf8f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+    .service-card:hover .service-icon { background: #8b7355; transform: scale(1.1); }
     .service-card:hover .service-icon svg { stroke: #fff; }
-    .service-card h3 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #1e1a17;
-        margin-bottom: 12px;
-    }
+    .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; color: #1e1a17; margin-bottom: 12px; }
     .service-card p { font-size: 0.92rem; color: #888; line-height: 1.7; }
 
     /* ── Gallery ── */
     .gallery { padding: 100px 0; background: #faf8f5; }
-    .gallery .section-title {
-        font-family: 'Playfair Display', serif;
-        color: #1e1a17;
-        margin-bottom: 48px;
-    }
-    .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-    }
-    .gallery-item {
-        position: relative;
-        border-radius: 16px;
-        overflow: hidden;
-        height: 280px;
-        text-decoration: none;
-        display: block;
-    }
-    .gallery-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
+    .gallery .section-title { font-family: 'Playfair Display', serif; color: #1e1a17; margin-bottom: 48px; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .gallery-item { position: relative; border-radius: 16px; overflow: hidden; height: 280px; text-decoration: none; display: block; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     .gallery-item:hover img { transform: scale(1.06); }
-    .gallery-item .gallery-caption {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, transparent 45%, rgba(30,26,23,0.55) 100%);
-        display: flex;
-        align-items: flex-end;
-        padding: 28px;
-        transition: opacity 0.4s ease;
-    }
-    .gallery-item .gallery-caption span {
-        color: #fff;
-        font-family: 'Playfair Display', serif;
-        font-size: 1.1rem;
-        font-weight: 600;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    }
-    /* Keep placeholder style as fallback */
-    .gallery-item .placeholder-image {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-start;
-        padding: 28px;
-        transition: all 0.5s ease;
-        position: relative;
-    }
-    .gallery-item .placeholder-image::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, transparent 40%, rgba(30,26,23,0.45) 100%);
-        transition: opacity 0.4s ease;
-    }
+    .gallery-item .gallery-caption { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(30,26,23,0.55) 100%); display: flex; align-items: flex-end; padding: 28px; }
+    .gallery-item .gallery-caption span { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+    .gallery-item .placeholder-image { width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: flex-start; padding: 28px; transition: all 0.5s ease; position: relative; }
+    .gallery-item .placeholder-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(30,26,23,0.45) 100%); }
     .gallery-item:hover .placeholder-image { transform: scale(1.06); }
-    .gallery-item .placeholder-image span {
-        position: relative;
-        z-index: 1;
-        color: #fff;
-        font-family: 'Playfair Display', serif;
-        font-size: 1.15rem;
-        font-weight: 600;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
+    .gallery-item .placeholder-image span { position: relative; z-index: 1; color: #fff; font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
-    @media (max-width: 700px) {
-        .gallery-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-        .gallery-item { height: 200px; }
-        .hero-content h2 { font-size: 2.8rem; }
-    }
-    @media (max-width: 480px) {
-        .gallery-grid { grid-template-columns: 1fr; }
-        .hero-content h2 { font-size: 2.2rem; }
-    }
+    @media (max-width: 700px) { .gallery-grid { grid-template-columns: 1fr 1fr; gap: 12px; } .gallery-item { height: 200px; } }
+    @media (max-width: 436px) { .gallery-grid { grid-template-columns: 1fr; } }
 
-    /* ── Gallery CTA tile ── */
-    .gallery-item--cta {
-        background: linear-gradient(135deg, #2b241e 0%, #3d3228 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        text-decoration: none;
-    }
+    .gallery-item--cta { background: linear-gradient(135deg, #2b241e 0%, #3d3228 100%); display: flex; align-items: center; justify-content: center; }
     .gallery-item--cta:hover { opacity: 0.9; }
-    .gallery-cta {
-        text-align: center;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-    }
-    .gallery-cta-sub {
-        font-size: 0.72rem;
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        color: #c8a882;
-        font-family: 'Georgia', serif;
-    }
-    .gallery-cta-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: #f5f0e8;
-        line-height: 1.3;
-    }
-    .gallery-cta-arrow {
-        font-size: 1.4rem;
-        color: #c8a882;
-        transition: transform 0.3s ease;
-    }
+    .gallery-cta { text-align: center; padding: 24px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+    .gallery-cta-sub { font-size: 0.72rem; letter-spacing: 2.5px; text-transform: uppercase; color: #c8a882; font-family: 'Georgia', serif; }
+    .gallery-cta-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: #f5f0e8; line-height: 1.3; }
+    .gallery-cta-arrow { font-size: 1.4rem; color: #c8a882; transition: transform 0.3s ease; }
     .gallery-item--cta:hover .gallery-cta-arrow { transform: translateX(6px); }
 
     /* ── Customer Love ── */
-    .customer-love {
-        padding: 100px 0;
-        background: #fff;
-    }
-    .customer-love-eyebrow {
-        text-align: center;
-        font-size: 0.72rem;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #c8a882;
-        font-family: 'Georgia', serif;
-        margin-bottom: 12px;
-    }
-    .customer-love .section-title {
-        font-family: 'Playfair Display', serif;
-        color: #1e1a17;
-        margin-bottom: 60px;
-    }
-    .customer-love-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 64px;
-        align-items: center;
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-    .customer-photo-wrap {
-        border-radius: 24px;
-        overflow: hidden;
-        aspect-ratio: 3/4;
-        box-shadow: 0 24px 60px rgba(0,0,0,0.12);
-    }
-    .customer-photo-wrap img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
-        display: block;
-        transition: transform 0.6s ease;
-    }
+    .customer-love { padding: 100px 0; background: #fff; }
+    .customer-love-eyebrow { text-align: center; font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: #c8a882; font-family: 'Georgia', serif; margin-bottom: 12px; }
+    .customer-love .section-title { font-family: 'Playfair Display', serif; color: #1e1a17; margin-bottom: 60px; }
+    .customer-love-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1000px; margin: 0 auto; }
+    .customer-photo-wrap { border-radius: 24px; overflow: hidden; aspect-ratio: 3/4; box-shadow: 0 24px 60px rgba(0,0,0,0.12); }
+    .customer-photo-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; transition: transform 0.6s ease; }
     .customer-photo-wrap:hover img { transform: scale(1.03); }
-    .customer-love-text {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-    }
+    .customer-love-text { display: flex; flex-direction: column; gap: 0; }
     .quote-mark { margin-bottom: 20px; flex-shrink: 0; }
-    .customer-love-text blockquote {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.25rem;
-        font-style: italic;
-        color: #2b2420;
-        line-height: 1.75;
-        margin: 0 0 28px 0;
-        padding: 0;
-        border: none;
-    }
-    .customer-love-meta {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-    .customer-stars {
-        color: #c8a882;
-        font-size: 1.1rem;
-        letter-spacing: 3px;
-    }
-    .customer-name {
-        font-size: 0.88rem;
-        color: #888;
-        font-family: 'Georgia', serif;
-    }
-    @media (max-width: 760px) {
-        .customer-love-grid {
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-        .customer-photo-wrap { aspect-ratio: 4/3; }
-    }
+    .customer-love-text blockquote { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; color: #2b2420; line-height: 1.75; margin: 0 0 28px 0; padding: 0; border: none; }
+    .customer-love-meta { display: flex; flex-direction: column; gap: 6px; }
+    .customer-stars { color: #c8a882; font-size: 1.1rem; letter-spacing: 3px; }
+    .customer-name { font-size: 0.88rem; color: #888; font-family: 'Georgia', serif; }
+    @media (max-width: 760px) { .customer-love-grid { grid-template-columns: 1fr; gap: 40px; } .customer-photo-wrap { aspect-ratio: 4/3; } }
 
-    
     .contact { padding: 100px 0; background: #fff; }
-    .contact .section-title {
-        font-family: 'Playfair Display', serif;
-        color: #1e1a17;
-        margin-bottom: 48px;
-    }
+    .contact .section-title { font-family: 'Playfair Display', serif; color: #1e1a17; margin-bottom: 48px; }
 
     /* ── Footer ── */
-    .footer-logo {
-        font-family: 'Great Vibes', cursive;
-        font-size: 1.8rem;
-        color: #f5f0e8 !important;
-        font-weight: 400;
-    }
+    .footer-logo { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: #f5f0e8 !important; font-weight: 400; }
 
     /* ── Active nav ── */
     .text-link.active { color: #8b7355; }
     .text-link.active::after { width: 100%; left: 0; }
+
+    /* ══════════════════════════════════════════════════
+       NAV BRANCH DECORATIONS
+       ══════════════════════════════════════════════════ */
+    .nav-branch {
+        position: absolute;
+        top: -30px;
+        height: 100%;
+        width: 190px;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 0;
+    }
+    .nav-branch--left  { left: 0; }
+    .nav-branch--right { right: 0; transform: scaleX(-1); }
+    .nav-container     { position: relative; z-index: 1; }
+
+    /* ══════════════════════════════════════════════════
+       FALLING PETALS
+       ══════════════════════════════════════════════════ */
+    #petals-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 8888;
+    }
     </style>
 </head>
 <body>
+
+    <!-- Falling Petals Canvas — copy this line to every page -->
+    <canvas id="petals-canvas" aria-hidden="true"></canvas>
 
     <!-- Top Bar -->
     <div class="top-bar">
@@ -587,6 +404,59 @@
 
     <!-- Navigation -->
     <nav class="navbar">
+
+        <!-- Floral branch — left side -->
+        <svg class="nav-branch nav-branch--left" viewBox="0 0 190 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M-6 54 C 22 46 58 37 100 28 C 132 21 162 18 194 16" stroke="#c8b89a" stroke-width="1.15" fill="none" stroke-linecap="round"/>
+            <path d="M44 43 C 48 33 54 24 58 16" stroke="#c8b89a" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M82 33 C 85 23 89 14 92 7" stroke="#c8b89a" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M120 24 C 122 17 125 10 127 5" stroke="#c8b89a" stroke-width="0.75" fill="none" stroke-linecap="round"/>
+            <ellipse cx="40" cy="45" rx="6.5" ry="2.8" fill="#b0c494" opacity="0.44" transform="rotate(-30 40 45)"/>
+            <ellipse cx="76" cy="35" rx="6"   ry="2.5" fill="#b0c494" opacity="0.38" transform="rotate(-20 76 35)"/>
+            <ellipse cx="114" cy="27" rx="5.5" ry="2.2" fill="#b0c494" opacity="0.35" transform="rotate(-14 114 27)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#f0d5d5" opacity="0.64" transform="rotate(0   58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#edd0d0" opacity="0.60" transform="rotate(72  58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#f0d5d5" opacity="0.58" transform="rotate(144 58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#edd0d0" opacity="0.58" transform="rotate(216 58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#f0d5d5" opacity="0.60" transform="rotate(288 58 12)"/>
+            <circle  cx="58" cy="12" r="2.8" fill="#d4b896" opacity="0.72"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f5ddd8" opacity="0.60" transform="rotate(0   92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f0d8d4" opacity="0.55" transform="rotate(72  92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f5ddd8" opacity="0.54" transform="rotate(144 92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f0d8d4" opacity="0.54" transform="rotate(216 92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f5ddd8" opacity="0.56" transform="rotate(288 92 4)"/>
+            <circle  cx="92" cy="4"  r="2.4" fill="#d4b896" opacity="0.68"/>
+            <ellipse cx="127" cy="2" rx="2.8" ry="4.8" fill="#f5e2de" opacity="0.52" transform="rotate(0  127 2)"/>
+            <ellipse cx="127" cy="2" rx="2.8" ry="4.8" fill="#f0deda" opacity="0.48" transform="rotate(90 127 2)"/>
+            <circle  cx="127" cy="2" r="1.9" fill="#d4b896" opacity="0.62"/>
+        </svg>
+
+        <!-- Floral branch — right (mirrored) -->
+        <svg class="nav-branch nav-branch--right" viewBox="0 0 190 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M-6 54 C 22 46 58 37 100 28 C 132 21 162 18 194 16" stroke="#c8b89a" stroke-width="1.15" fill="none" stroke-linecap="round"/>
+            <path d="M44 43 C 48 33 54 24 58 16" stroke="#c8b89a" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M82 33 C 85 23 89 14 92 7"  stroke="#c8b89a" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M120 24 C 122 17 125 10 127 5" stroke="#c8b89a" stroke-width="0.75" fill="none" stroke-linecap="round"/>
+            <ellipse cx="40"  cy="45" rx="6.5" ry="2.8" fill="#b0c494" opacity="0.44" transform="rotate(-30 40 45)"/>
+            <ellipse cx="76"  cy="35" rx="6"   ry="2.5" fill="#b0c494" opacity="0.38" transform="rotate(-20 76 35)"/>
+            <ellipse cx="114" cy="27" rx="5.5" ry="2.2" fill="#b0c494" opacity="0.35" transform="rotate(-14 114 27)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#f0d5d5" opacity="0.64" transform="rotate(0   58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#edd0d0" opacity="0.60" transform="rotate(72  58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#f0d5d5" opacity="0.58" transform="rotate(144 58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#edd0d0" opacity="0.58" transform="rotate(216 58 12)"/>
+            <ellipse cx="58" cy="12" rx="4.2" ry="7" fill="#f0d5d5" opacity="0.60" transform="rotate(288 58 12)"/>
+            <circle  cx="58" cy="12" r="2.8" fill="#d4b896" opacity="0.72"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f5ddd8" opacity="0.60" transform="rotate(0   92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f0d8d4" opacity="0.55" transform="rotate(72  92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f5ddd8" opacity="0.54" transform="rotate(144 92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f0d8d4" opacity="0.54" transform="rotate(216 92 4)"/>
+            <ellipse cx="92" cy="4"  rx="3.6" ry="6"  fill="#f5ddd8" opacity="0.56" transform="rotate(288 92 4)"/>
+            <circle  cx="92" cy="4"  r="2.4" fill="#d4b896" opacity="0.68"/>
+            <ellipse cx="127" cy="2" rx="2.8" ry="4.8" fill="#f5e2de" opacity="0.52" transform="rotate(0  127 2)"/>
+            <ellipse cx="127" cy="2" rx="2.8" ry="4.8" fill="#f0deda" opacity="0.48" transform="rotate(90 127 2)"/>
+            <circle  cx="127" cy="2" r="1.9" fill="#d4b896" opacity="0.62"/>
+        </svg>
+
         <div class="nav-container">
             <div class="nav-left">
                 <a href="index.html" class="text-link active">Home</a>
@@ -624,72 +494,61 @@
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
-
             <div class="search-header">
                 <h2>Find Your Perfect Arrangement</h2>
                 <p>Search our collection by name, occasion, or flower type</p>
             </div>
-
             <div class="search-input-wrap">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                 </svg>
-                <input type="text" id="searchInput" placeholder="Search flowers, occasions, styles…" autocomplete="off">
+                <input type="text" id="searchInput" placeholder="Search flowers, occasions, styles&#8230;" autocomplete="off">
                 <button class="search-submit-btn" id="searchSubmit" aria-label="Search">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </button>
             </div>
-
             <div class="search-cats">
                 <h4>Browse by Category</h4>
                 <div class="search-cat-grid">
                     <a href="shop.html" class="search-cat-card">
-                        <span class="cat-emoji">💐</span>
                         <span class="cat-name">All Flowers</span>
                         <span class="cat-sub">Full collection</span>
                     </a>
                     <a href="shop.html?category=wedding" class="search-cat-card">
-                        <span class="cat-emoji">🤍</span>
                         <span class="cat-name">Wedding</span>
-                        <span class="cat-sub">Bridal & venue florals</span>
+                        <span class="cat-sub">Bridal &amp; venue florals</span>
                     </a>
                     <a href="shop.html?category=birthday" class="search-cat-card">
-                        <span class="cat-emoji">🎂</span>
                         <span class="cat-name">Birthday</span>
                         <span class="cat-sub">Celebratory bouquets</span>
                     </a>
                     <a href="shop.html?category=corporate" class="search-cat-card">
-                        <span class="cat-emoji">🏢</span>
                         <span class="cat-name">Corporate</span>
-                        <span class="cat-sub">Office & events</span>
+                        <span class="cat-sub">Office &amp; events</span>
                     </a>
                     <a href="shop.html?category=sympathy" class="search-cat-card">
-                        <span class="cat-emoji">🕊️</span>
                         <span class="cat-name">Sympathy</span>
                         <span class="cat-sub">Thoughtful tributes</span>
                     </a>
                     <a href="shop.html?category=seasonal" class="search-cat-card">
-                        <span class="cat-emoji">🌸</span>
                         <span class="cat-name">Seasonal</span>
                         <span class="cat-sub">What's blooming now</span>
                     </a>
                 </div>
             </div>
-
             <div class="search-tags">
                 <h4>Popular Searches</h4>
                 <div class="search-tags-wrap">
-                    <a href="shop.html?q=red+roses" class="search-tag">Red Roses</a>
-                    <a href="shop.html?q=peonies" class="search-tag">Peonies</a>
-                    <a href="shop.html?q=mixed+bouquet" class="search-tag">Mixed Bouquet</a>
-                    <a href="shop.html?q=sunflowers" class="search-tag">Sunflowers</a>
-                    <a href="shop.html?q=white+lilies" class="search-tag">White Lilies</a>
-                    <a href="shop.html?q=orchids" class="search-tag">Orchids</a>
+                    <a href="shop.html?q=red+roses"      class="search-tag">Red Roses</a>
+                    <a href="shop.html?q=peonies"        class="search-tag">Peonies</a>
+                    <a href="shop.html?q=mixed+bouquet"  class="search-tag">Mixed Bouquet</a>
+                    <a href="shop.html?q=sunflowers"     class="search-tag">Sunflowers</a>
+                    <a href="shop.html?q=white+lilies"   class="search-tag">White Lilies</a>
+                    <a href="shop.html?q=orchids"        class="search-tag">Orchids</a>
                 </div>
             </div>
-
             <div class="search-results" id="searchResults"></div>
         </div>
     </div>
@@ -697,13 +556,172 @@
     <!-- ══ Hero ══ -->
     <section id="home" class="hero">
         <div class="hero-image"></div>
+
+        <!-- Soft glow behind flower -->
+        <div class="hero-flower-glow" aria-hidden="true"></div>
+
+        <!-- Vertical separator line between content and flower -->
+        <div class="hero-separator" aria-hidden="true"></div>
+
+        <!-- Scattered decorative petals/dots in the centre gap -->
+        <div class="hero-scatter" aria-hidden="true">
+            <svg width="100%" height="100%" viewBox="0 0 1400 760" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Floating ellipse petals — distributed across the centre zone -->
+                <ellipse cx="540"  cy="160" rx="8"   ry="13"  fill="#f0d0d0" opacity="0.32" transform="rotate(22  540 160)"/>
+                <ellipse cx="630"  cy="310" rx="10"  ry="6.5" fill="#e8c8c0" opacity="0.26" transform="rotate(-18 630 310)"/>
+                <ellipse cx="490"  cy="430" rx="7"   ry="11"  fill="#f5e0d8" opacity="0.28" transform="rotate(38  490 430)"/>
+                <ellipse cx="700"  cy="130" rx="6"   ry="9.5" fill="#eed8d0" opacity="0.24" transform="rotate(-28 700 130)"/>
+                <ellipse cx="575"  cy="540" rx="9"   ry="5.5" fill="#f0d4cc" opacity="0.26" transform="rotate(12  575 540)"/>
+                <ellipse cx="740"  cy="400" rx="6.5" ry="10"  fill="#e8c8c0" opacity="0.22" transform="rotate(52  740 400)"/>
+                <ellipse cx="430"  cy="250" rx="5.5" ry="8"   fill="#f5dcd4" opacity="0.30" transform="rotate(-22 430 250)"/>
+                <ellipse cx="660"  cy="500" rx="8"   ry="5"   fill="#f0d0c8" opacity="0.24" transform="rotate(33  660 500)"/>
+                <ellipse cx="800"  cy="210" rx="5"   ry="8"   fill="#eed4cc" opacity="0.20" transform="rotate(-48 800 210)"/>
+                <ellipse cx="510"  cy="360" rx="6.5" ry="10"  fill="#f5dcd8" opacity="0.25" transform="rotate(16  510 360)"/>
+                <ellipse cx="770"  cy="560" rx="7"   ry="4.5" fill="#f0ccc8" opacity="0.22" transform="rotate(-14 770 560)"/>
+                <ellipse cx="460"  cy="580" rx="5"   ry="7.5" fill="#f5e0dc" opacity="0.26" transform="rotate(44  460 580)"/>
+                <!-- Tiny accent dots -->
+                <circle cx="600" cy="240" r="2.8" fill="#c8a882" opacity="0.20"/>
+                <circle cx="720" cy="340" r="2.2" fill="#c8a882" opacity="0.16"/>
+                <circle cx="470" cy="300" r="3.2" fill="#d4b898" opacity="0.18"/>
+                <circle cx="680" cy="580" r="2.2" fill="#c8a882" opacity="0.16"/>
+                <circle cx="550" cy="90"  r="2.8" fill="#d4b898" opacity="0.20"/>
+                <circle cx="810" cy="470" r="2.2" fill="#c8a882" opacity="0.15"/>
+                <circle cx="635" cy="650" r="2.5" fill="#d4b0a0" opacity="0.18"/>
+                <circle cx="755" cy="140" r="2"   fill="#c8a882" opacity="0.14"/>
+            </svg>
+        </div>
+
+        <!-- Bottom-left corner sprig -->
+        <svg class="hero-corner-sprig" viewBox="0 0 200 170" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Main stem from corner -->
+            <path d="M8 175 C 18 148, 38 116, 68 92 C 92 72, 126 58, 162 48" stroke="#b0c494" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            <!-- Sub-stems -->
+            <path d="M42 132 C 52 120, 65 110, 76 102" stroke="#b0c494" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+            <path d="M82 88  C 90 78,  102 70, 110 63" stroke="#b0c494" stroke-width="1.0" fill="none" stroke-linecap="round"/>
+            <path d="M28 156 C 16 148, 8  138, 4  126" stroke="#c8b89a" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <!-- Leaves -->
+            <ellipse cx="60"  cy="118" rx="13" ry="5.2" fill="#a8c088" opacity="0.50" transform="rotate(-36 60 118)"/>
+            <ellipse cx="96"  cy="80"  rx="11" ry="4.5" fill="#a8c088" opacity="0.44" transform="rotate(-26 96 80)"/>
+            <ellipse cx="136" cy="58"  rx="9"  ry="4.0" fill="#a8c088" opacity="0.38" transform="rotate(-18 136 58)"/>
+            <!-- Blossom 1 — larger, at first branch tip -->
+            <ellipse cx="76" cy="98" rx="5.5" ry="9" fill="#f0d4d4" opacity="0.68" transform="rotate(0   76 98)"/>
+            <ellipse cx="76" cy="98" rx="5.5" ry="9" fill="#eeced0" opacity="0.62" transform="rotate(72  76 98)"/>
+            <ellipse cx="76" cy="98" rx="5.5" ry="9" fill="#f0d4d4" opacity="0.62" transform="rotate(144 76 98)"/>
+            <ellipse cx="76" cy="98" rx="5.5" ry="9" fill="#eeced0" opacity="0.62" transform="rotate(216 76 98)"/>
+            <ellipse cx="76" cy="98" rx="5.5" ry="9" fill="#f0d4d4" opacity="0.65" transform="rotate(288 76 98)"/>
+            <circle  cx="76" cy="98" r="3.4" fill="#d4b896" opacity="0.75"/>
+            <!-- Blossom 2 — smaller, at second branch tip -->
+            <ellipse cx="110" cy="60" rx="4"   ry="6.5" fill="#f5ddd8" opacity="0.62" transform="rotate(0   110 60)"/>
+            <ellipse cx="110" cy="60" rx="4"   ry="6.5" fill="#f5ddd8" opacity="0.58" transform="rotate(72  110 60)"/>
+            <ellipse cx="110" cy="60" rx="4"   ry="6.5" fill="#f5ddd8" opacity="0.58" transform="rotate(144 110 60)"/>
+            <ellipse cx="110" cy="60" rx="4"   ry="6.5" fill="#f5ddd8" opacity="0.58" transform="rotate(216 110 60)"/>
+            <ellipse cx="110" cy="60" rx="4"   ry="6.5" fill="#f5ddd8" opacity="0.60" transform="rotate(288 110 60)"/>
+            <circle  cx="110" cy="60" r="2.6" fill="#d4b896" opacity="0.70"/>
+            <!-- Small hanging bud on left tendril -->
+            <ellipse cx="4" cy="124" rx="3.5" ry="6" fill="#f0d8d4" opacity="0.55" transform="rotate(12 4 124)"/>
+            <circle  cx="4" cy="124" r="2"   fill="#d4b896" opacity="0.65"/>
+        </svg>
+
+        <!-- Large background flower SVG -->
+        <div class="hero-flower-wrap" aria-hidden="true">
+            <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer petals × 8 — blush rose -->
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#f2cece" opacity="0.50" transform="rotate(0   300 300)"/>
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#eecedc" opacity="0.48" transform="rotate(45  300 300)"/>
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#f2cece" opacity="0.50" transform="rotate(90  300 300)"/>
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#eecedc" opacity="0.48" transform="rotate(135 300 300)"/>
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#f2cece" opacity="0.50" transform="rotate(180 300 300)"/>
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#eecedc" opacity="0.48" transform="rotate(225 300 300)"/>
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#f2cece" opacity="0.50" transform="rotate(270 300 300)"/>
+                <ellipse cx="300" cy="144" rx="55" ry="136" fill="#eecedc" opacity="0.48" transform="rotate(315 300 300)"/>
+                <!-- Mid petals × 8 -->
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#e8b4b8" opacity="0.56" transform="rotate(22.5  300 300)"/>
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#dcaab4" opacity="0.52" transform="rotate(67.5  300 300)"/>
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#e8b4b8" opacity="0.56" transform="rotate(112.5 300 300)"/>
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#dcaab4" opacity="0.52" transform="rotate(157.5 300 300)"/>
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#e8b4b8" opacity="0.56" transform="rotate(202.5 300 300)"/>
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#dcaab4" opacity="0.52" transform="rotate(247.5 300 300)"/>
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#e8b4b8" opacity="0.56" transform="rotate(292.5 300 300)"/>
+                <ellipse cx="300" cy="170" rx="42" ry="106" fill="#dcaab4" opacity="0.52" transform="rotate(337.5 300 300)"/>
+                <!-- Inner petals × 6 — warm ivory -->
+                <ellipse cx="300" cy="200" rx="30" ry="76" fill="#f5ece0" opacity="0.70" transform="rotate(0   300 300)"/>
+                <ellipse cx="300" cy="200" rx="30" ry="76" fill="#f2e8da" opacity="0.68" transform="rotate(60  300 300)"/>
+                <ellipse cx="300" cy="200" rx="30" ry="76" fill="#f5ece0" opacity="0.70" transform="rotate(120 300 300)"/>
+                <ellipse cx="300" cy="200" rx="30" ry="76" fill="#f2e8da" opacity="0.68" transform="rotate(180 300 300)"/>
+                <ellipse cx="300" cy="200" rx="30" ry="76" fill="#f5ece0" opacity="0.70" transform="rotate(240 300 300)"/>
+                <ellipse cx="300" cy="200" rx="30" ry="76" fill="#f2e8da" opacity="0.68" transform="rotate(300 300 300)"/>
+                <!-- Innermost cup × 5 -->
+                <ellipse cx="300" cy="226" rx="20" ry="54" fill="#f5e8de" opacity="0.78" transform="rotate(0   300 300)"/>
+                <ellipse cx="300" cy="226" rx="20" ry="54" fill="#eddad0" opacity="0.75" transform="rotate(72  300 300)"/>
+                <ellipse cx="300" cy="226" rx="20" ry="54" fill="#f5e8de" opacity="0.78" transform="rotate(144 300 300)"/>
+                <ellipse cx="300" cy="226" rx="20" ry="54" fill="#eddad0" opacity="0.75" transform="rotate(216 300 300)"/>
+                <ellipse cx="300" cy="226" rx="20" ry="54" fill="#f5e8de" opacity="0.78" transform="rotate(288 300 300)"/>
+                <!-- Centre -->
+                <circle cx="300" cy="300" r="58" fill="#f5e8d0" opacity="0.90"/>
+                <circle cx="300" cy="300" r="44" fill="#e8d4b0" opacity="0.86"/>
+                <circle cx="300" cy="300" r="30" fill="#c8a882" opacity="0.70"/>
+                <circle cx="300" cy="300" r="15" fill="#8b7355" opacity="0.58"/>
+                <!-- Stamen ring -->
+                <circle cx="300" cy="266" r="3.4" fill="#8b7355" opacity="0.46"/>
+                <circle cx="324" cy="272" r="2.9" fill="#8b7355" opacity="0.42"/>
+                <circle cx="335" cy="293" r="2.9" fill="#8b7355" opacity="0.42"/>
+                <circle cx="326" cy="315" r="2.9" fill="#8b7355" opacity="0.42"/>
+                <circle cx="300" cy="324" r="3.4" fill="#8b7355" opacity="0.46"/>
+                <circle cx="274" cy="315" r="2.9" fill="#8b7355" opacity="0.42"/>
+                <circle cx="265" cy="293" r="2.9" fill="#8b7355" opacity="0.42"/>
+                <circle cx="276" cy="272" r="2.9" fill="#8b7355" opacity="0.42"/>
+                <!-- Leaf sprigs bottom-left -->
+                <path d="M144 438 Q163 414 186 400" stroke="#a0ba88" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <ellipse cx="188" cy="398" rx="13" ry="23" fill="#b4c898" opacity="0.46" transform="rotate(-44 188 398)"/>
+                <path d="M112 365 Q128 346 146 334" stroke="#a0ba88" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <ellipse cx="148" cy="332" rx="11" ry="19" fill="#b4c898" opacity="0.40" transform="rotate(-56 148 332)"/>
+                <!-- Orchid sprig top-right -->
+                <path d="M442 88 Q460 114 450 142" stroke="#c8a882" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                <ellipse cx="450" cy="144" rx="9"  ry="15" fill="#e8c2c8" opacity="0.58" transform="rotate(-8  450 144)"/>
+                <ellipse cx="460" cy="138" rx="7"  ry="12" fill="#f0d0d6" opacity="0.52" transform="rotate(34  460 138)"/>
+                <ellipse cx="440" cy="138" rx="7"  ry="12" fill="#f0d0d6" opacity="0.52" transform="rotate(-34 440 138)"/>
+                <circle  cx="450" cy="144" r="4.2" fill="#c8a882" opacity="0.64"/>
+            </svg>
+        </div>
+
+        <!-- Hero content -->
         <div class="hero-content">
+
+            <!-- Eyebrow label -->
+            <p class="hero-eyebrow">
+                <span class="hero-eyebrow-dot"></span>
+                Now in Season
+                <span class="hero-eyebrow-dot"></span>
+            </p>
+
             <h2>It's A<br>Peony Party</h2>
+
+            <!-- Decorative divider below heading -->
+            <hr class="hero-divider">
+
             <p>Our premium Alaskan peonies are here and going fast. A short-lived season meets a long-lasting impression.</p>
+
             <div class="hero-buttons">
                 <a href="shop.html" class="btn-primary">SHOP FLOWERS</a>
                 <a href="shop.html?material=artificial" class="btn-secondary">SHOP PLANTS</a>
             </div>
+
+            <!-- Trust line -->
+            <p class="hero-trust">
+                Same-day delivery
+                <span class="hero-trust-dot">&#9679;</span>
+                Free over $50
+                <span class="hero-trust-dot">&#9679;</span>
+                Sydney-wide
+            </p>
+
+            <!-- Review snippet -->
+            <div class="hero-review">
+                <span class="hero-review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="hero-review-sep"></span>
+                <span class="hero-review-text">"Even more beautiful in person"<br>&#8212; Leidine, Sydney</span>
+            </div>
+
         </div>
     </section>
 
@@ -761,30 +779,30 @@
             <h2 class="section-title">Our Creations</h2>
             <div class="gallery-grid">
                 <a href="shop.html?category=seasonal" class="gallery-item">
-                    <img src="images/gallery/bouquet-pink-tulip.jpg" alt="Spring Collection — pink tulip and dahlia bouquet" loading="lazy">
+                    <img src="images/gallery/bouquet-pink-tulip.jpg" alt="Spring Collection" loading="lazy">
                     <div class="gallery-caption"><span>Spring Collection</span></div>
                 </a>
                 <a href="shop.html?category=wedding" class="gallery-item">
-                    <img src="images/gallery/bouquet-white.jpg" alt="Wedding Bouquets — elegant white floral arrangement" loading="lazy">
+                    <img src="images/gallery/bouquet-white.jpg" alt="Wedding Bouquets" loading="lazy">
                     <div class="gallery-caption"><span>Wedding Bouquets</span></div>
                 </a>
                 <a href="shop.html?category=birthday" class="gallery-item">
-                    <img src="images/gallery/bouquet-pink-roses.jpg" alt="Gift Bouquets — blush pink roses and dahlias" loading="lazy">
+                    <img src="images/gallery/bouquet-pink-roses.jpg" alt="Gift Bouquets" loading="lazy">
                     <div class="gallery-caption"><span>Gift Bouquets</span></div>
                 </a>
                 <a href="shop.html" class="gallery-item">
-                    <img src="images/gallery/bouquet-workshop.jpg" alt="Custom Designs — fresh arrangement being crafted in studio" loading="lazy">
+                    <img src="images/gallery/bouquet-workshop.jpg" alt="Custom Designs" loading="lazy">
                     <div class="gallery-caption"><span>Custom Designs</span></div>
                 </a>
                 <a href="shop.html" class="gallery-item">
-                    <img src="images/gallery/flowers-market.jpg" alt="Fresh Flowers — premium roses sourced from market" loading="lazy">
+                    <img src="images/gallery/flowers-market.jpg" alt="Fresh Flowers" loading="lazy">
                     <div class="gallery-caption"><span>Fresh Flowers</span></div>
                 </a>
                 <a href="shop.html" class="gallery-item gallery-item--cta">
                     <div class="gallery-cta">
                         <span class="gallery-cta-sub">Ready to order?</span>
                         <span class="gallery-cta-title">Shop the full collection</span>
-                        <span class="gallery-cta-arrow">→</span>
+                        <span class="gallery-cta-arrow">&#8594;</span>
                     </div>
                 </a>
             </div>
@@ -808,7 +826,7 @@
                         Absolutely stunning. I couldn't believe how beautiful the bouquet was — it was even better in person. Will definitely be ordering again for every special occasion.
                     </blockquote>
                     <div class="customer-love-meta">
-                        <div class="customer-stars">★★★★★</div>
+                        <div class="customer-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                         <span class="customer-name">— Leidine, Sydney</span>
                     </div>
                     <a href="shop.html" class="learn-more-btn" style="margin-top:32px; display:inline-block;">SHOP NOW</a>
@@ -826,14 +844,14 @@
                     <h3>Visit Our Shop</h3>
                     <p><strong>Address:</strong> 123 Garden Street, Floral District, Sydney NSW 2000</p>
                     <p><strong>Phone:</strong> (02) 9123-4567</p>
-                    <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95fdf0f9f9fad5e3f4fbfcf4f3f9fae7e6fce1bbf6faf8bbf4e0">[email&#160;protected]</a></p>
+                    <p><strong>Email:</strong> hello@vaniaflorsit.com.au</p>
                     <p><strong>Hours:</strong> Mon–Sat 9 AM – 7 PM, Sun 10 AM – 5 PM</p>
                 </div>
                 <form class="contact-form" id="contactForm">
-                    <input type="text" name="name" placeholder="Your Name" required>
-                    <input type="email" name="email" placeholder="Your Email" required>
-                    <input type="tel" name="phone" placeholder="Phone Number">
-                    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    <input type="text"  name="name"    placeholder="Your Name"    required>
+                    <input type="email" name="email"   placeholder="Your Email"   required>
+                    <input type="tel"   name="phone"   placeholder="Phone Number">
+                    <textarea          name="message"  placeholder="Your Message" rows="5" required></textarea>
                     <button type="submit" class="submit-button">Send Message</button>
                 </form>
             </div>
@@ -860,7 +878,7 @@
                 <div class="footer-section">
                     <h4>Follow Us</h4>
                     <div class="social-links">
-                        <a href="#" aria-label="Facebook" rel="noopener">Facebook</a>
+                        <a href="#" aria-label="Facebook"  rel="noopener">Facebook</a>
                         <a href="#" aria-label="Instagram" rel="noopener">Instagram</a>
                         <a href="#" aria-label="Pinterest" rel="noopener">Pinterest</a>
                     </div>
@@ -872,4 +890,139 @@
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-c
+    <script>
+    // ── Footer year ──
+    const fy = document.getElementById('footer-year');
+    if (fy) fy.textContent = new Date().getFullYear();
+
+    // ── Navbar scroll ──
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        }, { passive: true });
+    }
+
+    // ── Search overlay ──
+    const searchBtn     = document.getElementById('searchButton');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const searchClose   = document.getElementById('searchClose');
+    const searchInput   = document.getElementById('searchInput');
+    if (searchBtn && searchOverlay) {
+        searchBtn.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            setTimeout(() => searchInput && searchInput.focus(), 300);
+        });
+        searchClose && searchClose.addEventListener('click', () => searchOverlay.classList.remove('active'));
+        searchOverlay.addEventListener('click', e => { if (e.target === searchOverlay) searchOverlay.classList.remove('active'); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') searchOverlay.classList.remove('active'); });
+    }
+
+    // ── Contact form ──
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('.submit-button');
+            if (btn) { btn.textContent = 'Message Sent'; btn.style.background = '#7a9e7a'; btn.disabled = true; }
+        });
+    }
+
+    // ── Cart count ──
+    try {
+        const cartEl = document.getElementById('nav-cart-count');
+        if (cartEl) {
+            const cart  = JSON.parse(localStorage.getItem('vaniaflorsit_cart') || '[]');
+            const total = cart.reduce((s, i) => s + (i.quantity || 1), 0);
+            cartEl.textContent = total;
+            cartEl.style.display = total > 0 ? 'flex' : 'none';
+        }
+    } catch(e) {}
+    </script>
+
+    <!-- ══════════════════════════════════════════════════════
+         FALLING PETALS SCRIPT
+         To enable on other pages, add this to each page:
+           <canvas id="petals-canvas" aria-hidden="true"></canvas>
+         then paste this entire <script> block before </body>
+         ══════════════════════════════════════════════════════ -->
+    <script>
+    (function () {
+        'use strict';
+        const canvas = document.getElementById('petals-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const PALETTE = [
+            [242, 206, 206],
+            [238, 200, 210],
+            [245, 234, 220],
+            [216, 168, 164],
+            [252, 232, 226],
+            [196, 164, 148],
+        ];
+
+        let W = 0, H = 0;
+        const COUNT = 28;
+        let petals = [];
+
+        function resize() {
+            W = canvas.width  = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize, { passive: true });
+        resize();
+
+        function rand(a, b) { return a + Math.random() * (b - a); }
+
+        function newPetal(spread) {
+            const c = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+            return {
+                x: rand(0, W),
+                y: spread ? rand(-H * 0.3, H * 1.05) : rand(-150, -8),
+                rx: rand(4, 11), ry: rand(3, 7.5),
+                rot: rand(0, Math.PI * 2), rotSpd: rand(-0.016, 0.016),
+                fall: rand(0.5, 1.45), drift: rand(-0.28, 0.28),
+                swayAmp: rand(0.5, 1.3), swayFreq: rand(0.018, 0.038),
+                tick: rand(0, 220), alpha: rand(0.30, 0.65),
+                r: c[0], g: c[1], b: c[2],
+            };
+        }
+
+        for (let i = 0; i < COUNT; i++) petals.push(newPetal(true));
+
+        let lastTs = 0;
+        function loop(ts) {
+            const dt = Math.min((ts - lastTs) / 16.667, 3.5);
+            lastTs = ts;
+            ctx.clearRect(0, 0, W, H);
+            for (let i = 0; i < petals.length; i++) {
+                const p = petals[i];
+                p.tick += dt;
+                p.y    += p.fall  * dt;
+                p.x    += p.drift * dt + Math.sin(p.tick * p.swayFreq) * p.swayAmp * 0.45 * dt;
+                p.rot  += p.rotSpd * dt;
+                const fromBottom = H - p.y;
+                const fade = fromBottom < 80 ? fromBottom / 80 : 1;
+                const a = p.alpha * fade;
+                if (a > 0.01) {
+                    ctx.save();
+                    ctx.globalAlpha = a;
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgb(${p.r},${p.g},${p.b})`;
+                    ctx.fill();
+                    ctx.restore();
+                }
+                if (p.y > H + 20 || fromBottom <= 0) petals[i] = newPetal(false);
+            }
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+    })();
+    </script>
+
+</body>
+</html>

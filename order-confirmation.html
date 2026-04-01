@@ -5,372 +5,265 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmed – Vaniaflorsit</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
-    /* ── Confirmation Page ── */
     .confirmation-page {
         background: #faf8f5;
-        min-height: 80vh;
-        padding: 60px 0 100px;
+        min-height: 100vh;
+        padding: 50px 0 100px;
     }
 
-    /* ── Hero checkmark ── */
+    /* Falling petals */
+    .petals-container {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .petal {
+        position: absolute;
+        top: -20px;
+        border-radius: 50% 0 50% 0;
+        opacity: 0;
+        animation: petalFall linear forwards;
+    }
+    @keyframes petalFall {
+        0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+        8%   { opacity: 0.75; }
+        92%  { opacity: 0.5; }
+        100% { opacity: 0; transform: translateY(105vh) rotate(600deg); }
+    }
+
+    /* Hero */
     .confirmation-hero {
         text-align: center;
-        margin-bottom: 48px;
+        margin-bottom: 44px;
+        position: relative;
+        z-index: 1;
     }
-
-    .checkmark-circle {
-        width: 80px;
-        height: 80px;
+    .checkmark-ring {
+        width: 88px; height: 88px;
         border-radius: 50%;
         background: linear-gradient(135deg, #5a9a5a, #4a8a4a);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 24px;
-        box-shadow: 0 8px 30px rgba(90,154,90,0.25);
-        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 22px;
+        box-shadow: 0 12px 40px rgba(90,154,90,0.28), 0 0 0 10px rgba(90,154,90,0.07);
+        animation: popIn 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
     }
-
     @keyframes popIn {
-        from { opacity: 0; transform: scale(0.5); }
+        from { opacity: 0; transform: scale(0.25); }
         to   { opacity: 1; transform: scale(1); }
     }
-
-    .checkmark-circle svg {
-        color: white;
-        animation: drawCheck 0.4s ease 0.3s both;
-        opacity: 0;
-    }
-
-    @keyframes drawCheck {
-        from { opacity: 0; transform: scale(0.5); }
+    .checkmark-ring svg { animation: checkAppear 0.35s ease 0.55s both; opacity: 0; }
+    @keyframes checkAppear {
+        from { opacity: 0; transform: scale(0.4); }
         to   { opacity: 1; transform: scale(1); }
     }
-
     .confirmation-hero h1 {
         font-family: 'Great Vibes', cursive;
-        font-size: 3.5rem;
-        color: #8b7355;
-        font-weight: 400;
-        margin-bottom: 10px;
-        animation: fadeUp 0.6s ease 0.2s both;
+        font-size: 3.8rem; color: #8b7355; font-weight: 400; margin-bottom: 8px;
+        animation: fadeUp 0.6s ease 0.3s both;
     }
-
-    .confirmation-hero p {
-        color: #9a8778;
-        font-size: 1rem;
-        animation: fadeUp 0.6s ease 0.35s both;
+    .hero-sub {
+        color: #9a8778; font-size: 0.95rem;
+        font-family: 'Playfair Display', serif; font-style: italic;
+        animation: fadeUp 0.6s ease 0.45s both;
     }
-
     @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(16px); }
+        from { opacity: 0; transform: translateY(18px); }
         to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Layout ── */
+    /* Loading card */
+    #conf-loading { animation: fadeUp 0.5s ease 0.65s both; opacity: 0; position: relative; z-index: 1; }
+    .loading-card {
+        background: white; border-radius: 20px; border: 1px solid #f0e8dd;
+        padding: 44px 36px; text-align: center; max-width: 460px; margin: 0 auto;
+    }
+    .loading-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+    .loading-dots span {
+        width: 10px; height: 10px; border-radius: 50%; background: #c8a882;
+        animation: dotPulse 1.2s ease-in-out infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse {
+        0%, 80%, 100% { transform: scale(0.55); opacity: 0.35; }
+        40% { transform: scale(1); opacity: 1; }
+    }
+    .loading-title { font-size: 1rem; font-weight: 700; color: #6b5240; margin-bottom: 7px; }
+    .loading-sub { font-size: 0.84rem; color: #bbb; line-height: 1.65; }
+    .loading-progress { margin-top: 26px; height: 3px; background: #f0e8dd; border-radius: 99px; overflow: hidden; }
+    .loading-progress-bar {
+        height: 100%; border-radius: 99px;
+        background: linear-gradient(90deg, #c8a882, #8b7355);
+        animation: progressFill 14s ease forwards; width: 0%;
+    }
+    @keyframes progressFill {
+        0%  { width: 0%; } 15% { width: 25%; } 45% { width: 58%; }
+        75% { width: 82%; } 100% { width: 96%; }
+    }
+
+    /* Error card */
+    #conf-error { position: relative; z-index: 1; }
+    .conf-error-card {
+        background: white; border-radius: 20px; border: 1px solid #f0e8dd;
+        padding: 52px 36px; text-align: center; max-width: 500px; margin: 0 auto;
+    }
+    .conf-error-card .error-emoji { font-size: 3.2rem; display: block; margin-bottom: 18px; }
+    .conf-error-card h3 {
+        font-family: 'Playfair Display', serif; font-size: 1.25rem;
+        color: #2b2b2b; margin-bottom: 10px;
+    }
+    .conf-error-card p { font-size: 0.88rem; color: #9a8778; line-height: 1.65; margin-bottom: 26px; }
+    .btn-refresh {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 12px 26px; background: #8b7355; color: white;
+        border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700;
+        cursor: pointer; font-family: 'Georgia', serif; transition: all 0.2s;
+    }
+    .btn-refresh:hover { background: #6d5a44; transform: translateY(-1px); }
+
+    /* Layout */
     .confirmation-layout {
-        display: grid;
-        grid-template-columns: 1fr 360px;
-        gap: 24px;
-        align-items: start;
-        animation: fadeUp 0.6s ease 0.4s both;
+        display: grid; grid-template-columns: 1fr 360px;
+        gap: 24px; align-items: start;
+        animation: fadeUp 0.5s ease 0.1s both;
+        position: relative; z-index: 1;
     }
 
-    /* ── Panels ── */
+    /* Panels */
     .conf-panel {
-        background: white;
-        border-radius: 16px;
-        border: 1px solid #f0e8dd;
-        overflow: hidden;
-        margin-bottom: 20px;
+        background: white; border-radius: 18px;
+        border: 1px solid #f0e8dd; overflow: hidden;
+        margin-bottom: 20px; transition: box-shadow 0.25s;
     }
-
+    .conf-panel:hover { box-shadow: 0 6px 24px rgba(139,115,85,0.07); }
     .conf-panel:last-child { margin-bottom: 0; }
 
     .conf-panel-header {
-        padding: 18px 24px;
-        border-bottom: 1px solid #f8f3ee;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        padding: 16px 22px; border-bottom: 1px solid #f8f3ee;
+        display: flex; align-items: center; gap: 10px;
     }
-
     .conf-panel-header h2 {
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        color: #c8a882;
-        margin: 0;
+        font-size: 0.69rem; font-weight: 700; letter-spacing: 2.5px;
+        text-transform: uppercase; color: #c8a882; margin: 0;
     }
+    .panel-icon {
+        width: 28px; height: 28px; border-radius: 8px;
+        background: #faf8f5; border: 1px solid #f0e8dd;
+        display: flex; align-items: center; justify-content: center; font-size: 0.82rem;
+    }
+    .conf-panel-body { padding: 20px 22px; }
 
-    .conf-panel-body { padding: 22px 24px; }
-
-    /* ── Order ID banner ── */
+    /* Order ID */
     .order-id-banner {
-        background: linear-gradient(135deg, #faf8f5, #f5ede0);
-        border: 1px solid #e8ddd4;
-        border-radius: 12px;
-        padding: 18px 22px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
+        background: linear-gradient(135deg, #fdfaf6, #f7ede0);
+        border: 1px dashed #d4c0a8; border-radius: 14px;
+        padding: 16px 20px; display: flex; align-items: center;
+        justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
     }
-
     .order-id-label {
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #c8a882;
-        margin-bottom: 4px;
+        font-size: 0.67rem; font-weight: 700; letter-spacing: 2.5px;
+        text-transform: uppercase; color: #c8a882; margin-bottom: 5px;
     }
-
     .order-id-value {
-        font-family: 'Courier New', monospace;
-        font-size: 0.88rem;
-        color: #6b5240;
-        font-weight: 700;
-        letter-spacing: 1px;
+        font-family: 'Courier New', monospace; font-size: 0.82rem;
+        color: #6b5240; font-weight: 700; letter-spacing: 1px;
     }
-
     .copy-id-btn {
-        padding: 7px 14px;
-        border: 1.5px solid #e8ddd4;
-        background: white;
-        border-radius: 8px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #8b7355;
-        cursor: pointer;
-        font-family: 'Georgia', serif;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        padding: 7px 15px; border: 1.5px solid #e8ddd4; background: white;
+        border-radius: 8px; font-size: 0.74rem; font-weight: 700; color: #8b7355;
+        cursor: pointer; font-family: 'Georgia', serif; transition: all 0.2s;
+        display: flex; align-items: center; gap: 6px; white-space: nowrap;
     }
-
     .copy-id-btn:hover { border-color: #8b7355; background: #faf8f5; }
     .copy-id-btn.copied { background: #5a9a5a; border-color: #5a9a5a; color: white; }
 
-    /* ── Detail rows ── */
-    .detail-rows { display: grid; gap: 14px; }
-
+    /* Detail rows */
+    .detail-rows { display: grid; }
     .detail-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 16px;
-        padding-bottom: 14px;
-        border-bottom: 1px solid #f8f3ee;
+        display: flex; justify-content: space-between; align-items: flex-start;
+        gap: 16px; padding: 12px 0; border-bottom: 1px solid #f8f3ee;
     }
-
     .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
-
+    .detail-row:first-child { padding-top: 0; }
     .detail-key {
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: #c8a882;
-        flex-shrink: 0;
+        font-size: 0.71rem; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: #c8a882; flex-shrink: 0; padding-top: 2px;
     }
-
-    .detail-val {
-        font-size: 0.9rem;
-        color: #2b2b2b;
-        text-align: right;
-        line-height: 1.5;
+    .detail-val { font-size: 0.88rem; color: #2b2b2b; text-align: right; line-height: 1.5; }
+    .detail-val.paid {
+        color: #4a8a4a; font-weight: 700;
+        display: flex; align-items: center; gap: 5px; justify-content: flex-end;
     }
+    .paid-dot { width: 7px; height: 7px; border-radius: 50%; background: #4a8a4a; flex-shrink: 0; }
 
-    /* ── Order items ── */
-    .order-items-list { display: grid; gap: 14px; }
-
-    .order-item-row {
-        display: flex;
-        gap: 14px;
-        align-items: flex-start;
-    }
-
+    /* Items */
+    .order-items-list { display: grid; gap: 16px; }
+    .order-item-row { display: flex; gap: 14px; align-items: flex-start; }
     .order-item-img {
-        width: 56px;
-        height: 56px;
-        border-radius: 10px;
-        background: #faf8f5;
-        flex-shrink: 0;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.6rem;
-        border: 1px solid #f0e8dd;
+        width: 58px; height: 58px; border-radius: 12px; background: #faf8f5;
+        flex-shrink: 0; overflow: hidden; display: flex; align-items: center;
+        justify-content: center; font-size: 1.5rem; border: 1px solid #f0e8dd;
     }
-
-    .order-item-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
+    .order-item-img img { width: 100%; height: 100%; object-fit: cover; }
     .order-item-info { flex: 1; min-width: 0; }
+    .order-item-name { font-size: 0.9rem; font-weight: 700; color: #1e1a17; margin-bottom: 3px; }
+    .order-item-meta { font-size: 0.77rem; color: #bbb; }
+    .order-item-price { font-size: 0.92rem; font-weight: 700; color: #8b7355; flex-shrink: 0; padding-top: 2px; }
 
-    .order-item-name {
-        font-size: 0.92rem;
-        font-weight: 700;
-        color: #1e1a17;
-        margin-bottom: 3px;
-    }
-
-    .order-item-meta { font-size: 0.8rem; color: #bbb; }
-
-    .order-item-price {
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: #8b7355;
-        flex-shrink: 0;
-    }
-
-    /* ── Cost breakdown ── */
-    .cost-rows { display: grid; gap: 10px; }
-
+    /* Cost rows */
+    .cost-rows { display: grid; }
     .cost-row {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.88rem;
-        color: #888;
+        display: flex; justify-content: space-between;
+        font-size: 0.87rem; color: #888; padding: 10px 0; border-bottom: 1px solid #f8f3ee;
     }
-
+    .cost-row:first-child { padding-top: 0; }
+    .cost-row:last-child { border-bottom: none; }
     .cost-row.total {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #1e1a17;
-        padding-top: 14px;
-        border-top: 1px solid #f0e8dd;
-        margin-top: 4px;
+        font-size: 1.05rem; font-weight: 700; color: #1e1a17;
+        padding-top: 16px; border-top: 2px solid #f0e8dd; border-bottom: none; margin-top: 4px;
     }
+    .cost-row.total span:last-child { color: #8b7355; font-size: 1.28rem; }
 
-    .cost-row.total span:last-child { color: #8b7355; font-size: 1.25rem; }
-
-    /* ── Next steps ── */
-    .next-steps { display: grid; gap: 14px; }
-
+    /* Next steps */
+    .next-steps { display: grid; gap: 10px; }
     .next-step {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
+        display: flex; align-items: flex-start; gap: 12px;
+        padding: 14px; background: #fdfaf6; border-radius: 12px;
+        border: 1px solid #f0e8dd; transition: border-color 0.2s;
     }
-
-    .next-step-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        background: #faf8f5;
-        border: 1px solid #f0e8dd;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.1rem;
-        flex-shrink: 0;
+    .next-step:hover { border-color: #d4c0a8; }
+    .next-step-num {
+        width: 26px; height: 26px; border-radius: 50%; background: #8b7355;
+        color: white; display: flex; align-items: center; justify-content: center;
+        font-size: 0.72rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
     }
+    .next-step-text h4 { font-size: 0.86rem; font-weight: 700; color: #2b2b2b; margin-bottom: 3px; }
+    .next-step-text p { font-size: 0.78rem; color: #9a8778; line-height: 1.5; margin: 0; }
 
-    .next-step-text h4 {
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #2b2b2b;
-        margin-bottom: 2px;
-    }
-
-    .next-step-text p {
-        font-size: 0.8rem;
-        color: #9a8778;
-        line-height: 1.5;
-    }
-
-    /* ── CTAs ── */
+    /* CTAs */
     .conf-ctas { display: grid; gap: 10px; }
-
     .btn-continue-shopping {
-        display: block;
-        width: 100%;
-        padding: 14px;
-        background: #8b7355;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 0.9rem;
-        font-weight: 700;
-        font-family: 'Georgia', serif;
-        text-align: center;
-        text-decoration: none;
-        transition: all 0.25s ease;
-        cursor: pointer;
+        display: block; width: 100%; padding: 15px; background: #8b7355; color: white;
+        border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700;
+        font-family: 'Georgia', serif; text-align: center; text-decoration: none;
+        transition: all 0.25s; cursor: pointer;
     }
-
-    .btn-continue-shopping:hover {
-        background: #6d5a44;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(139,115,85,0.3);
-    }
-
+    .btn-continue-shopping:hover { background: #6d5a44; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,115,85,0.3); }
     .btn-home {
-        display: block;
-        width: 100%;
-        padding: 12px;
-        background: transparent;
-        color: #8b7355;
-        border: 1.5px solid #e8ddd4;
-        border-radius: 10px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        font-family: 'Georgia', serif;
-        text-align: center;
-        text-decoration: none;
-        transition: all 0.2s;
+        display: block; width: 100%; padding: 12px; background: transparent; color: #8b7355;
+        border: 1.5px solid #e8ddd4; border-radius: 10px; font-size: 0.85rem; font-weight: 600;
+        font-family: 'Georgia', serif; text-align: center; text-decoration: none; transition: all 0.2s;
     }
-
     .btn-home:hover { border-color: #8b7355; background: #faf8f5; }
 
-    /* ── Loading / Error states ── */
-    .conf-loading {
-        text-align: center;
-        padding: 60px 20px;
-        color: #bbb;
-    }
-
-    .conf-spinner {
-        width: 36px;
-        height: 36px;
-        border: 3px solid #f0e8dd;
-        border-top-color: #8b7355;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        margin: 0 auto 16px;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .conf-error {
-        text-align: center;
-        padding: 60px 20px;
-        color: #e05252;
-    }
-
-    .conf-error h3 { margin-bottom: 8px; }
-    .conf-error p  { font-size: 0.9rem; color: #bbb; }
-
-    /* ── Responsive ── */
-    @media (max-width: 900px) {
-        .confirmation-layout { grid-template-columns: 1fr; }
-    }
-
+    @media (max-width: 900px) { .confirmation-layout { grid-template-columns: 1fr; } }
     @media (max-width: 600px) {
-        .confirmation-hero h1 { font-size: 2.6rem; }
-        .confirmation-page { padding: 40px 0 80px; }
+        .confirmation-hero h1 { font-size: 2.8rem; }
+        .confirmation-page { padding: 36px 0 80px; }
         .conf-panel-body { padding: 16px; }
         .order-id-banner { flex-direction: column; }
     }
@@ -378,7 +271,8 @@
 </head>
 <body>
 
-    <!-- Nav -->
+    <div class="petals-container" id="petals-container"></div>
+
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-left"></div>
@@ -394,40 +288,49 @@
     <main class="confirmation-page">
         <div class="container">
 
+            <!-- Hero — shown immediately on load -->
+            <div class="confirmation-hero" id="conf-hero" style="display:none;">
+                <div class="checkmark-ring">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <h1>Order Confirmed!</h1>
+                <p class="hero-sub">Thank you — your flowers are on their way to being arranged 🌸</p>
+            </div>
+
             <!-- Loading state -->
-            <div id="conf-loading" class="conf-loading">
-                <div class="conf-spinner"></div>
-                <p>Loading your order…</p>
+            <div id="conf-loading" style="display:none;">
+                <div class="loading-card">
+                    <div class="loading-dots"><span></span><span></span><span></span></div>
+                    <div class="loading-title">Fetching your order details…</div>
+                    <div class="loading-sub">Your payment was successful.<br>We're just pulling your order summary together.</div>
+                    <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                </div>
             </div>
 
             <!-- Error state -->
-            <div id="conf-error" style="display:none;" class="conf-error">
-                <h3>Couldn't load order details</h3>
-                <p>Your order was placed — we just couldn't fetch the details right now.<br>Check your phone for a confirmation, or <a href="index.html" style="color:#8b7355;">return home</a>.</p>
+            <div id="conf-error" style="display:none;">
+                <div class="conf-error-card">
+                    <span class="error-emoji">🌸</span>
+                    <h3>Your payment went through!</h3>
+                    <p>We're still preparing your order details in the background.<br>This usually takes just a few seconds — please try refreshing.</p>
+                    <button class="btn-refresh" onclick="location.reload()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        Refresh Page
+                    </button>
+                </div>
             </div>
 
             <!-- Main content -->
             <div id="conf-content" style="display:none;">
-
-                <!-- Hero -->
-                <div class="confirmation-hero">
-                    <div class="checkmark-circle">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                    </div>
-                    <h1>Order Confirmed!</h1>
-                    <p>Thank you — your flowers are on their way to being arranged 🌸</p>
-                </div>
-
                 <div class="confirmation-layout">
 
-                    <!-- LEFT col -->
                     <div>
-
-                        <!-- Order ID -->
+                        <!-- Order reference -->
                         <div class="conf-panel">
                             <div class="conf-panel-header">
+                                <div class="panel-icon">🧾</div>
                                 <h2>Order Reference</h2>
                             </div>
                             <div class="conf-panel-body">
@@ -441,67 +344,61 @@
                                         Copy
                                     </button>
                                 </div>
-                                <div class="detail-rows" id="order-details">
-                                    <!-- Populated by JS -->
-                                </div>
+                                <div class="detail-rows" id="order-details"></div>
                             </div>
                         </div>
 
                         <!-- Items -->
                         <div class="conf-panel">
                             <div class="conf-panel-header">
+                                <div class="panel-icon">💐</div>
                                 <h2>Items Ordered</h2>
                             </div>
                             <div class="conf-panel-body">
-                                <div class="order-items-list" id="order-items-list">
-                                    <!-- Populated by JS -->
-                                </div>
+                                <div class="order-items-list" id="order-items-list"></div>
                             </div>
                         </div>
 
-                        <!-- Cost summary -->
+                        <!-- Payment -->
                         <div class="conf-panel">
                             <div class="conf-panel-header">
+                                <div class="panel-icon">💳</div>
                                 <h2>Payment Summary</h2>
                             </div>
                             <div class="conf-panel-body">
-                                <div class="cost-rows" id="cost-rows">
-                                    <!-- Populated by JS -->
-                                </div>
+                                <div class="cost-rows" id="cost-rows"></div>
                             </div>
                         </div>
-
                     </div>
 
-                    <!-- RIGHT col -->
                     <div>
-
-                        <!-- Next steps -->
+                        <!-- What happens next -->
                         <div class="conf-panel" style="margin-bottom:20px;">
                             <div class="conf-panel-header">
+                                <div class="panel-icon">📋</div>
                                 <h2>What Happens Next</h2>
                             </div>
                             <div class="conf-panel-body">
                                 <div class="next-steps">
                                     <div class="next-step">
-                                        <div class="next-step-icon">📞</div>
+                                        <div class="next-step-num">1</div>
                                         <div class="next-step-text">
                                             <h4>We'll call to confirm</h4>
                                             <p>Our team will call you within 1 hour to confirm your order details.</p>
                                         </div>
                                     </div>
                                     <div class="next-step">
-                                        <div class="next-step-icon">💐</div>
+                                        <div class="next-step-num">2</div>
                                         <div class="next-step-text">
                                             <h4>Arranged with care</h4>
-                                            <p>Our florists will handcraft your arrangement fresh on the day.</p>
+                                            <p>Your arrangement will be handcrafted fresh on the day by our florists.</p>
                                         </div>
                                     </div>
                                     <div class="next-step">
-                                        <div class="next-step-icon">🚚</div>
+                                        <div class="next-step-num">3</div>
                                         <div class="next-step-text">
                                             <h4>Delivered to your door</h4>
-                                            <p>We'll deliver on your chosen date, handled with care.</p>
+                                            <p>Delivered on your chosen date, handled with care all the way.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -517,15 +414,36 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
 
         </div>
     </main>
 
-    <script type="module" src="src/scripts/order-confirmation.ts"></script>
+    <script>
+    (function() {
+        const colors = ['#e8b4c0','#f0c8d0','#d4a8b8','#e8d4c0','#f0e0d0','#c8d4b4','#dce8c0'];
+        const container = document.getElementById('petals-container');
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const p = document.createElement('div');
+                p.className = 'petal';
+                p.style.cssText = `
+                    left:${Math.random()*100}vw;
+                    background:${colors[Math.floor(Math.random()*colors.length)]};
+                    width:${7+Math.random()*8}px;
+                    height:${9+Math.random()*10}px;
+                    animation-duration:${4+Math.random()*5}s;
+                `;
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 10000);
+            }, i * 130);
+        }
+    })();
+    </script>
 
+    <script type="module" src="src/scripts/order-confirmation.ts"></script>
 </body>
 </html>

@@ -111,7 +111,7 @@ function render(order: any, items: any[]) {
     ["Phone",         order.customer_phone],
     ["Delivery Date", fmtDate(order.delivery_date)],
     ["Delivery Type", isPickup ? "Pickup" : "Delivery"],
-    ["Payment",       order.status === "paid" ? "✓ Paid" : order.status],
+    ["Payment",       order.status === "paid" ? "__PAID__" : order.status],
   ];
 
   if (order.notes) {
@@ -123,12 +123,18 @@ function render(order: any, items: any[]) {
     if (displayNotes) detailData.push(["Notes", displayNotes]);
   }
 
-  $("order-details").innerHTML = detailData.map(([k, v]) => `
+  $("order-details").innerHTML = detailData.map(([k, v]) => {
+    const isPaid = v === "__PAID__";
+    const valHtml = isPaid
+      ? `<span class="detail-val paid"><span class="paid-dot"></span> Paid</span>`
+      : `<span class="detail-val">${v}</span>`;
+    return `
     <div class="detail-row">
       <span class="detail-key">${k}</span>
-      <span class="detail-val">${v}</span>
+      ${valHtml}
     </div>
-  `).join("");
+  `;
+  }).join("");
 
   // Items
   $("order-items-list").innerHTML = items.map((item: any) => {
@@ -165,8 +171,7 @@ function render(order: any, items: any[]) {
     <div class="cost-row total"><span>Total Paid</span><span>${fmt(total)}</span></div>
   `;
 
-  // Show content
-  $("conf-loading").style.display  = "none";
+  // Show content (hero already visible, loading hidden by main())
   $("conf-content").style.display  = "block";
 }
 
@@ -176,26 +181,31 @@ async function main() {
   const orderId   = params.get("id");
   const sessionId = params.get("session_id");
 
+  // No params at all — show error immediately
   if (!orderId && !sessionId) {
-    $("conf-loading").style.display = "none";
-    $("conf-error").style.display   = "block";
+    $("conf-error").style.display = "block";
     return;
   }
+
+  // ✅ Show hero checkmark + loading card IMMEDIATELY
+  // User sees "Order Confirmed!" right away instead of blank screen
+  $("conf-hero").style.display    = "block";
+  $("conf-loading").style.display = "block";
 
   try {
     let result;
 
     if (orderId) {
-      // Direct order ID (legacy or admin link)
       result = await fetchOrderById(orderId);
     } else {
-      // Stripe redirect — poll for order created by webhook
       result = await fetchOrderBySessionId(sessionId!);
     }
 
+    // Hide loading, show full order details
+    $("conf-loading").style.display = "none";
     render(result.order, result.items);
 
-    // Clean up URL to show order ID instead of session_id
+    // Clean up URL
     if (sessionId && result.order.id) {
       window.history.replaceState({}, "", `order-confirmation.html?id=${result.order.id}`);
     }
@@ -203,21 +213,6 @@ async function main() {
     console.error("Failed to load order:", err);
     $("conf-loading").style.display = "none";
     $("conf-error").style.display   = "block";
-
-    // If it's a timing issue, show a more helpful message
-    const errorEl = $("conf-error");
-    if (sessionId && err.message?.includes("still being processed")) {
-      errorEl.innerHTML = `
-        <div style="text-align:center;padding:40px 20px;">
-          <h2 style="color:#8b6f6f;">Payment Successful!</h2>
-          <p>Your payment went through, but your order is still being processed.</p>
-          <p>This usually takes just a few seconds. Please refresh the page.</p>
-          <button onclick="location.reload()" style="margin-top:16px;padding:12px 24px;background:#8b6f6f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;">
-            Refresh Page
-          </button>
-        </div>
-      `;
-    }
   }
 }
 
