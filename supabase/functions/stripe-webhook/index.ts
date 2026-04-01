@@ -20,7 +20,7 @@ const WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 
 // ─── UPDATE THESE ───
-const OWNER_EMAIL = "hungsonle211@gmail.com";  // Vania's email for order alerts
+const OWNER_EMAIL = "hungsonle2112@gmail.com";  // Vania's email for order alerts
 const FROM_EMAIL  = "onboarding@resend.dev";  // Verified Resend domain
 // For testing before domain verification, use:
 // const FROM_EMAIL = "onboarding@resend.dev";

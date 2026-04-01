@@ -1,7 +1,6 @@
 // src/scripts/order-confirmation.ts
-// UPDATED: Now handles both direct order ID and Stripe session ID redirects.
-// After Stripe checkout, the URL contains ?session_id=cs_xxx
-// We poll Supabase for the order (webhook may take a moment to create it).
+// UPDATED: Handles both ?id= and ?session_id= from Stripe redirect.
+// FIXED: Removed broken variant join — looks up variant name via product instead.
 
 import { supabase } from "./db";
 import { formatPrice } from "./utils";
@@ -12,56 +11,69 @@ const DELIVERY_FEE_CENTS            = 1500;
 function $(id: string) { return document.getElementById(id) as HTMLElement; }
 function fmt(cents: number) { return formatPrice(cents / 100); }
 
+/* ── Fetch order items with product info (no variant join) ── */
+async function fetchOrderItems(orderId: string) {
+  const { data: items, error } = await supabase
+    .from("order_items")
+    .select(`
+      id, qty, line_cents, variant_code, product_id,
+      products ( name, product_images ( image_url, sort_order ) )
+    `)
+    .eq("order_id", orderId);
+
+  if (error) throw error;
+
+  // Look up variant names from the variants table via product_id + variant_code
+  const enriched = [];
+  for (const item of (items || [])) {
+    let variantName = item.variant_code || "";
+
+    // Try to get the human-readable variant name
+    const { data: variant } = await supabase
+      .from("variants")
+      .select("name")
+      .eq("product_id", item.product_id)
+      .eq("variant_code", item.variant_code)
+      .maybeSingle();
+
+    if (variant) variantName = variant.name;
+
+    enriched.push({ ...item, variant_name: variantName });
+  }
+
+  return enriched;
+}
+
 /* ── Fetch order by ID ── */
 async function fetchOrderById(orderId: string) {
-  const { data: order, error: e1 } = await supabase
+  const { data: order, error } = await supabase
     .from("orders")
     .select("id, customer_name, customer_phone, delivery_date, notes, total_cents, status, created_at")
     .eq("id", orderId)
     .single();
 
-  if (e1 || !order) throw e1 ?? new Error("Order not found");
+  if (error || !order) throw error ?? new Error("Order not found");
 
-  const { data: items, error: e2 } = await supabase
-    .from("order_items")
-    .select(`
-      id, qty, line_cents, variant_code,
-      products ( name, product_images ( image_url, sort_order ) ),
-      variants:variant_code ( name )
-    `)
-    .eq("order_id", orderId);
-
-  if (e2) throw e2;
-
-  return { order, items: items ?? [] };
+  const items = await fetchOrderItems(orderId);
+  return { order, items };
 }
 
 /* ── Fetch order by Stripe session ID (with retry/polling) ── */
 async function fetchOrderBySessionId(sessionId: string, retries = 8): Promise<{ order: any; items: any[] }> {
   for (let i = 0; i < retries; i++) {
-    const { data: order, error } = await supabase
+    const { data: order } = await supabase
       .from("orders")
       .select("id, customer_name, customer_phone, delivery_date, notes, total_cents, status, created_at")
       .eq("stripe_session_id", sessionId)
       .maybeSingle();
 
     if (order) {
-      // Found the order — now fetch items
-      const { data: items } = await supabase
-        .from("order_items")
-        .select(`
-          id, qty, line_cents, variant_code,
-          products ( name, product_images ( image_url, sort_order ) ),
-          variants:variant_code ( name )
-        `)
-        .eq("order_id", order.id);
-
-      return { order, items: items ?? [] };
+      const items = await fetchOrderItems(order.id);
+      return { order, items };
     }
 
-    // Webhook hasn't fired yet — wait and retry
     if (i < retries - 1) {
-      await new Promise(r => setTimeout(r, 1500)); // wait 1.5s between retries
+      await new Promise(r => setTimeout(r, 1500));
     }
   }
 
@@ -89,10 +101,8 @@ function render(order: any, items: any[]) {
   const isPickup = (order.notes || "").toLowerCase().includes("pick up") ||
                    (order.notes || "").toLowerCase().includes("pickup");
 
-  // Order ID
   $("order-id-display").textContent = order.id;
 
-  // Copy button
   $("copy-id-btn").addEventListener("click", () => {
     navigator.clipboard.writeText(order.id).then(() => {
       const btn = $("copy-id-btn");
@@ -105,13 +115,12 @@ function render(order: any, items: any[]) {
     });
   });
 
-  // Detail rows
   const detailData: Array<[string, string]> = [
     ["Name",          order.customer_name],
     ["Phone",         order.customer_phone],
     ["Delivery Date", fmtDate(order.delivery_date)],
     ["Delivery Type", isPickup ? "Pickup" : "Delivery"],
-    ["Payment",       order.status === "paid" ? "__PAID__" : order.status],
+    ["Payment",       order.status === "paid" ? "✓ Paid" : order.status],
   ];
 
   if (order.notes) {
@@ -123,23 +132,16 @@ function render(order: any, items: any[]) {
     if (displayNotes) detailData.push(["Notes", displayNotes]);
   }
 
-  $("order-details").innerHTML = detailData.map(([k, v]) => {
-    const isPaid = v === "__PAID__";
-    const valHtml = isPaid
-      ? `<span class="detail-val paid"><span class="paid-dot"></span> Paid</span>`
-      : `<span class="detail-val">${v}</span>`;
-    return `
+  $("order-details").innerHTML = detailData.map(([k, v]) => `
     <div class="detail-row">
       <span class="detail-key">${k}</span>
-      ${valHtml}
+      <span class="detail-val">${v}</span>
     </div>
-  `;
-  }).join("");
+  `).join("");
 
-  // Items
   $("order-items-list").innerHTML = items.map((item: any) => {
     const productName  = item.products?.name ?? "Flower Arrangement";
-    const variantName  = item.variants?.name ?? item.variant_code ?? "";
+    const variantName  = item.variant_name ?? item.variant_code ?? "";
     const images       = item.products?.product_images ?? [];
     const sortedImages = [...images].sort((a: any, b: any) => a.sort_order - b.sort_order);
     const imgUrl       = sortedImages[0]?.image_url ?? "";
@@ -160,7 +162,6 @@ function render(order: any, items: any[]) {
     `;
   }).join("");
 
-  // Cost breakdown
   const subtotal  = items.reduce((s: number, i: any) => s + i.line_cents, 0);
   const delivery  = isPickup ? 0 : deriveDelivery(order.total_cents, items);
   const total     = order.total_cents;
@@ -171,7 +172,7 @@ function render(order: any, items: any[]) {
     <div class="cost-row total"><span>Total Paid</span><span>${fmt(total)}</span></div>
   `;
 
-  // Show content (hero already visible, loading hidden by main())
+  $("conf-loading").style.display  = "none";
   $("conf-content").style.display  = "block";
 }
 
@@ -181,16 +182,11 @@ async function main() {
   const orderId   = params.get("id");
   const sessionId = params.get("session_id");
 
-  // No params at all — show error immediately
   if (!orderId && !sessionId) {
-    $("conf-error").style.display = "block";
+    $("conf-loading").style.display = "none";
+    $("conf-error").style.display   = "block";
     return;
   }
-
-  // ✅ Show hero checkmark + loading card IMMEDIATELY
-  // User sees "Order Confirmed!" right away instead of blank screen
-  $("conf-hero").style.display    = "block";
-  $("conf-loading").style.display = "block";
 
   try {
     let result;
@@ -201,11 +197,8 @@ async function main() {
       result = await fetchOrderBySessionId(sessionId!);
     }
 
-    // Hide loading, show full order details
-    $("conf-loading").style.display = "none";
     render(result.order, result.items);
 
-    // Clean up URL
     if (sessionId && result.order.id) {
       window.history.replaceState({}, "", `order-confirmation.html?id=${result.order.id}`);
     }
@@ -213,6 +206,20 @@ async function main() {
     console.error("Failed to load order:", err);
     $("conf-loading").style.display = "none";
     $("conf-error").style.display   = "block";
+
+    const errorEl = $("conf-error");
+    if (sessionId && err.message?.includes("still being processed")) {
+      errorEl.innerHTML = `
+        <div style="text-align:center;padding:40px 20px;">
+          <h2 style="color:#8b6f6f;">Payment Successful!</h2>
+          <p>Your payment went through, but your order is still being processed.</p>
+          <p>This usually takes just a few seconds. Please refresh the page.</p>
+          <button onclick="location.reload()" style="margin-top:16px;padding:12px 24px;background:#8b6f6f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;">
+            Refresh Page
+          </button>
+        </div>
+      `;
+    }
   }
 }
 
