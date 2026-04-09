@@ -1,7 +1,8 @@
 // src/script.ts — FIXED VERSION
 // Removed ALL alert() and confirm() popups
 // Replaced with proper navigation and UI feedback
-
+import { initSeasonalTheme } from '../seasonalTheme';
+initSeasonalTheme();
 interface FlowerItem {
     id: string;
     name: string;
