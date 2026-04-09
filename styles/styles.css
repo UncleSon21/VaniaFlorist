@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   Vaniaflorist — styles.css
+   Vaniaflorsit — styles.css
    Luxury · Romantic · Soft · Professional
    Fonts: Great Vibes (logo) · Cormorant Garamond (headings) · Inter (body)
    ───────────────────────────────────────────────────────────────────────────── */
@@ -941,11 +941,7 @@ blockquote {
   margin-bottom: 12px;
   font-weight: 400;
 }
-.footer-section .footer-tagline {
-   font-size: 12px; 
-   color: #5e4a37; 
-   line-height: 1.7; 
-  }
+.footer-section p { font-size: 12px; color: #7a6d60; line-height: 1.7; }
 .footer-section h4 {
   font-family: 'Inter', sans-serif;
   font-size: 9px;
@@ -955,12 +951,9 @@ blockquote {
   color: #c8b89a;
   margin-bottom: 20px;
 }
-.footer-section h3 {
-  color: #5e4a37;
-}
 .footer-section ul { list-style: none; }
 .footer-section ul li { margin-bottom: 10px; }
-.footer-section a { color: #5e4a37; text-decoration: none; font-size: 12px; letter-spacing: 0.5px; transition: color 0.3s ease; }
+.footer-section a { color: #7a6d60; text-decoration: none; font-size: 12px; letter-spacing: 0.5px; transition: color 0.3s ease; }
 .footer-section a:hover { color: #d4c5a0; }
 .social-links { display: flex; flex-direction: column; gap: 10px; }
 .footer-bottom {

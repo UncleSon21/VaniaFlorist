@@ -745,9 +745,17 @@
         font-size: 1rem;
         color: #c8b89a;
     }
+    .footer-section .footer-logo {
+        font-size: 40px;
+        color: #c8b89a;
+        line-height: 1.8;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-weight: 300;
+    }
     .footer-section p,
     .footer-section a {
-        font-size: 12px;
+        font-size: 14px;
         color: #c8b89a;
         line-height: 1.8;
         text-decoration: none;
@@ -794,7 +802,7 @@
     .hero-photo img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         object-position: center bottom;
         filter: brightness(0.95) contrast(1.05);
         display: block;
@@ -805,7 +813,7 @@
         pointer-events: none;
         background: linear-gradient(to right,
             var(--hero-bg, #faf8f4) 0%,
-            transparent 18%
+            transparent 10%
         );
     }
     body.season-spring .hero-photo-fade { --hero-bg: #fdf0f5; }
@@ -1076,7 +1084,7 @@
     <!-- Hero -->
     <section class="hero" id="home">
         <div class="hero-photo" aria-hidden="true">
-            <img src="images/gallery/bouquet-white.jpg" alt="Seasonal bouquet arrangement" loading="eager">
+            <img src="images/gallery/flowers-market.jpg" alt="Seasonal bouquet arrangement" loading="eager">
             <div class="hero-photo-fade"></div>
         </div>
         <div class="hero-content">
@@ -1513,15 +1521,7 @@
          ═══════════════════════════════════════════════════════ -->
     <script src="seasonalTheme.ts"></script>
     <script>
-        // ─────────────────────────────────────────────────────
-        // Change the season here:
-        //   initSeasonalTheme('spring')
-        //   initSeasonalTheme('summer')
-        //   initSeasonalTheme('autumn')
-        //   initSeasonalTheme('winter')
-        //   initSeasonalTheme()          ← auto from calendar
-        // ─────────────────────────────────────────────────────
-        var current = initSeasonalTheme('spring');
+        var current = initSeasonalTheme('winter');
         updateHeroCopy(current);
     </script>
 

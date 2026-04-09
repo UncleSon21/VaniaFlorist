@@ -281,23 +281,23 @@ const SIDE_SVG = {
     },
     winter: {
         left: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 700" fill="none" style="width:100%;height:100%">
-      <path d="M82 700 Q65 608 78 518 Q90 428 68 338 Q46 248 60 158 Q74 78 56 8" stroke="#4e6a78" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M82 700 Q65 608 78 518 Q90 428 68 338 Q46 248 60 158 Q74 78 56 8" stroke="#85929e" stroke-width="1.8" stroke-linecap="round"/>
       ${[580, 470, 365, 258, 152, 60].map((y, i) => {
             const len = 38 - i * 2;
             const x = 72 - i;
-            return `<path d="${x} ${y} Q${x - 14} ${y + 4} ${x - len} ${y + 6}" stroke="#4e6a78" stroke-width="${1.4 - i * 0.06}" stroke-linecap="round"/>
-        <path d="${x} ${y} Q${x - 12} ${y - 4} ${x - len + 2} ${y - 5}" stroke="#4e6a78" stroke-width="${1.2 - i * 0.06}" stroke-linecap="round"/>
+            return `<path d="${x} ${y} Q${x - 14} ${y + 4} ${x - len} ${y + 6}" stroke="#ddf0f8" stroke-width="${1.4 - i * 0.06}" stroke-linecap="round"/>
+        <path d="${x} ${y} Q${x - 12} ${y - 4} ${x - len + 2} ${y - 5}" stroke="#ddf0f8" stroke-width="${1.2 - i * 0.06}" stroke-linecap="round"/>
         <ellipse cx="${x - len + 2}" cy="${y + 2}" rx="${10 - i}" ry="3" fill="#ddf0f8" opacity="0.88" transform="rotate(-6 ${x - len + 2} ${y + 2})"/>
         <ellipse cx="${x - len + 4}" cy="${y - 4}" rx="${9 - i}" ry="2.5" fill="#ddf0f8" opacity="0.82" transform="rotate(5 ${x - len + 4} ${y - 4})"/>`;
         }).join('')}
     </svg>`,
         right: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 700" fill="none" style="width:100%;height:100%">
-      <path d="M18 700 Q35 608 22 518 Q10 428 32 338 Q54 248 40 158 Q26 78 44 8" stroke="#4e6a78" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M18 700 Q35 608 22 518 Q10 428 32 338 Q54 248 40 158 Q26 78 44 8" stroke="#ddf0f8" stroke-width="1.8" stroke-linecap="round"/>
       ${[580, 470, 365, 258, 152, 60].map((y, i) => {
             const len = 38 - i * 2;
             const x = 28 + i;
-            return `<path d="${x} ${y} Q${x + 14} ${y + 4} ${x + len} ${y + 6}" stroke="#4e6a78" stroke-width="${1.4 - i * 0.06}" stroke-linecap="round"/>
-        <path d="${x} ${y} Q${x + 12} ${y - 4} ${x + len - 2} ${y - 5}" stroke="#4e6a78" stroke-width="${1.2 - i * 0.06}" stroke-linecap="round"/>
+            return `<path d="${x} ${y} Q${x + 14} ${y + 4} ${x + len} ${y + 6}" stroke="#ddf0f8" stroke-width="${1.4 - i * 0.06}" stroke-linecap="round"/>
+        <path d="${x} ${y} Q${x + 12} ${y - 4} ${x + len - 2} ${y - 5}" stroke="#ddf0f8" stroke-width="${1.2 - i * 0.06}" stroke-linecap="round"/>
         <ellipse cx="${x + len - 2}" cy="${y + 2}" rx="${10 - i}" ry="3" fill="#ddf0f8" opacity="0.88" transform="rotate(6 ${x + len - 2} ${y + 2})"/>
         <ellipse cx="${x + len - 4}" cy="${y - 4}" rx="${9 - i}" ry="2.5" fill="#ddf0f8" opacity="0.82" transform="rotate(-5 ${x + len - 4} ${y - 4})"/>`;
         }).join('')}
