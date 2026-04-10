@@ -478,8 +478,9 @@ const __HERO_REMOVED__ = true; // placeholder to keep line references stable
 // PUBLIC API
 // ─────────────────────────────────────────────────────────────────────────────
 const ALL_SEASONS = ['spring', 'summer', 'autumn', 'winter'];
-function initSeasonalTheme(override) {
-    const season = override ?? getAustralianSeason();
+export function initSeasonalTheme(override) {
+    //const season = override ?? getAustralianSeason();
+    const season = "summer"
     ALL_SEASONS.forEach(s => document.body.classList.remove(`season-${s}`));
     document.body.classList.add(`season-${season}`);
     updateNavBranches(season);
@@ -487,7 +488,7 @@ function initSeasonalTheme(override) {
     startParticles(season);
     return season;
 }
-function destroySeasonalTheme() {
+export function destroySeasonalTheme() {
     stopParticles();
     sideLeft?.remove();
     sideLeft = null;
@@ -507,7 +508,7 @@ const HERO_COPY = {
     winter: { eyebrow: 'Winter Collection', headline: 'Flowers for the <em>still</em> season', subtitle: 'Cool clarity &amp; crystalline grace', cta: 'The winter collection' }
 };
 
-function updateHeroCopy(season) {
+export function updateHeroCopy(season) {
     const y = new Date().getFullYear();
     const c = HERO_COPY[season];
     const el = (id) => document.getElementById(id);
@@ -516,4 +517,3 @@ function updateHeroCopy(season) {
     if (el('hero-subtitle')) el('hero-subtitle').innerHTML = c.subtitle;
     if (el('hero-cta-primary')) el('hero-cta-primary').textContent = c.cta;
 }
-

@@ -58,6 +58,7 @@ body.season-spring .marquee-item { color:#b07090 !important; }
 body.season-spring .marquee-item::after { color:#f9a8c9 !important; }
 body.season-spring .shop-by-occasion { background:#fff9fb !important; }
 body.season-spring .section-eyebrow { color:#e8688a !important; }
+body.season-summer .section-eyebrow::before { background: #e8688a !important;}
 body.season-spring .section-title { color:#3d0a1e !important; }
 body.season-spring .occasion-card { background:#fdf5f8 !important; border-color:rgba(194,75,110,0.12) !important; }
 body.season-spring .occasion-card-title { color:#3d0a1e !important; }
@@ -155,6 +156,7 @@ body.season-summer .marquee-item { color:#4a7c2f !important; }
 body.season-summer .marquee-item::after { color:#a5d07a !important; }
 body.season-summer .shop-by-occasion { background:#f5faf0 !important; }
 body.season-summer .section-eyebrow { color:#5a9a42 !important; }
+body.season-summer .section-eyebrow::before { background: #5a9a42 !important;}
 body.season-summer .section-title { color:#1a3010 !important; }
 body.season-summer .occasion-card { background:#f0f7eb !important; border-color:rgba(74,138,50,0.12) !important; }
 body.season-summer .occasion-card-title { color:#1a3010 !important; }
@@ -252,6 +254,7 @@ body.season-autumn .marquee-item { color:#b08048 !important; }
 body.season-autumn .marquee-item::after { color:#e8941a !important; }
 body.season-autumn .shop-by-occasion { background:#fffaf4 !important; }
 body.season-autumn .section-eyebrow { color:#d4772a !important; }
+body.season-autumn .section-eyebrow::before { background: #d4772a !important;}
 body.season-autumn .section-title { color:#3d1c08 !important; }
 body.season-autumn .occasion-card { background:#fdf6ec !important; border-color:rgba(196,112,40,0.12) !important; }
 body.season-autumn .occasion-card-title { color:#3d1c08 !important; }
@@ -349,6 +352,7 @@ body.season-winter .marquee-item { color:#5a8aaa !important; }
 body.season-winter .marquee-item::after { color:#7ec8e3 !important; }
 body.season-winter .shop-by-occasion { background:#f4fafd !important; }
 body.season-winter .section-eyebrow { color:#4a90c4 !important; }
+body.season-winter .section-eyebrow::before { background: #4a90c4 !important;}
 body.season-winter .section-title { color:#0d2535 !important; }
 body.season-winter .occasion-card { background:#eef6fb !important; border-color:rgba(58,122,170,0.12) !important; }
 body.season-winter .occasion-card-title { color:#0d2535 !important; }
@@ -407,3 +411,173 @@ body.season-winter .search-tag:hover { background:#3a7aaa !important; border-col
 body.season-winter .search-submit-btn { background:#0d2535 !important; }
 body.season-winter .search-submit-btn:hover { background:#3a7aaa !important; }
 body.season-winter .search-input-wrap input:focus { border-color:#3a7aaa !important; }
+
+
+/* ══ SHOP PAGE — shop.html ══════════════════════════════════════════════════ */
+
+/* ── Spring ── */
+body.season-spring .shop-hero                 { background:#fdf0f5 !important; border-bottom-color:rgba(194,75,110,0.12) !important; }
+body.season-spring .shop-hero-eyebrow         { color:#e8688a !important; }
+body.season-spring .shop-hero h1              { color:#3d0a1e !important; }
+body.season-spring .shop-hero p               { color:#9a607a !important; }
+body.season-spring .shop-filterbar            { border-bottom-color:rgba(194,75,110,0.12) !important; }
+body.season-spring .material-pill             { color:#c24b6e !important; border-color:rgba(194,75,110,0.25) !important; }
+body.season-spring .material-pill:hover       { background:#fdf0f5 !important; border-color:#c24b6e !important; }
+body.season-spring .material-pill.active      { background:#c24b6e !important; border-color:#c24b6e !important; color:#fff !important; }
+body.season-spring #categorySelect            { color:#c24b6e !important; border-color:rgba(194,75,110,0.25) !important; }
+body.season-spring .view-details-btn          { background:#c24b6e !important; }
+body.season-spring .view-details-btn:hover    { background:#a03058 !important; }
+body.season-spring .product-price             { color:#c24b6e !important; }
+body.season-spring .product-card:hover        { border-color:rgba(194,75,110,0.25) !important; }
+
+/* ── Summer ── */
+body.season-summer .shop-hero                 { background:#f0faf0 !important; border-bottom-color:rgba(90,158,58,0.12) !important; }
+body.season-summer .shop-hero-eyebrow         { color:#5a9e3a !important; }
+body.season-summer .shop-hero h1              { color:#1a3a0a !important; }
+body.season-summer .shop-hero p               { color:#4a7a30 !important; }
+body.season-summer .shop-filterbar            { border-bottom-color:rgba(90,158,58,0.12) !important; }
+body.season-summer .material-pill             { color:#5a9e3a !important; border-color:rgba(90,158,58,0.25) !important; }
+body.season-summer .material-pill:hover       { background:#f0faf0 !important; border-color:#5a9e3a !important; }
+body.season-summer .material-pill.active      { background:#5a9e3a !important; border-color:#5a9e3a !important; color:#fff !important; }
+body.season-summer #categorySelect            { color:#5a9e3a !important; border-color:rgba(90,158,58,0.25) !important; }
+body.season-summer .view-details-btn          { background:#5a9e3a !important; }
+body.season-summer .view-details-btn:hover    { background:#427828 !important; }
+body.season-summer .product-price             { color:#5a9e3a !important; }
+body.season-summer .product-card:hover        { border-color:rgba(90,158,58,0.25) !important; }
+
+/* ── Autumn ── */
+body.season-autumn .shop-hero                 { background:#fdf5ec !important; border-bottom-color:rgba(196,112,40,0.12) !important; }
+body.season-autumn .shop-hero-eyebrow         { color:#c47028 !important; }
+body.season-autumn .shop-hero h1              { color:#3d1c08 !important; }
+body.season-autumn .shop-hero p               { color:#7a4a20 !important; }
+body.season-autumn .shop-filterbar            { border-bottom-color:rgba(196,112,40,0.12) !important; }
+body.season-autumn .material-pill             { color:#c47028 !important; border-color:rgba(196,112,40,0.25) !important; }
+body.season-autumn .material-pill:hover       { background:#fdf5ec !important; border-color:#c47028 !important; }
+body.season-autumn .material-pill.active      { background:#c47028 !important; border-color:#c47028 !important; color:#fff !important; }
+body.season-autumn #categorySelect            { color:#c47028 !important; border-color:rgba(196,112,40,0.25) !important; }
+body.season-autumn .view-details-btn          { background:#c47028 !important; }
+body.season-autumn .view-details-btn:hover    { background:#9a5010 !important; }
+body.season-autumn .product-price             { color:#c47028 !important; }
+body.season-autumn .product-card:hover        { border-color:rgba(196,112,40,0.25) !important; }
+
+/* ── Winter ── */
+body.season-winter .shop-hero                 { background:#eef4fa !important; border-bottom-color:rgba(58,122,170,0.12) !important; }
+body.season-winter .shop-hero-eyebrow         { color:#4a90c4 !important; }
+body.season-winter .shop-hero h1              { color:#0d2535 !important; }
+body.season-winter .shop-hero p               { color:#2a5070 !important; }
+body.season-winter .shop-filterbar            { border-bottom-color:rgba(58,122,170,0.12) !important; }
+body.season-winter .material-pill             { color:#3a7aaa !important; border-color:rgba(58,122,170,0.25) !important; }
+body.season-winter .material-pill:hover       { background:#eef4fa !important; border-color:#3a7aaa !important; }
+body.season-winter .material-pill.active      { background:#3a7aaa !important; border-color:#3a7aaa !important; color:#fff !important; }
+body.season-winter #categorySelect            { color:#3a7aaa !important; border-color:rgba(58,122,170,0.25) !important; }
+body.season-winter .view-details-btn          { background:#3a7aaa !important; }
+body.season-winter .view-details-btn:hover    { background:#2c6a9a !important; }
+body.season-winter .product-price             { color:#3a7aaa !important; }
+body.season-winter .product-card:hover        { border-color:rgba(58,122,170,0.25) !important; }
+/* ══════════════════════════════════════════════════════════════════════════════
+   SHOP PAGE — product card text + cart drawer
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Spring ── */
+body.season-spring .product-card               { background:#fff9fb !important; }
+body.season-spring .product-title              { color:#3d0a1e !important; }
+body.season-spring .product-description        { color:#9a607a !important; }
+body.season-spring .product-price-label        { color:#e8688a !important; }
+body.season-spring .product-price              { color:#c24b6e !important; }
+body.season-spring .product-footer             { border-top-color:rgba(194,75,110,0.1) !important; }
+body.season-spring .view-details-btn           { background:#c24b6e !important; color:#fff !important; }
+body.season-spring .view-details-btn:hover     { background:#a03058 !important; }
+/* Cart drawer */
+body.season-spring .cart-drawer,
+body.season-spring .cart-panel,
+body.season-spring .cart-sidebar               { background:#fff9fb !important; border-left-color:rgba(194,75,110,0.15) !important; }
+body.season-spring .cart-header,
+body.season-spring .cart-title                 { color:#3d0a1e !important; border-bottom-color:rgba(194,75,110,0.12) !important; }
+body.season-spring .cart-count-label,
+body.season-spring .cart-items-count           { color:#c24b6e !important; }
+body.season-spring .cart-empty-msg,
+body.season-spring .cart-empty p               { color:#9a607a !important; }
+body.season-spring .cart-empty-cta,
+body.season-spring .cart-browse-btn,
+body.season-spring [class*="cart"] button,
+body.season-spring [class*="cart"] .btn        { background:#c24b6e !important; color:#fff !important; border-color:#c24b6e !important; }
+body.season-spring [class*="cart"] button:hover,
+body.season-spring [class*="cart"] .btn:hover  { background:#a03058 !important; }
+
+/* ── Summer ── */
+body.season-summer .product-card               { background:#f5faf0 !important; }
+body.season-summer .product-title              { color:#1a3010 !important; }
+body.season-summer .product-description        { color:#4a7a38 !important; }
+body.season-summer .product-price-label        { color:#5a9a42 !important; }
+body.season-summer .product-price              { color:#4a8a32 !important; }
+body.season-summer .product-footer             { border-top-color:rgba(74,138,50,0.1) !important; }
+body.season-summer .view-details-btn           { background:#4a8a32 !important; color:#fff !important; }
+body.season-summer .view-details-btn:hover     { background:#3a6a28 !important; }
+/* Cart drawer */
+body.season-summer .cart-drawer,
+body.season-summer .cart-panel,
+body.season-summer .cart-sidebar               { background:#f5faf0 !important; border-left-color:rgba(74,138,50,0.15) !important; }
+body.season-summer .cart-header,
+body.season-summer .cart-title                 { color:#1a3010 !important; border-bottom-color:rgba(74,138,50,0.12) !important; }
+body.season-summer .cart-count-label,
+body.season-summer .cart-items-count           { color:#4a8a32 !important; }
+body.season-summer .cart-empty-msg,
+body.season-summer .cart-empty p               { color:#4a7a38 !important; }
+body.season-summer .cart-empty-cta,
+body.season-summer .cart-browse-btn,
+body.season-summer [class*="cart"] button,
+body.season-summer [class*="cart"] .btn        { background:#4a8a32 !important; color:#fff !important; border-color:#4a8a32 !important; }
+body.season-summer [class*="cart"] button:hover,
+body.season-summer [class*="cart"] .btn:hover  { background:#3a6a28 !important; }
+
+/* ── Autumn ── */
+body.season-autumn .product-card               { background:#fffaf4 !important; }
+body.season-autumn .product-title              { color:#3d1c08 !important; }
+body.season-autumn .product-description        { color:#7a4020 !important; }
+body.season-autumn .product-price-label        { color:#d4772a !important; }
+body.season-autumn .product-price              { color:#c47028 !important; }
+body.season-autumn .product-footer             { border-top-color:rgba(196,112,40,0.1) !important; }
+body.season-autumn .view-details-btn           { background:#c47028 !important; color:#fff !important; }
+body.season-autumn .view-details-btn:hover     { background:#9a5010 !important; }
+/* Cart drawer */
+body.season-autumn .cart-drawer,
+body.season-autumn .cart-panel,
+body.season-autumn .cart-sidebar               { background:#fffaf4 !important; border-left-color:rgba(196,112,40,0.15) !important; }
+body.season-autumn .cart-header,
+body.season-autumn .cart-title                 { color:#3d1c08 !important; border-bottom-color:rgba(196,112,40,0.12) !important; }
+body.season-autumn .cart-count-label,
+body.season-autumn .cart-items-count           { color:#c47028 !important; }
+body.season-autumn .cart-empty-msg,
+body.season-autumn .cart-empty p               { color:#7a4020 !important; }
+body.season-autumn .cart-empty-cta,
+body.season-autumn .cart-browse-btn,
+body.season-autumn [class*="cart"] button,
+body.season-autumn [class*="cart"] .btn        { background:#c47028 !important; color:#fff !important; border-color:#c47028 !important; }
+body.season-autumn [class*="cart"] button:hover,
+body.season-autumn [class*="cart"] .btn:hover  { background:#9a5010 !important; }
+
+/* ── Winter ── */
+body.season-winter .product-card               { background:#f4fafd !important; }
+body.season-winter .product-title              { color:#0d2535 !important; }
+body.season-winter .product-description        { color:#2a5070 !important; }
+body.season-winter .product-price-label        { color:#4a90c4 !important; }
+body.season-winter .product-price              { color:#3a7aaa !important; }
+body.season-winter .product-footer             { border-top-color:rgba(58,122,170,0.1) !important; }
+body.season-winter .view-details-btn           { background:#3a7aaa !important; color:#fff !important; }
+body.season-winter .view-details-btn:hover     { background:#2c6a9a !important; }
+/* Cart drawer */
+body.season-winter .cart-drawer,
+body.season-winter .cart-panel,
+body.season-winter .cart-sidebar               { background:#eef4fa !important; border-left-color:rgba(58,122,170,0.15) !important; }
+body.season-winter .cart-header,
+body.season-winter .cart-title                 { color:#0d2535 !important; border-bottom-color:rgba(58,122,170,0.12) !important; }
+body.season-winter .cart-count-label,
+body.season-winter .cart-items-count           { color:#3a7aaa !important; }
+body.season-winter .cart-empty-msg,
+body.season-winter .cart-empty p               { color:#2a5070 !important; }
+body.season-winter .cart-empty-cta,
+body.season-winter .cart-browse-btn,
+body.season-winter [class*="cart"] button,
+body.season-winter [class*="cart"] .btn        { background:#3a7aaa !important; color:#fff !important; border-color:#3a7aaa !important; }
+body.season-winter [class*="cart"] button:hover,
+body.season-winter [class*="cart"] .btn:hover  { background:#2c6a9a !important; }

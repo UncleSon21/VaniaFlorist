@@ -1262,11 +1262,13 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- Loved by Sydney — Unified Section -->
     <section class="testimonials-section fade-in-on-scroll">
         <div class="container">
             <p class="section-eyebrow">Real Moments</p>
             <h2 class="section-title">Loved by Sydney</h2>
+
+            <!-- Three review cards -->
             <div class="testimonials-grid">
                 <div class="testimonial-card fade-in-on-scroll">
                     <div class="testimonial-stars">★★★★★</div>
@@ -1284,19 +1286,13 @@
                     <div class="testimonial-author">— Sarah & James, Sydney</div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Loved by Sydney Section -->
-    <section class="customer-love fade-in-on-scroll">
-        <div class="container">
-            <p class="customer-love-eyebrow">Real Moments</p>
-            <h2 class="section-title">Loved by Sydney</h2>
-            <div class="customer-love-grid">
-                <div class="customer-photo-wrap fade-in-on-scroll">
+            <!-- Customer photo + featured quote -->
+            <div class="customer-love-grid fade-in-on-scroll" style="margin-top: 72px;">
+                <div class="customer-photo-wrap">
                     <img src="images/gallery/customer-Leidine.jpg" alt="Happy customer with bouquet from Vaniaflorist">
                 </div>
-                <div class="customer-love-text fade-in-on-scroll">
+                <div class="customer-love-text">
                     <svg class="quote-mark" width="48" height="36" viewBox="0 0 48 36" fill="none"><path d="M0 36V22.5C0 15.9 2.1 10.5 6.3 6.3C10.5 2.1 16.2 0 23.4 0V6C19.8 6 16.95 7.05 14.85 9.15C12.75 11.25 11.7 14.1 11.7 17.7H21.6V36H0ZM26.4 36V22.5C26.4 15.9 28.5 10.5 32.7 6.3C36.9 2.1 42.6 0 49.8 0V6C46.2 6 43.35 7.05 41.25 9.15C39.15 11.25 38.1 14.1 38.1 17.7H48V36H26.4Z" fill="#e8ddd0"/></svg>
                     <blockquote>Absolutely stunning. I couldn't believe how beautiful the bouquet was — it was even better in person. Will definitely be ordering again for every special occasion.</blockquote>
                     <div class="customer-love-meta">
@@ -1306,6 +1302,7 @@
                     <a href="shop.html" class="learn-more-btn" style="margin-top:32px;display:inline-block;">Shop now</a>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -1520,8 +1517,9 @@
          Place seasonalTheme.js inside your scripts/ folder.
          ═══════════════════════════════════════════════════════ -->
     <script src="seasonalTheme.ts"></script>
-    <script>
-        var current = initSeasonalTheme('winter');
+    <script type="module">
+        import { initSeasonalTheme,updateHeroCopy } from "./seasonalTheme.ts";
+        var current = initSeasonalTheme();
         updateHeroCopy(current);
     </script>
 

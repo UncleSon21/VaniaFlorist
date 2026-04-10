@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Browse our collection of handcrafted floral arrangements – Vaniaflorsit Sydney Florist">
-    <title>Shop – Vaniaflorsit Sydney Florist</title>
+    <title>Shop – Vaniaflorist Sydney Florist</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/shop-styles.css">
+    <link rel="stylesheet" href="styles/seasonal.css">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -21,12 +22,11 @@
                 <a href="index.html" class="text-link">Home</a>
                 <a href="shop.html"  class="text-link active">Shop</a>
                 <a href="about.html" class="text-link">About</a>
-                <!-- ✅ FIX: Contact link now goes to index.html#contact (not #contact on this page) -->
                 <a href="index.html#contact" class="text-link">Contact</a>
             </div>
             <div class="logo">
                 <a href="index.html">
-                    <h1 class="logo-title">Vaniaflorsit</h1>
+                    <h1 class="logo-title">Vaniaflorist</h1>
                     <p class="logo-subtitle">Sydney Florist</p>
                 </a>
             </div>
@@ -80,7 +80,7 @@
 
     <script type="module" src="src/scripts/shop_page_db.ts"></script>
     <script type="module">
-        import { initSeasonalTheme } from "./seasonalTheme.js";
+        import { initSeasonalTheme } from "./seasonalTheme.ts";
         initSeasonalTheme();
     </script>
 
