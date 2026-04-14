@@ -3,6 +3,39 @@
 // 1. Verifies the Stripe signature
 // 2. Creates the order + items in Supabase
 // 3. Sends confirmation emails via Resend
+const TWILIO_SID    = Deno.env.get("TWILIO_ACCOUNT_SID")!;
+const TWILIO_TOKEN  = Deno.env.get("TWILIO_AUTH_TOKEN")!;
+const TWILIO_FROM   = Deno.env.get("TWILIO_FROM_NUMBER")!; // e.g. "+61400000000"
+const OWNER_PHONE   = "+61XXXXXXXXX"; // your mobile
+
+async function sendSMS(to: string, body: string) {
+  const res = await fetch(
+    `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_SID}/Messages.json`,
+    {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + btoa(`${TWILIO_SID}:${TWILIO_TOKEN}`),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ From: TWILIO_FROM, To: to, Body: body }).toString(),
+    }
+  );
+  if (!res.ok) console.error("SMS failed:", await res.text());
+}
+
+// Then inside the checkout.session.completed handler, after the emails:
+await sendSMS(
+  OWNER_PHONE,
+  `New order from ${meta.customer_name} — ${formatPrice(totalCents)}. Delivery: ${meta.delivery_date}. Call: ${meta.customer_phone}`
+);
+
+if (meta.customer_phone) {
+  await sendSMS(
+    meta.customer_phone,
+    `Hi ${meta.customer_name}! Your Vania Florist order is confirmed for ${meta.delivery_date}. Total: ${formatPrice(totalCents)}. We'll call to confirm. 🌸`
+  );
+}
+
 
 import Stripe from "https://esm.sh/stripe@17?target=deno";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -107,7 +140,7 @@ function buildCustomerEmail(order: any, items: any[]): string {
         ${order.notes ? `<p style="margin:0;"><strong>Notes:</strong> ${order.notes}</p>` : ""}
       </div>
       <p style="font-size:13px;color:#a08b7e;text-align:center;">
-        Questions? Just reply to this email or call us at (02) 9123-4567
+        Questions? Just reply to this email or call us at 0414 827 927
       </p>
     </div>
   `;
