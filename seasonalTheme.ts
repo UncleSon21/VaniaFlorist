@@ -480,7 +480,7 @@ const __HERO_REMOVED__ = true; // placeholder to keep line references stable
 const ALL_SEASONS = ['spring', 'summer', 'autumn', 'winter'];
 export function initSeasonalTheme(override) {
     //const season = override ?? getAustralianSeason();
-    const season = "summer"
+    const season = "winter"
     ALL_SEASONS.forEach(s => document.body.classList.remove(`season-${s}`));
     document.body.classList.add(`season-${season}`);
     updateNavBranches(season);
